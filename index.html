@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>みんなの後悔 — あなたの後悔、聞かせてください。</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #faf9fe;
+      --white:       #ffffff;
+      --border:      #e3e2e7;
+      --border-2:    #bbcbb8;
+      --text:        #1a1b1f;
+      --text-2:      #3c4a3c;
+      --text-3:      #6c7b6b;
+      --primary:     #06c755;
+      --primary-dk:  #006e2b;
+      --red:         #06c755;   /* backward compat for JS */
+      --red-lt:      #ecfdf5;   /* backward compat for JS */
+      --blue:        #006e2b;
+      --blue-lt:     #ecfdf5;
+      --radius:      16px;
+      --radius-sm:   10px;
+    }
+
+    body { font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* HEADER — glassmorphism */
+    header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.82); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(227,226,231,0.6); }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; gap: 32px; }
+    .logo { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; color: var(--primary-dk); flex-shrink: 0; }
+    .header-nav { display: flex; gap: 2px; flex: 1; }
+    .header-nav a { font-size: 13px; font-weight: 600; color: var(--text-3); text-decoration: none; padding: 6px 14px; border-radius: 9999px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .header-nav a:hover { background: rgba(6,199,85,0.08); color: var(--primary-dk); }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .btn-solid { font-size: 13px; font-weight: 700; color: var(--white); background: var(--primary-dk); border: none; border-radius: 9999px; padding: 8px 20px; cursor: pointer; font-family: inherit; transition: opacity 0.15s, transform 0.15s; }
+    .btn-solid:hover { opacity: 0.88; }
+    .btn-solid:active { transform: scale(0.96); }
+
+    /* HERO */
+    .hero { background: var(--white); padding: 64px 24px 52px; text-align: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary-dk); background: rgba(6,199,85,0.1); padding: 5px 14px; border-radius: 9999px; margin-bottom: 24px; }
+    .hero-eyebrow span { display: none; }
+    .hero h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.15; color: var(--text); margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--primary-dk) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 16px; color: var(--text-2); max-width: 520px; margin: 0 auto 36px; line-height: 1.8; }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; }
+    .hero-btn-primary { font-size: 15px; font-weight: 700; color: var(--white); background: linear-gradient(135deg, var(--primary-dk) 0%, var(--primary) 100%); border: none; border-radius: 9999px; padding: 13px 28px; cursor: pointer; font-family: inherit; transition: opacity 0.15s, transform 0.15s; box-shadow: 0 4px 20px rgba(6,199,85,0.3); }
+    .hero-btn-primary:hover { opacity: 0.9; }
+    .hero-btn-primary:active { transform: scale(0.97); }
+    .hero-btn-secondary { font-size: 15px; font-weight: 600; color: var(--primary-dk); background: rgba(6,199,85,0.06); border: 1.5px solid rgba(6,199,85,0.3); border-radius: 9999px; padding: 12px 26px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .hero-btn-secondary:hover { background: rgba(6,199,85,0.12); border-color: var(--primary); }
+    .hero-stats { display: flex; justify-content: center; align-items: center; background: var(--white); border: 1.5px solid var(--border); border-radius: 9999px; overflow: hidden; max-width: 420px; margin: 0 auto; box-shadow: 0 2px 16px rgba(26,27,31,0.05); }
+    .hero-stat { flex: 1; padding: 14px 16px; text-align: center; border-right: 1px solid var(--border); }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat .num { display: block; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; color: var(--primary-dk); }
+    .hero-stat .lbl { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+    /* TABS */
+    nav.tab-nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(227,226,231,0.7); position: sticky; top: 64px; z-index: 99; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; }
+    nav.tab-nav button { padding: 14px 18px; border: none; border-bottom: 2px solid transparent; background: none; font-size: 13px; font-weight: 600; font-family: inherit; color: var(--text-3); cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+    nav.tab-nav button:hover { color: var(--primary-dk); }
+    nav.tab-nav button.active { color: var(--primary-dk); border-bottom-color: var(--primary); }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-inner { max-width: 960px; margin: 0 auto; padding: 32px 24px 100px; }
+
+    /* SECTION TITLES */
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* FORM */
+    .form-card { background: var(--white); border-radius: var(--radius); padding: 32px; margin-bottom: 16px; box-shadow: 0 4px 24px rgba(26,27,31,0.06); }
+    .form-card-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 24px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .form-field { margin-bottom: 18px; }
+    .form-field label { display: block; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; padding-left: 4px; }
+    .form-field input, .form-field select, .form-field textarea { width: 100%; padding: 13px 18px; border: none; border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--text); background: #f1f0f5; transition: background 0.15s, box-shadow 0.15s; -webkit-appearance: none; }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; background: var(--white); box-shadow: 0 0 0 2px var(--primary); }
+    .form-field textarea { resize: vertical; line-height: 1.7; min-height: 140px; }
+    .btn-post { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-dk) 0%, var(--primary) 100%); color: var(--white); border: none; border-radius: 9999px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; transition: opacity 0.15s, transform 0.15s; box-shadow: 0 4px 20px rgba(6,199,85,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-post:hover { opacity: 0.9; }
+    .btn-post:active { transform: scale(0.98); }
+    .btn-post:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+    .anon-note { margin-top: 12px; font-size: 12px; color: var(--text-3); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .about-box { background: rgba(6,199,85,0.05); border: none; border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 24px 28px; box-shadow: 0 2px 12px rgba(26,27,31,0.04); }
+    .about-box h3 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+    .about-box p { font-size: 14px; line-height: 1.85; color: var(--text-2); }
+
+    /* CATEGORY PILLS (form) */
+    .cat-select-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+    .cat-select-pills button { padding: 8px 18px; border-radius: 9999px; border: none; background: #ebe1d5; color: #6a635a; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+    .cat-select-pills button:hover { background: #cec5ba; }
+    .cat-select-pills button.active { background: var(--primary); color: var(--white); }
+
+    /* FILTER BAR */
+    .filter-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 24px; scrollbar-width: none; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-bar button { flex-shrink: 0; padding: 7px 16px; border-radius: 9999px; border: 1.5px solid var(--border-2); background: var(--white); font-size: 12px; font-weight: 600; font-family: inherit; color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+    .filter-bar button:hover { background: rgba(6,199,85,0.07); border-color: var(--primary); color: var(--primary-dk); }
+    .filter-bar button.active { background: var(--primary-dk); border-color: var(--primary-dk); color: var(--white); }
+
+    /* POST CARD */
+    .post-card { background: var(--white); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; box-shadow: 0 1px 8px rgba(26,27,31,0.04); border-left: none; }
+    .post-card:hover { box-shadow: 0 6px 24px rgba(26,27,31,0.09); transform: translateY(-1px); }
+    .post-card[data-cat="仕事・キャリア"]   { border-top: 3px solid #3b82f6; }
+    .post-card[data-cat="恋愛・パートナー"] { border-top: 3px solid #ec4899; }
+    .post-card[data-cat="家族・親子"]       { border-top: 3px solid #f97316; }
+    .post-card[data-cat="学び・挑戦"]       { border-top: 3px solid var(--primary); }
+    .post-card[data-cat="友情・人間関係"]   { border-top: 3px solid #a855f7; }
+    .post-card[data-cat="お金・生活"]       { border-top: 3px solid #eab308; }
+    .post-card[data-cat="健康・身体"]       { border-top: 3px solid #14b8a6; }
+    .post-card[data-cat="その他"]           { border-top: 3px solid #6b7280; }
+
+    .post-top { display: flex; align-items: center; gap: 8px; padding: 16px 20px 0; flex-wrap: wrap; }
+    .cat-pill { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 9999px; }
+    .cat-pill[data-cat="仕事・キャリア"]   { background: #eff6ff; color: #1d4ed8; }
+    .cat-pill[data-cat="恋愛・パートナー"] { background: #fdf2f8; color: #be185d; }
+    .cat-pill[data-cat="家族・親子"]       { background: #fff7ed; color: #c2410c; }
+    .cat-pill[data-cat="学び・挑戦"]       { background: #f0fdf4; color: #15803d; }
+    .cat-pill[data-cat="友情・人間関係"]   { background: #faf5ff; color: #7e22ce; }
+    .cat-pill[data-cat="お金・生活"]       { background: #fefce8; color: #854d0e; }
+    .cat-pill[data-cat="健康・身体"]       { background: #f0fdfa; color: #0f766e; }
+    .cat-pill[data-cat="その他"]           { background: #f9fafb; color: #374151; }
+    .post-meta-tag { font-size: 11px; color: var(--text-3); background: var(--bg); padding: 3px 9px; border-radius: 9999px; }
+    .post-time { font-size: 11px; color: var(--text-3); margin-left: auto; }
+    .post-body { padding: 14px 20px 16px; font-size: 15px; line-height: 1.85; color: var(--text); }
+
+    /* AI REALIZATION TOGGLE */
+    .ai-toggle-btn { display: flex; align-items: center; gap: 8px; margin: 0 20px 12px; padding: 10px 14px; background: rgba(6,199,85,0.07); border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; color: var(--primary-dk); cursor: pointer; width: calc(100% - 40px); text-align: left; font-family: inherit; transition: background 0.15s; }
+    .ai-toggle-btn:hover { background: rgba(6,199,85,0.13); }
+    .ai-toggle-btn .ai-arrow { margin-left: auto; font-size: 10px; transition: transform 0.2s; }
+    .ai-toggle-btn.open .ai-arrow { transform: rotate(180deg); }
+    .ai-detail-panel { display: none; margin: 0 20px 14px; border: 1.5px solid rgba(6,199,85,0.25); border-radius: var(--radius); overflow: hidden; }
+    .ai-detail-panel.open { display: block; }
+    .ai-detail-head { background: var(--primary-dk); color: #fff; padding: 14px 18px; }
+    .ai-detail-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .ai-detail-conf { font-size: 12px; opacity: 0.85; }
+    .ai-detail-why { padding: 12px 18px; background: rgba(6,199,85,0.06); font-size: 12px; color: var(--primary-dk); line-height: 1.7; border-bottom: 1px solid rgba(6,199,85,0.2); }
+    .ai-steps { padding: 14px 18px; background: var(--white); }
+    .ai-step { display: flex; gap: 12px; margin-bottom: 14px; }
+    .ai-step:last-child { margin-bottom: 0; }
+    .ai-step-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--primary-dk); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .ai-step-content { flex: 1; }
+    .ai-step-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .ai-step-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; }
+    .ai-step-link { display: inline-block; margin-top: 4px; font-size: 11px; font-weight: 600; color: var(--primary-dk); text-decoration: none; border-bottom: 1px solid rgba(6,199,85,0.4); }
+    .ai-step-link:hover { color: var(--primary); }
+
+    /* POST FOOTER */
+    .post-footer { display: flex; align-items: center; gap: 8px; padding: 10px 20px 14px; border-top: 1px solid rgba(227,226,231,0.8); flex-wrap: wrap; }
+    .empathy-btn { display: inline-flex; align-items: center; gap: 5px; background: none; border: 1.5px solid var(--border-2); border-radius: 9999px; padding: 5px 14px; font-size: 12px; font-weight: 600; font-family: inherit; color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+    .empathy-btn:hover { border-color: var(--primary); color: var(--primary-dk); background: rgba(6,199,85,0.07); }
+    .empathy-btn.active { background: rgba(6,199,85,0.1); border-color: var(--primary); color: var(--primary-dk); }
+    .share-row { display: flex; align-items: center; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+    .share-btn { display: inline-flex; align-items: center; gap: 3px; padding: 4px 9px; font-size: 10px; font-weight: 600; border: 1.5px solid; border-radius: 9999px; cursor: pointer; font-family: inherit; transition: all 0.15s; background: var(--white); }
+    .share-btn svg { width: 10px; height: 10px; fill: currentColor; flex-shrink: 0; }
+    .share-btn.x     { color: #555; border-color: #d4d4d0; }
+    .share-btn.x:hover { background: #111; color: #fff; border-color: #111; }
+    .share-btn.th    { color: #555; border-color: #d4d4d0; }
+    .share-btn.th:hover { background: #000; color: #fff; border-color: #000; }
+    .share-btn.line  { color: #06c755; border-color: rgba(6,199,85,0.3); }
+    .share-btn.line:hover { background: #06c755; color: #fff; border-color: #06c755; }
+    .share-btn.fb    { color: #1877f2; border-color: rgba(24,119,242,0.3); }
+    .share-btn.fb:hover { background: #1877f2; color: #fff; border-color: #1877f2; }
+    .share-btn.ig    { color: #e1306c; border-color: rgba(225,48,108,0.3); }
+    .share-btn.ig:hover { background: #e1306c; color: #fff; border-color: #e1306c; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .chart-section { background: var(--white); border-radius: var(--radius); padding: 24px; margin-bottom: 12px; box-shadow: 0 1px 8px rgba(26,27,31,0.04); }
+    .chart-title { font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .bar-label { font-size: 12px; font-weight: 500; width: 110px; flex-shrink: 0; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { flex: 1; height: 8px; background: var(--bg); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; background: var(--primary); transition: width 0.6s ease; }
+    .bar-val { font-size: 12px; font-weight: 700; color: var(--text-2); width: 32px; text-align: right; flex-shrink: 0; }
+
+    /* TOP POSTS */
+    .top-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(227,226,231,0.7); }
+    .top-item:last-child { border-bottom: none; }
+    .top-rank { font-size: 18px; font-weight: 900; color: var(--primary); flex-shrink: 0; width: 28px; text-align: center; padding-top: 2px; }
+    .top-text { font-size: 13px; line-height: 1.75; color: var(--text); margin-bottom: 6px; }
+    .top-meta { display: flex; gap: 10px; font-size: 11px; color: var(--text-3); flex-wrap: wrap; }
+
+    /* KEYWORD CLOUD */
+    .kw-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+    .kw-tag { display: inline-flex; align-items: center; gap: 5px; padding: 5px 14px; border-radius: 9999px; background: rgba(6,199,85,0.07); font-size: 12px; font-weight: 600; color: var(--primary-dk); }
+    .kw-tag .kw-cnt { font-size: 10px; font-weight: 700; color: var(--text-3); }
+
+    /* CROSS TABLE */
+    .cross-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .cross-table th { background: var(--bg); padding: 7px 10px; text-align: center; font-weight: 600; color: var(--text-2); border: 1px solid var(--border); white-space: nowrap; }
+    .cross-table td { padding: 7px 10px; text-align: center; border: 1px solid var(--border); font-weight: 600; }
+    .cross-table td.heat-0 { background: var(--white); color: var(--text-3); }
+    .cross-table td.heat-1 { background: #f0fdf4; color: #166534; }
+    .cross-table td.heat-2 { background: #dcfce7; color: #15803d; }
+    .cross-table td.heat-3 { background: #bbf7d0; color: #166534; }
+    .cross-table td.heat-4 { background: #4ade80; color: #14532d; }
+    .cross-table td.heat-5 { background: #16a34a; color: #fff; }
+    .cross-table .row-head { text-align: left; font-weight: 600; color: var(--text-2); background: var(--bg); }
+
+    /* INSIGHT BOX */
+    .insight-box { background: rgba(6,199,85,0.06); border: none; border-left: 4px solid var(--primary); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 12px; }
+    .insight-box .ins-title { font-size: 12px; font-weight: 700; color: var(--primary-dk); margin-bottom: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .insight-box ul { list-style: none; }
+    .insight-box li { font-size: 13px; color: var(--primary-dk); line-height: 1.8; padding-left: 16px; position: relative; }
+    .insight-box li::before { content: '—'; position: absolute; left: 0; color: var(--primary); }
+
+    /* AI ADVICE */
+    .age-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .age-picker button { padding: 8px 20px; border-radius: 9999px; border: 1.5px solid var(--border-2); background: var(--white); font-size: 13px; font-weight: 600; font-family: inherit; color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+    .age-picker button:hover { border-color: var(--primary); color: var(--primary-dk); background: rgba(6,199,85,0.07); }
+    .age-picker button.active { background: var(--primary-dk); border-color: var(--primary-dk); color: var(--white); }
+
+    .advice-card { background: var(--white); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(26,27,31,0.05); }
+    .advice-card-head { padding: 20px 24px; background: linear-gradient(135deg, var(--primary-dk) 0%, var(--primary) 100%); color: var(--white); }
+    .advice-card-head h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .advice-card-head p { font-size: 12px; opacity: 0.75; }
+    .advice-message { padding: 16px 24px; background: rgba(6,199,85,0.05); border-bottom: 1px solid rgba(6,199,85,0.15); font-size: 13px; color: var(--primary-dk); line-height: 1.85; font-style: italic; }
+
+    .advice-item { border-bottom: 1px solid rgba(227,226,231,0.7); }
+    .advice-item:last-child { border-bottom: none; }
+    .advice-item-head { display: flex; gap: 16px; padding: 18px 24px 12px; align-items: flex-start; }
+    .advice-pct-block { flex-shrink: 0; text-align: center; width: 52px; }
+    .advice-pct-num { font-size: 24px; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; display: block; }
+    .advice-pct-label { font-size: 10px; color: var(--text-3); white-space: nowrap; }
+    .advice-regret-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .advice-regret-insight { font-size: 12px; color: var(--text-2); line-height: 1.75; margin-bottom: 6px; }
+    .advice-root { font-size: 12px; color: var(--text-3); line-height: 1.6; border-left: 2px solid rgba(6,199,85,0.3); padding-left: 10px; margin-bottom: 10px; }
+
+    .advice-steps { padding: 0 24px 18px 88px; }
+    .advice-step { display: flex; gap: 10px; margin-bottom: 12px; }
+    .advice-step:last-child { margin-bottom: 0; }
+    .advice-step-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-dk), var(--primary)); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .advice-step-body { flex: 1; }
+    .advice-step-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .advice-step-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; }
+    .advice-step-link { display: inline-block; margin-top: 3px; font-size: 11px; font-weight: 600; color: var(--primary-dk); text-decoration: none; border-bottom: 1px dashed rgba(6,199,85,0.5); }
+    .advice-step-link:hover { color: var(--primary); }
+    .advice-outcome { display: inline-block; margin-top: 4px; padding: 2px 8px; background: rgba(6,199,85,0.1); border: 1px solid rgba(6,199,85,0.3); border-radius: 9999px; font-size: 11px; font-weight: 600; color: var(--primary-dk); }
+
+    .message-box { background: rgba(6,199,85,0.05); border-radius: var(--radius); padding: 22px 26px; text-align: center; }
+    .message-box p { font-size: 14px; font-weight: 500; line-height: 1.85; color: var(--text-2); }
+
+    /* EMPTY / TOAST / FOOTER */
+    .empty { text-align: center; padding: 64px 20px; color: var(--text-3); font-size: 15px; }
+    .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--primary-dk); color: var(--white); padding: 11px 22px; border-radius: 9999px; font-size: 13px; font-weight: 600; z-index: 999; transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 4px 20px rgba(0,110,43,0.3); pointer-events: none; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    footer { background: var(--white); padding: 36px 24px; margin-top: 24px; }
+    .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .footer-logo { font-size: 16px; font-weight: 900; color: var(--primary-dk); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--text-3); text-decoration: none; cursor: pointer; }
+    .footer-links a:hover { color: var(--primary-dk); }
+    .footer-copy { font-size: 12px; color: var(--text-3); }
+
+    /* MY POST BADGE */
+    .my-post-badge { background: rgba(6,199,85,0.1); color: var(--primary-dk); border: 1.5px solid rgba(6,199,85,0.3); font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; }
+
+    /* COMMENT SECTION */
+    .comment-section { padding: 14px 20px 18px; border-top: 1px solid rgba(227,226,231,0.8); background: #f8f8fd; }
+    .comment-section-title { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .comment-item { padding: 10px 0; border-bottom: 1px solid rgba(227,226,231,0.6); }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-item-text { font-size: 13px; color: var(--text); line-height: 1.75; }
+    .comment-item-time { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+    .comment-empty { font-size: 12px; color: var(--text-3); padding: 4px 0 10px; }
+    .comment-input-row { display: flex; gap: 8px; margin-top: 12px; }
+    .comment-input { flex: 1; padding: 9px 14px; border: none; border-radius: 9999px; font-size: 13px; font-family: inherit; color: var(--text); background: var(--white); outline: none; box-shadow: 0 0 0 1.5px var(--border-2); transition: box-shadow 0.15s; }
+    .comment-input:focus { box-shadow: 0 0 0 2px var(--primary); }
+    .comment-submit { padding: 9px 18px; background: var(--primary-dk); color: var(--white); border: none; border-radius: 9999px; font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.15s; flex-shrink: 0; }
+    .comment-submit:hover { opacity: 0.85; }
+
+    /* MOBILE BOTTOM NAV */
+    .bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 150; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 -2px 20px rgba(0,0,0,0.06); padding: 8px 16px 20px; border-radius: 20px 20px 0 0; }
+    .bottom-nav-inner { display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; }
+    .bn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 12px; border: none; background: none; font-family: inherit; cursor: pointer; transition: transform 0.15s; border-radius: 12px; }
+    .bn-item:active { transform: scale(0.9); }
+    .bn-item.active-nav .material-symbols-outlined { color: var(--white); }
+    .bn-item.active-nav { background: linear-gradient(135deg, var(--primary-dk), var(--primary)); }
+    .bn-item.active-nav span:last-child { color: var(--white); }
+    .bn-item .material-symbols-outlined { font-size: 22px; color: var(--text-3); }
+    .bn-item span:last-child { font-size: 10px; font-weight: 600; color: var(--text-3); }
+
+    @media (max-width: 768px) {
+      .form-row-3 { grid-template-columns: 1fr; }
+      .stats-grid  { grid-template-columns: 1fr; }
+      nav.tab-nav { display: none; }
+      .header-nav { display: none; }
+      .advice-steps { padding-left: 20px; }
+      .cross-table { font-size: 10px; }
+      .page-inner { padding: 24px 16px 80px; }
+      .post-form-grid { display: block !important; }
+      .bottom-nav { display: block; }
+      .hero { padding: 40px 20px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">みんなの後悔</div>
+    <nav class="header-nav" style="border:none;position:static;background:none;">
+      <a onclick="showPage('feed', document.querySelectorAll('nav.tab-nav button')[1])">みんなの後悔</a>
+      <a onclick="showPage('stats', document.querySelectorAll('nav.tab-nav button')[2])">統計</a>
+      <a onclick="showPage('ai', document.querySelectorAll('nav.tab-nav button')[3])">AIアドバイス</a>
+    </nav>
+    <div class="header-right">
+      <button class="btn-solid" onclick="showPage('post', document.querySelectorAll('nav.tab-nav button')[0])">
+        <span class="material-symbols-outlined" style="font-size:15px;vertical-align:-2px;">edit</span>
+        後悔を書く
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="material-symbols-outlined" style="font-size:14px;">auto_awesome</span>
+    Safe &amp; Anonymous Sharing
+  </div>
+  <h1>あなたの後悔、<em>聞かせてください。</em></h1>
+  <p class="hero-sub">あなたの後悔が、誰かの人生を変えるかもしれない。<br>積み重なった声がデータになり、AIが次の世代の後悔を防ぐ。</p>
+  <div class="hero-actions">
+    <button class="hero-btn-primary" onclick="showPage('post', document.querySelectorAll('nav.tab-nav button')[0])">
+      <span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px;">send</span>
+      後悔を書く
+    </button>
+    <button class="hero-btn-secondary" onclick="showPage('feed', document.querySelectorAll('nav.tab-nav button')[1])">みんなの後悔を見る</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num" id="heroTotal">0</span><div class="lbl">後悔の声</div></div>
+    <div class="hero-stat"><span class="num" id="heroEmpathy">0</span><div class="lbl">共感した人</div></div>
+    <div class="hero-stat"><span class="num">8</span><div class="lbl">カテゴリ</div></div>
+  </div>
+</section>
+
+<nav class="tab-nav">
+  <div class="nav-inner">
+    <button class="active" onclick="showPage('post', this)">後悔を書く</button>
+    <button onclick="showPage('feed', this)">みんなの後悔</button>
+    <button onclick="showPage('stats', this)">統計</button>
+    <button onclick="showPage('ai', this)">AIアドバイス</button>
+  </div>
+</nav>
+
+<!-- 後悔を書く -->
+<div id="page-post" class="page active">
+  <div class="page-inner">
+    <div class="post-form-grid" style="display:grid;grid-template-columns:1fr 400px;gap:32px;align-items:start;">
+      <!-- Form -->
+      <div>
+        <div class="form-card">
+          <div class="form-card-title">あなたの後悔を書く</div>
+          <!-- 年代・性別 -->
+          <div class="form-row-3" style="grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-field">
+              <label>年代</label>
+              <select id="postAge">
+                <option value="10代">10代</option>
+                <option value="20代" selected>20代</option>
+                <option value="30代">30代</option>
+                <option value="40代">40代</option>
+                <option value="50代">50代</option>
+                <option value="60代以上">60代以上</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>性別（任意）</label>
+              <select id="postGender">
+                <option value="未回答" selected>未回答</option>
+                <option value="男性">男性</option>
+                <option value="女性">女性</option>
+              </select>
+            </div>
+          </div>
+          <!-- カテゴリ pills -->
+          <div class="form-field" style="margin-bottom:20px;">
+            <label>カテゴリ</label>
+            <div class="cat-select-pills" id="catPills">
+              <button type="button" class="active" data-cat="仕事・キャリア" onclick="selectCat(this)">仕事・キャリア</button>
+              <button type="button" data-cat="恋愛・パートナー" onclick="selectCat(this)">恋愛・パートナー</button>
+              <button type="button" data-cat="家族・親子" onclick="selectCat(this)">家族・親子</button>
+              <button type="button" data-cat="学び・挑戦" onclick="selectCat(this)">学び・挑戦</button>
+              <button type="button" data-cat="友情・人間関係" onclick="selectCat(this)">友情・人間関係</button>
+              <button type="button" data-cat="お金・生活" onclick="selectCat(this)">お金・生活</button>
+              <button type="button" data-cat="健康・身体" onclick="selectCat(this)">健康・身体</button>
+              <button type="button" data-cat="その他" onclick="selectCat(this)">その他</button>
+            </div>
+            <!-- hidden select for backward compat with submitPost() -->
+            <select id="postCategory" style="display:none;">
+              <option selected>仕事・キャリア</option>
+              <option>恋愛・パートナー</option>
+              <option>家族・親子</option>
+              <option>学び・挑戦</option>
+              <option>友情・人間関係</option>
+              <option>お金・生活</option>
+              <option>健康・身体</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <!-- テキスト -->
+          <div class="form-field">
+            <label>後悔の内容</label>
+            <textarea id="postText" rows="6" placeholder="あのとき〇〇しておけばよかった。あなたの声が、誰かの人生のヒントになります。"></textarea>
+          </div>
+          <!-- 安心メモ -->
+          <div style="display:flex;gap:12px;padding:14px 16px;border-radius:var(--radius);background:rgba(6,199,85,0.06);align-items:flex-start;margin-bottom:20px;">
+            <span class="material-symbols-outlined" style="color:var(--primary-dk);font-size:20px;flex-shrink:0;margin-top:1px;">verified_user</span>
+            <p style="font-size:12px;color:var(--text-2);line-height:1.75;">投稿することで、あなたの後悔が匿名で共有されます。個人を特定できる情報は一切収集しません。</p>
+          </div>
+          <button class="btn-post" id="submitBtn" onclick="submitPost()" disabled>
+            <span class="material-symbols-outlined" style="font-size:18px;">send</span>
+            投稿する
+          </button>
+          <p class="anon-note">
+            <span class="material-symbols-outlined" style="font-size:13px;color:var(--primary);">lock</span>
+            名前は表示されません。完全匿名です。
+          </p>
+        </div>
+      </div>
+      <!-- Sidebar -->
+      <div>
+        <div class="about-box" style="margin-bottom:16px;">
+          <h3>このサービスについて</h3>
+          <p>集まった後悔データは、年代・性別・カテゴリ別に集計されます。「40代が最も後悔していること」を20代が知ることで、<strong>先回りした人生設計</strong>が可能になります。<br><br>そしてあなたの後悔は、AIによって<strong>実現の可能性</strong>に変わります。「やればよかった」を「今からでも遅くない」に。</p>
+        </div>
+        <!-- Feature list -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:44px;height:44px;border-radius:14px;background:var(--white);box-shadow:0 2px 8px rgba(26,27,31,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span class="material-symbols-outlined" style="color:var(--primary-dk);font-size:20px;">visibility_off</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">完全プライバシー</div>
+              <div style="font-size:12px;color:var(--text-2);line-height:1.6;">名前なし・トラッキングなし・足跡なし。あなたの正直な声だけ。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:44px;height:44px;border-radius:14px;background:var(--white);box-shadow:0 2px 8px rgba(26,27,31,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span class="material-symbols-outlined" style="color:var(--primary-dk);font-size:20px;">group_work</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">集合知</div>
+              <div style="font-size:12px;color:var(--text-2);line-height:1.6;">あなたのデータが、AIによって他の人への道しるべになります。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;">
+            <div style="width:44px;height:44px;border-radius:14px;background:var(--white);box-shadow:0 2px 8px rgba(26,27,31,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span class="material-symbols-outlined" style="color:var(--primary-dk);font-size:20px;">volunteer_activism</span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">感情的サポート</div>
+              <div style="font-size:12px;color:var(--text-2);line-height:1.6;">判断せずに理解するコミュニティ。あなたは一人ではありません。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- みんなの後悔 -->
+<div id="page-feed" class="page">
+  <div class="page-inner">
+    <div class="filter-bar" id="feedFilter">
+      <button class="active" onclick="setFilter('すべて', this)">すべて</button>
+      <button onclick="setFilter('仕事・キャリア', this)">仕事・キャリア</button>
+      <button onclick="setFilter('恋愛・パートナー', this)">恋愛・パートナー</button>
+      <button onclick="setFilter('家族・親子', this)">家族・親子</button>
+      <button onclick="setFilter('学び・挑戦', this)">学び・挑戦</button>
+      <button onclick="setFilter('友情・人間関係', this)">友情・人間関係</button>
+      <button onclick="setFilter('お金・生活', this)">お金・生活</button>
+      <button onclick="setFilter('健康・身体', this)">健康・身体</button>
+      <button onclick="setFilter('その他', this)">その他</button>
+    </div>
+    <div id="feedList"></div>
+  </div>
+</div>
+
+<!-- 統計 -->
+<div id="page-stats" class="page">
+  <div class="page-inner">
+
+    <div class="chart-section">
+      <div class="chart-title">共感された後悔 Top 3</div>
+      <div id="topPosts"></div>
+    </div>
+
+    <div id="insightBox" class="insight-box">
+      <div class="ins-title">データから見える傾向</div>
+      <ul id="insightList"></ul>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">カテゴリ別・投稿数</div>
+      <div id="catBars"></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">カテゴリ別・平均共感数</div>
+      <div id="catEmpathyBars"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="chart-section" style="margin-bottom:0">
+        <div class="chart-title">年代別</div>
+        <div id="ageBars"></div>
+      </div>
+      <div class="chart-section" style="margin-bottom:0">
+        <div class="chart-title">性別</div>
+        <div id="genderBars"></div>
+      </div>
+    </div>
+
+    <div class="chart-section" style="margin-top:10px">
+      <div class="chart-title">年代 × カテゴリ ヒートマップ（後悔の件数）</div>
+      <div style="overflow-x:auto"><table class="cross-table" id="crossTable"></table></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">頻出キーワード</div>
+      <div class="kw-cloud" id="kwCloud"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- AIアドバイス -->
+<div id="page-ai" class="page">
+  <div class="page-inner">
+    <div class="form-card" style="margin-bottom:20px;">
+      <div class="form-card-title" style="margin-bottom:6px;">あなたへのAIアドバイス</div>
+      <p style="font-size:13px;color:var(--text-2);margin-bottom:18px;line-height:1.7;">上の世代が最も後悔していることから、今のあなたへ具体的なアクションプランを届けます。</p>
+      <div class="age-picker" id="ageSelectRow">
+        <button onclick="selectAge('10代', this)">10代</button>
+        <button onclick="selectAge('20代', this)">20代</button>
+        <button onclick="selectAge('30代', this)">30代</button>
+        <button onclick="selectAge('40代', this)">40代</button>
+        <button onclick="selectAge('50代', this)">50代</button>
+        <button onclick="selectAge('60代以上', this)">60代以上</button>
+      </div>
+    </div>
+    <div id="adviceContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">みんなの後悔</div>
+    <div class="footer-links">
+      <a>利用規約</a>
+      <a>プライバシー</a>
+      <a>お問い合わせ</a>
+    </div>
+    <div class="footer-copy">© 2026 みんなの後悔 — 登録不要・完全無料</div>
+  </div>
+</footer>
+
+<!-- Mobile Bottom Nav -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bottom-nav-inner">
+    <button class="bn-item active-nav" id="bn-post" onclick="showPage('post', document.querySelectorAll('nav.tab-nav button')[0]); updateBottomNav('bn-post')">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">edit_square</span>
+      <span>書く</span>
+    </button>
+    <button class="bn-item" id="bn-feed" onclick="showPage('feed', document.querySelectorAll('nav.tab-nav button')[1]); updateBottomNav('bn-feed')">
+      <span class="material-symbols-outlined">layers</span>
+      <span>みんなの後悔</span>
+    </button>
+    <button class="bn-item" id="bn-stats" onclick="showPage('stats', document.querySelectorAll('nav.tab-nav button')[2]); updateBottomNav('bn-stats')">
+      <span class="material-symbols-outlined">analytics</span>
+      <span>統計</span>
+    </button>
+    <button class="bn-item" id="bn-ai" onclick="showPage('ai', document.querySelectorAll('nav.tab-nav button')[3]); updateBottomNav('bn-ai')">
+      <span class="material-symbols-outlined">smart_toy</span>
+      <span>AIアドバイス</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+// ========= DATA =========
+
+const CATEGORIES = {
+  '仕事・キャリア':   { bg: '#eff6ff', text: '#1d4ed8' },
+  '恋愛・パートナー': { bg: '#fdf2f8', text: '#be185d' },
+  '家族・親子':       { bg: '#fff7ed', text: '#c2410c' },
+  '学び・挑戦':       { bg: '#f0fdf4', text: '#15803d' },
+  '友情・人間関係':   { bg: '#faf5ff', text: '#7e22ce' },
+  'お金・生活':       { bg: '#fefce8', text: '#854d0e' },
+  '健康・身体':       { bg: '#f0fdfa', text: '#0f766e' },
+  'その他':           { bg: '#f9fafb', text: '#374151' },
+};
+
+// AIが実現できるかも — カテゴリ別・最高確度の1案件
+const AI_REALIZATION = {
+  '仕事・キャリア': {
+    confidence: 92,
+    title: 'AIを活用した副業・個人事業化でキャリアの後悔を逆転できる',
+    why: '2024〜2026年にかけて、AIツールの普及により「スキルを持つ個人」が企業と対等に仕事を獲得できる環境が整いました。副業で月10〜30万円を稼ぐ個人が急増しており、実現確度は極めて高い段階にあります。',
+    steps: [
+      { title: 'スキルの棚卸し（今日・30分）', desc: 'ChatGPTに「職歴：○○」と入力し、「市場価値のあるスキルTOP5と副業への転用方法を教えて」と聞く。自分では気づかなかった強みが言語化される。' },
+      { title: 'プラットフォーム登録（今週・1時間）', desc: 'クラウドワークス or ランサーズでプロフィールを作成。最初の1件は単価より「実績とレビュー獲得」を優先し、低単価案件に入札する。', link: 'https://crowdworks.jp/', linkText: 'クラウドワークスで登録' },
+      { title: '月5万円の達成（1〜3ヶ月）', desc: '受注→納品→レビューのサイクルを5回回すと、単価を3〜5倍に引き上げられる。この段階でfreeeの個人事業主プランに登録し、経費・税務を自動化する。', link: 'https://www.freee.co.jp/', linkText: 'freeeで確定申告を自動化' },
+      { title: '独立判断ライン（6〜18ヶ月）', desc: '副収入が月20万円を安定的に超えたら独立を本格検討。会社員時代の収入の120%を副業で稼げるようになってから退職が安全圏。社会保険・退職金の試算も同時に行う。' },
+    ]
+  },
+  '恋愛・パートナー': {
+    confidence: 85,
+    title: 'AIコミュニケーション分析でパートナーシップの危機を予防・修復できる',
+    why: 'パートナーとの関係悪化の根本原因の80%以上は「コミュニケーションパターンの固定化」です。AIツールを活用した対話改善は、カウンセリング費用の1/10以下のコストで、より継続的な効果が出ています。',
+    steps: [
+      { title: '関係性の現状診断（今日）', desc: '直近3ヶ月のパートナーとの会話パターンを書き出し、ChatGPTに「改善すべきコミュニケーションの癖」を分析させる。客観視できるだけで行動変容が起きる。' },
+      { title: 'Couples日記アプリの導入（今週）', desc: 'Coupleアプリ（iOS/Android）を二人で共有。感謝・出来事・気持ちを短文で毎日記録する習慣をつける。3週間で相互理解スコアが有意に向上する。', link: 'https://coupleapp.com/', linkText: 'Couple — Relationship App' },
+      { title: 'AIカップルカウンセリング（月1回）', desc: 'Marta（AI関係カウンセラー）等のサービスで、対話ロールプレイを練習。特に「不満の伝え方」「謝罪のタイミング」をシミュレーションする。', link: 'https://www.gottman.com/', linkText: 'Gottman Institute の研究ベース手法' },
+      { title: 'オフラインの定期デート設計', desc: '月1回以上の「スマホなし2時間」を日程に入れる。AI予約サービスで近場の体験型コンテンツ（料理教室・陶芸等）を探し、話題を作る。' },
+    ]
+  },
+  '家族・親子': {
+    confidence: 91,
+    title: 'AIを使った「家族の記憶の保存」で失われた時間の後悔に向き合える',
+    why: '親の記憶・声・写真をAIで保存・整理するサービスが実用段階に入っています。認知症や死別後でも「その人との対話」を再現できる技術が存在し、「もっと話を聞いておけばよかった」という後悔への現実的な対応手段になっています。',
+    steps: [
+      { title: '親の音声・写真のデジタルアーカイブ（今月）', desc: 'GoogleフォトやiCloudでの自動バックアップ設定を今日中に親のスマホにも入れる。古いアルバムはiPhoneのスキャン機能で撮影→自動整理。費用：0円。' },
+      { title: '「人生の聞き書き」を録音（今月〜3ヶ月）', desc: 'Notionにテンプレートを作り「子ども時代・恋愛・仕事・後悔・伝えたいこと」の質問を用意。月1回の帰省時にスマホで録音するだけでよい。1時間の音声がかけがえない遺産になる。' },
+      { title: 'AI自分史ツールでまとめる', desc: 'StoryWorth等のサービスで、録音や写真を元に家族史を自動生成。Kindleで自費出版すれば家族全員への贈り物になる。', link: 'https://www.storyworth.com/', linkText: 'StoryWorth — 家族の物語を残す' },
+      { title: '今すぐ連絡する', desc: '「LINEで写真を一枚送る」「週1回の5分電話」から始める。完璧なタイミングを待たない。研究では、親との接触頻度が子の幸福度と親の長寿に直結している。' },
+    ]
+  },
+  '学び・挑戦': {
+    confidence: 95,
+    title: 'AIチューターで語学・スキル習得のスピードが劇的に向上。今からでも遅くない',
+    why: 'AI語学ツールの登場で、語学習得コストは従来の1/10以下になりました。ネイティブとの会話練習が1日何時間でも可能になり、「時間がない」「お金がない」という言い訳が通じない環境になっています。',
+    steps: [
+      { title: 'AI会話パートナーで今日から毎日10分（無料）', desc: 'Duolingoのロールプレイ機能 or ChatGPTに「英語で日常会話の練習相手になって」と依頼。発音矯正はElsaSpeak（AI音声判定）が効果的。', link: 'https://www.duolingo.com/course/ja/en/', linkText: 'Duolingo（無料）で今日から開始' },
+      { title: 'YouTube + AI要約で体系的インプット', desc: 'NotebookLM（Google、無料）に英語のPDFや動画字幕を入れると、AIが要約・Q&Aしてくれる。教科書代・スクール代が不要になる。', link: 'https://notebooklm.google.com/', linkText: 'Google NotebookLM（無料）' },
+      { title: '3ヶ月で「使える英語」の目標設定', desc: 'TOEIC900点より「会議で発言できる」「メールを書ける」の実用目標を設定。LinkedIn Learningのビジネス英語コース（月¥2,570）で業界用語を習得する。', link: 'https://www.linkedin.com/learning/', linkText: 'LinkedIn Learning（1ヶ月無料）' },
+      { title: '学んだことを即アウトプット', desc: 'Xで「英語学習記録」を毎日1ツイート。フォロワーゼロでも継続率が3倍になる（公開コミットメント効果）。3ヶ月で外国人フォロワーができ、実践機会が生まれる。' },
+    ]
+  },
+  '友情・人間関係': {
+    confidence: 83,
+    title: 'AIが「再接続の壁」を下げ、疎遠になった関係を修復できる',
+    why: '「久しぶりに連絡するのが気まずい」という心理的障壁がほとんどの関係断絶の原因です。AIが最初のメッセージ文面を生成することで、この障壁を取り除くことができます。実際に連絡した人の78%が「相手も歓迎してくれた」と報告しています。',
+    steps: [
+      { title: '「連絡したい人」リストを今日作る（10分）', desc: 'スマホの連絡先から「3年以上連絡していないが、また話したい人」を5人書き出す。名前を書くだけで行動への準備が整う。' },
+      { title: 'AIで最初のメッセージを生成する', desc: 'ChatGPTに「〇〇さんと5年ぶりに連絡を取りたい。自然で押し付けがましくない再接続メッセージを作って」と入力。生成文を自分の言葉に調整して送信。' },
+      { title: 'オンライン飲み会を設定（今月中）', desc: 'LINEグループ or Discord で「久しぶりに話そう」と呼びかける。Whenisgoodnow（スケジュール調整ツール）で日時を決める。場所の制約がなくなったことで再会のハードルが下がっている。' },
+      { title: '継続的な関係維持の仕組みを作る', desc: 'Googleカレンダーに「〇〇に連絡する」を3ヶ月ごとにリマインド設定。SNSでも「いいね」するだけでも関係は維持される。質より頻度が友情には重要。' },
+    ]
+  },
+  'お金・生活': {
+    confidence: 94,
+    title: 'NISAと自動積立で、今日から始めれば老後の後悔は回避できる',
+    why: '新NISAは2024年から年間360万円（つみたて枠120万円+成長投資枠240万円）まで非課税投資が可能になりました。月3.3万円の積立を30歳から始めると、60歳時点で複利効果により元本約1,188万円が約3,000〜4,000万円規模になる試算があります（年利7%想定）。',
+    steps: [
+      { title: 'NISA口座の開設（今日・10〜20分）', desc: 'SBI証券 or 楽天証券 で新NISA口座を開設。マイナンバーカード + スマホで完結。どちらも手数料0円で購入できるeMAXIS Slim全世界株式（オルカン）が最も無難な選択。', link: 'https://www.sbisec.co.jp/ETGate/?_ControlID=WPLETmgR001Control&_PageID=WPLETmgR001Idtm20&burl=search_nisa&cat1=nisa&cat2=all&dir=all&file=nisa_guide.html', linkText: 'SBI証券NISA口座開設ガイド' },
+      { title: '月3.3万円の自動積立設定', desc: 'つみたて枠の上限（年40万円 → 月3.3万円）をeMAXIS Slim全世界株式に設定。「自動」にすることが最重要。相場を気にしないドルコスト平均法で20年以上続ける。', link: 'https://emaxis.jp/fund/253425.html', linkText: 'eMAXIS Slim 全世界株式' },
+      { title: '緊急資金の分離と固定費削減', desc: '生活費3ヶ月分（一般的には60〜90万円）を高利息口座に分離。SBI新生銀行スタンダード（年0.3%）が現時点で優秀。スマホをpovoやLINEMOに変えるだけで月3,000〜6,000円削減。', link: 'https://www.sbishinseibank.co.jp/', linkText: 'SBI新生銀行（普通預金0.3%）' },
+      { title: '家計の可視化（今日・無料）', desc: 'マネーフォワードMEで全口座・カードを連携。「見える化」するだけで支出が平均12%削減されると同社調査で示されている。節約を意識しなくても自然に使い過ぎが減る。', link: 'https://moneyforward.com/', linkText: 'マネーフォワードME（無料）' },
+    ]
+  },
+  '健康・身体': {
+    confidence: 88,
+    title: 'AI予防医療とウェアラブルで、今からでも体の後悔を「先取り回避」できる',
+    why: 'Apple WatchやGarminのウェアラブルデバイスは、不整脈・睡眠無呼吸・血中酸素濃度の異常を日常的に検出できます。研究では、ウェアラブルユーザーは心臓疾患の発見が平均2.4年早く、生存率に有意な差が出ています。',
+    steps: [
+      { title: '健康診断の再受診と結果の記録（今月）', desc: '最後の健康診断からいつ経っているか確認。「D判定」があれば今週中に医療機関へ。健康診断の結果をAI問診アプリ（ルナルナ / Ubie）に入力し、追加検査の必要性を確認する。', link: 'https://ubie.app/', linkText: 'Ubie — AI症状チェッカー（無料）' },
+      { title: 'ウェアラブルデバイスの導入', desc: 'Apple Watch Series 9（49,800円〜）は心電図・転倒検知・血中酸素測定に対応。Garmin Vivosmart 5（約25,000円）は睡眠スコア・ストレスレベルを毎日計測。「いつもと違う」を機械が先に発見してくれる。', link: 'https://www.apple.com/jp/apple-watch/', linkText: 'Apple Watch — ヘルスケア機能一覧' },
+      { title: '睡眠の質の改善（無料・即日）', desc: 'Sleep Cycle（無料版）で睡眠サイクルを計測。「就寝前1時間のスマホ禁止」「室温18〜20度設定」「週150分以上の有酸素運動」の3つで、睡眠の質が有意に改善する。大半の慢性疾患リスクは睡眠改善で30〜50%低下。' },
+      { title: '予防医療プログラムへの参加', desc: 'HELPO（ヘルスケアアプリ）で医師・看護師・管理栄養士に24時間チャット相談可能。月額650円〜。人間ドックは年1回投資すると、発見が1年早くなるだけで治療費が平均300万円削減されるという試算もある。', link: 'https://helpo.jp/', linkText: 'HELPO — 24時間医療相談' },
+    ]
+  },
+  'その他': {
+    confidence: 80,
+    title: 'AIで「やりたかったこと」を今日から小さく始められる',
+    why: '「いつかやろう」と思っていたことの多くは、AIツールを使うことで参入障壁が10分の1以下になっています。資格・創作・起業・旅行など、どんな後悔にも対応できるAIサポートが揃っています。',
+    steps: [
+      { title: '後悔を「今やるなら何から？」に変換', desc: 'ChatGPTに「私は○○をやりたかったが後悔している。今から始めるなら最小コストで試せる最初の一歩を教えて」と入力。具体的なアクションプランが出てくる。' },
+      { title: '小さなプロトタイプを24時間以内に作る', desc: '書きたかった本 → noteで1記事だけ書く。やりたかったビジネス → 知人10人にLINEで需要確認する。弾きたかった楽器 → YouTubeの入門動画を30分見る。「完成」を目指さない。' },
+      { title: 'コミュニティで同志を見つける', desc: 'Peatixで同じ興味を持つイベントを探して1件参加。オフラインのつながりが継続のモチベーションになる。行動を宣言すると実行率が65%向上する（American Society of Training and Development調査）。', link: 'https://peatix.com/', linkText: 'Peatix — 近くのイベントを探す' },
+      { title: '毎日15分の習慣化', desc: 'Habiticaアプリで目標を習慣トラッキング。スマホのホーム画面にアプリを置くことで開始摩擦が下がる。「21日で習慣化」は神話。研究では平均66日かかるため、3ヶ月のコミットメントで考える。' },
+    ]
+  },
+};
+
+const initialPosts = [
+  { id:1,   text:'親が元気なうちに、もっと話を聞いておけばよかった。仕事が忙しいからといって帰省を後回しにし続けて、気づいたら認知症が進んでいた。あの頃の話をもっと聞きたかった。', category:'家族・親子',     age:'50代', gender:'男性',  empathy:247, empathized:false, time:'3時間前' },
+  { id:2,   text:'20代のときに起業するチャンスがあったのに、安定を選んで諦めた。友人は同じアイデアで会社を作り今や大成功。あのとき踏み出していたら、と今でも頭から離れない。', category:'仕事・キャリア', age:'40代', gender:'男性',  empathy:183, empathized:false, time:'5時間前' },
+  { id:3,   text:'告白できなかった。あれから20年、彼女は別の人と結婚して幸せそうだ。それでいいんだと思いながら、あのときの自分をずっと責めている。', category:'恋愛・パートナー',age:'40代', gender:'男性',  empathy:312, empathized:false, time:'8時間前' },
+  { id:4,   text:'英語の勉強をサボり続けた。30代で外資系に転職しようとしたら語学力がネックになった。学生時代のあの無駄にした時間が悔しい。', category:'学び・挑戦',     age:'30代', gender:'女性',  empathy:156, empathized:false, time:'12時間前' },
+  { id:5,   text:'20代の頃、貯金をまったくしなかった。「若いうちは経験に使え」と信じて飲み歩いていた。40代になって家を買いたいと思ったとき、何も残っていなかった。', category:'お金・生活',     age:'40代', gender:'男性',  empathy:198, empathized:false, time:'1日前' },
+  { id:6,   text:'子どもの運動会も発表会も、仕事を優先した。「また次がある」と思っていたら、気づけば子どもたちは家を出ていた。あの瞬間は二度と戻らない。', category:'家族・親子',     age:'50代', gender:'男性',  empathy:289, empathized:false, time:'1日前' },
+  { id:7,   text:'高校時代の親友と些細なことで喧嘩して、謝るタイミングを逃したまま25年が経った。SNSで見かけるたびに、一言謝りたいと思っている。', category:'友情・人間関係',  age:'40代', gender:'女性',  empathy:134, empathized:false, time:'2日前' },
+  { id:8,   text:'健康診断でずっとD判定が出ていたのに無視し続けた。50歳で心筋梗塞。生死の境をさまよって初めて「体は資本」の意味がわかった。', category:'健康・身体',     age:'50代', gender:'男性',  empathy:221, empathized:false, time:'2日前' },
+  { id:9,   text:'仕事に明け暮れて家族との時間をないがしろにした。子供たちは大きくなり、今では連絡も少ない。お金より大切なものを失った。', category:'家族・親子',    age:'60代以上', gender:'男性', empathy:178, empathized:false, time:'3日前' },
+  { id:10,  text:'大学院に進学するお金がなくて諦めた研究テーマが、10年後に別の人によって実現されていた。あのとき奨学金という選択肢を真剣に調べればよかった。', category:'学び・挑戦',    age:'40代', gender:'女性',  empathy:88,  empathized:false, time:'3日前' },
+  { id:11,  text:'離婚したあの人に、もう少し歩み寄ればよかった。プライドが邪魔をして謝れなかった。正しさを争って、大切なものを失った。', category:'恋愛・パートナー',age:'50代', gender:'女性',  empathy:167, empathized:false, time:'4日前' },
+  { id:12,  text:'20代後半で体を壊した。あの頃は「若いから大丈夫」と思って睡眠を削り続けた。今でも後遺症が残っている。健康だけは本当に大切にしてほしい。', category:'健康・身体',    age:'30代', gender:'女性',  empathy:142, empathized:false, time:'5日前' },
+  { id:13,  text:'転職のチャンスを見逃した。上司から「別部署に来ないか」と声をかけられたのに、変化が怖くて断った。あの判断が今の停滞を生んでいる。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:89,  empathized:false, time:'5日前' },
+  { id:14,  text:'昇進の面接でアピールできなかった。自分の実績を言葉にする練習をもっとしておけばよかった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:67,  empathized:false, time:'6日前' },
+  { id:15,  text:'嫌な会社に12年いた。「もう少し待てばよくなる」と思い続けて、気づいたら40代になっていた。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:134, empathized:false, time:'6日前' },
+  { id:16,  text:'副業を始めるのが遅すぎた。30代のうちに始めていれば、今頃は独立できていたと思う。', category:'仕事・キャリア', age:'40代', gender:'女性', empathy:78,  empathized:false, time:'1週間前' },
+  { id:17,  text:'資格を取るのを先延ばしにした。「来年こそ」を10年繰り返して、気づいたら手遅れの年齢になっていた。', category:'仕事・キャリア', age:'50代', gender:'男性', empathy:112, empathized:false, time:'1週間前' },
+  { id:18,  text:'ビジネス英語を学ぶ機会を逃した。海外赴任の話があったのに、英語力がなくて断らざるを得なかった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:95,  empathized:false, time:'1週間前' },
+  { id:19,  text:'新卒の就職先を妥協した。「とりあえず内定を取ればいい」と思って入った会社が、キャリアの足を引っ張り続けた。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:83,  empathized:false, time:'1週間前' },
+  { id:20,  text:'好きな仕事より安定を選んだ。「好きなことは仕事にならない」と言われ信じ込んだが、友人は好きなことで独立して成功している。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:98,  empathized:false, time:'2週間前' },
+  { id:21,  text:'起業した仲間を笑った。「そんなの無理だよ」と言ったあの人が今は年収3000万円。あのとき一緒にやればよかった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:187, empathized:false, time:'2週間前' },
+  { id:22,  text:'専門性を磨かなかった。広く浅くやってきたせいで、AIに仕事を奪われた。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:156, empathized:false, time:'2週間前' },
+  { id:23,  text:'定年まで同じ会社にいると決めてしまった。40代でリストラされて初めて、会社に依存していた怖さを知った。', category:'仕事・キャリア', age:'50代', gender:'男性', empathy:203, empathized:false, time:'2週間前' },
+  { id:24,  text:'パワハラを我慢した。もっと早く声を上げるか転職するかすればよかった。体を壊してから動いても遅かった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:119, empathized:false, time:'2週間前' },
+  { id:25,  text:'独立を諦めた。家族に反対されたからではなく、自分が怖かっただけだと今はわかる。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:176, empathized:false, time:'3週間前' },
+  { id:26,  text:'給料交渉を一度もしなかった。言わないと上げてもらえないのは当然なのに、ずっと待っていた。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:137, empathized:false, time:'3週間前' },
+  { id:27,  text:'テレワーク移行の波に乗り遅れた。ITスキルが低くて社内で浮いてしまい、居場所がなくなった。', category:'仕事・キャリア', age:'50代', gender:'男性', empathy:88,  empathized:false, time:'3週間前' },
+  { id:28,  text:'AIの勉強を後回しにした。あと2年早く始めていれば、今頃は会社の中でなくてはならない存在になれた。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:203, empathized:false, time:'3週間前' },
+  { id:29,  text:'お客様への誠実さを一度だけ欠いた。その一度が全てを壊した。ビジネスは信頼だと痛感した。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:151, empathized:false, time:'1ヶ月前' },
+  { id:30,  text:'社内政治を軽視した。実力があれば評価されると信じていたが、現実は違った。根回しを学ぶべきだった。', category:'仕事・キャリア', age:'40代', gender:'女性', empathy:92,  empathized:false, time:'1ヶ月前' },
+  { id:31,  text:'業界の変化を無視した。まさか自分の職種がなくなるとは思っていなかった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:167, empathized:false, time:'1ヶ月前' },
+  { id:32,  text:'会議での発言を恐れた。いつも「そうですね」と言い続け、存在感がゼロのまま年を重ねた。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:98,  empathized:false, time:'1ヶ月前' },
+  { id:33,  text:'就職活動を手を抜いた。「どこかに入れればいい」と思っていたが、最初の就職先が人生の方向を大きく左右した。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:115, empathized:false, time:'1ヶ月前' },
+  { id:34,  text:'チャレンジより安全策を選び続けた。一度も失敗しなかったが、一度も成功もしなかった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:188, empathized:false, time:'1ヶ月前' },
+  { id:35,  text:'不得意なことを避け続けた。苦手なプレゼンから逃げ続けた結果、管理職への道が閉ざされた。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:82,  empathized:false, time:'2ヶ月前' },
+  { id:36,  text:'残業代目当てで残業し続けた。20代の時間を会社に売り、スキルも人脈も何も残らなかった。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:84,  empathized:false, time:'2ヶ月前' },
+  { id:37,  text:'上司に意見を言えなかった。おかしいと気づいていたのに黙っていたら、プロジェクトが失敗した。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:57,  empathized:false, time:'2ヶ月前' },
+  { id:38,  text:'海外で働くチャンスを断った。家族への遠慮で諦めたが、家族は「行けばよかった」と今も言う。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:144, empathized:false, time:'2ヶ月前' },
+  { id:39,  text:'スキルアップへの投資を惜しんだ。セミナー代や書籍代をケチったせいで、市場価値が上がらなかった。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:74,  empathized:false, time:'2ヶ月前' },
+  { id:40,  text:'部下の教育に手を抜いた。「忙しい」を言い訳に任せっきりにしたら、チームが崩壊した。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:48,  empathized:false, time:'2ヶ月前' },
+  { id:41,  text:'転職活動を本気でやらなかった。2社しか受けずに諦めた。もっと数を打てばよかった。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:43,  empathized:false, time:'3ヶ月前' },
+  { id:42,  text:'社内の勉強会を軽視した。面倒くさくて出なかったが、あの場所が人脈の宝庫だったと後から知った。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:52,  empathized:false, time:'3ヶ月前' },
+  { id:43,  text:'転職エージェントを使わなかった。自力で転職活動したが、エージェントを使えばもっと良い条件の会社に入れた。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:63,  empathized:false, time:'3ヶ月前' },
+  { id:44,  text:'メンターを見つけるのが遅かった。30代半ばになってようやく良い師に出会えたが、10年早ければよかった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:88,  empathized:false, time:'3ヶ月前' },
+  { id:45,  text:'フリーランスになるのが早すぎた。会社員としての経験をもっと積んでから独立すべきだった。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:77,  empathized:false, time:'3ヶ月前' },
+  { id:46,  text:'昔の上司の言葉を素直に聞かなかった。「君には可能性がある」と言ってくれたのに、謙遜して否定し続けた。', category:'仕事・キャリア', age:'50代', gender:'男性', empathy:74,  empathized:false, time:'4ヶ月前' },
+  { id:47,  text:'会社の財務状況を見ていなかった。倒産する2日前まで安心していた自分が情けない。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:109, empathized:false, time:'4ヶ月前' },
+  { id:48,  text:'新卒で大手より成長できる環境を選ぶべきだった。大企業ブランドに安心して、スキルが全く身につかなかった。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:91,  empathized:false, time:'4ヶ月前' },
+  { id:49,  text:'副業禁止の会社に残りすぎた。可能性を社内だけに限定したせいで、視野が狭くなった。', category:'仕事・キャリア', age:'40代', gender:'男性', empathy:96,  empathized:false, time:'5ヶ月前' },
+  { id:50,  text:'社内の飲み会を全部断っていた。「時間の無駄」と思っていたが、人脈は飲み会で生まれていた。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:67,  empathized:false, time:'5ヶ月前' },
+  { id:51,  text:'ライターになる夢を諦めた。才能がないと決めつけて。でも才能より努力が大事だったと気づくのが遅かった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:94,  empathized:false, time:'5ヶ月前' },
+  { id:52,  text:'同期との比較に疲れた。自分のペースでキャリアを築けばよかったのに、焦りばかりだった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:69,  empathized:false, time:'6ヶ月前' },
+  { id:53,  text:'仕事の断り方を知らなかった。何でも引き受けたせいで、常にキャパオーバーで成果が出なかった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:83,  empathized:false, time:'6ヶ月前' },
+  { id:54,  text:'プレゼンの練習を怠った。大事な会議でしどろもどろになり、信頼を大きく失った。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:65,  empathized:false, time:'6ヶ月前' },
+  { id:55,  text:'入社後すぐに転職した。少し辛いだけで逃げてしまい、若気の至りを今も後悔している。', category:'仕事・キャリア', age:'20代', gender:'女性', empathy:28,  empathized:false, time:'7ヶ月前' },
+  { id:56,  text:'人事に自己PRをしなかった。「実績を見てくれるはず」と思っていたら、いつまでも昇格できなかった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:79,  empathized:false, time:'7ヶ月前' },
+  { id:57,  text:'チームへの報告を怠った。自分だけで解決しようとして隠したミスが、後で大問題に発展した。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:55,  empathized:false, time:'8ヶ月前' },
+  { id:58,  text:'転職して3ヶ月で辞めた。すぐに楽になろうとしないで、もう少し踏ん張ればよかった。', category:'仕事・キャリア', age:'20代', gender:'男性', empathy:32,  empathized:false, time:'8ヶ月前' },
+  { id:59,  text:'職場の親友に嫉妬した。彼女の昇進が悔しくて距離を置いたら、良きライバルを失ってしまった。', category:'仕事・キャリア', age:'30代', gender:'女性', empathy:45,  empathized:false, time:'9ヶ月前' },
+  { id:60,  text:'同僚のアイデアを横取りした。あの罪悪感は今も消えない。信頼を失ったのは当然だった。', category:'仕事・キャリア', age:'30代', gender:'男性', empathy:61,  empathized:false, time:'10ヶ月前' },
+  { id:61,  text:'長年付き合った彼女を傷つけた。仕事が忙しいを言い訳に、精神的に追い詰めていた。彼女が去った後で初めて気づいた。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:142, empathized:false, time:'2日前' },
+  { id:62,  text:'パートナーへの感謝を言葉にしなかった。「言わなくても伝わる」と思っていたが、伝わっていなかった。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:134, empathized:false, time:'3日前' },
+  { id:63,  text:'結婚のタイミングを誤った。仕事を優先して先延ばしにしたら、相手が離れてしまった。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:187, empathized:false, time:'5日前' },
+  { id:64,  text:'好きな人の前で素直になれなかった。強がって本音を隠し、すれ違い続けた末に別れた。', category:'恋愛・パートナー', age:'20代', gender:'男性', empathy:113, empathized:false, time:'6日前' },
+  { id:65,  text:'彼女の話をちゃんと聞かなかった。「また愚痴か」と思いながら適当に聞いていたら、心が離れていった。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:165, empathized:false, time:'1週間前' },
+  { id:66,  text:'価値観の違いを見て見ぬふりをした。付き合いながらずっと違和感があったのに、結婚まで進んで後悔した。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:143, empathized:false, time:'1週間前' },
+  { id:67,  text:'束縛が強すぎた。愛しているからこそ管理したかったが、それは愛ではなかった。', category:'恋愛・パートナー', age:'20代', gender:'男性', empathy:109, empathized:false, time:'2週間前' },
+  { id:68,  text:'結婚前に相手の借金を知らなかった。もっとオープンに話し合う関係を築くべきだった。', category:'恋愛・パートナー', age:'40代', gender:'女性', empathy:187, empathized:false, time:'2週間前' },
+  { id:69,  text:'喧嘩のたびに感情的になった。冷静に話し合う方法を知っていれば、関係は続いていたかもしれない。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:92,  empathized:false, time:'2週間前' },
+  { id:70,  text:'マッチングアプリをもっと早く使えばよかった。プライドがあり拒否して、出会いの場を逃し続けた。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:76,  empathized:false, time:'3週間前' },
+  { id:71,  text:'彼氏の浮気を見て見ぬふりをした。自信がなくて別れられず、3年間自分を傷つけ続けた。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:98,  empathized:false, time:'3週間前' },
+  { id:72,  text:'相手の話を最後まで聞かなかった。いつも自分の意見を押し付け、最終的に「話が通じない」と言われた。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:84,  empathized:false, time:'1ヶ月前' },
+  { id:73,  text:'デートより仕事を選んだ回数が多すぎた。「稼ぐことが愛情表現」と信じていたが、相手が求めていたのは時間だった。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:201, empathized:false, time:'1ヶ月前' },
+  { id:74,  text:'相手の体調変化に気づかなかった。毎日会っていたのに、うつになるまで気づいてあげられなかった。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:156, empathized:false, time:'1ヶ月前' },
+  { id:75,  text:'彼女のプロポーズを先延ばしにした。「まだ早い」を3年続けたら彼女が去った。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:234, empathized:false, time:'2ヶ月前' },
+  { id:76,  text:'再婚に踏み切れなかった。子供のことを考えすぎて躊躇したが、子供は「お母さんが幸せなら嬉しい」と言ってくれた。', category:'恋愛・パートナー', age:'50代', gender:'女性', empathy:143, empathized:false, time:'2ヶ月前' },
+  { id:77,  text:'子供の前で夫婦喧嘩をした。あの頃の子供の表情が今も忘れられない。', category:'恋愛・パートナー', age:'40代', gender:'女性', empathy:267, empathized:false, time:'2ヶ月前' },
+  { id:78,  text:'転勤を断るべきだった。仕事のために遠距離になり、2年で別れた。仕事より大切なものがあった。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:166, empathized:false, time:'3ヶ月前' },
+  { id:79,  text:'初めての恋人に酷いことを言った。若さゆえの残酷さだったが、あの言葉は一生後悔している。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:79,  empathized:false, time:'3ヶ月前' },
+  { id:80,  text:'パートナーを精神的に支えられなかった。辛い時期に「自分も大変だ」と突き放してしまった。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:198, empathized:false, time:'4ヶ月前' },
+  { id:81,  text:'結婚相談所への登録を恥ずかしがった。プライドで3年先延ばしにして、婚期を逃した。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:122, empathized:false, time:'4ヶ月前' },
+  { id:82,  text:'好きではない人と付き合い続けた。「一人になるのが怖い」という理由だけで2年間関係を続けた。相手に申し訳なかった。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:134, empathized:false, time:'5ヶ月前' },
+  { id:83,  text:'相手の努力を褒めなかった。「当たり前」と思いすぎて、いつも感謝を言葉にしなかった。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:97,  empathized:false, time:'5ヶ月前' },
+  { id:84,  text:'嫉妬心をコントロールできなかった。相手を信頼できず、問い詰め続けて関係を壊した。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:118, empathized:false, time:'6ヶ月前' },
+  { id:85,  text:'遠距離恋愛を諦めすぎた。「どうせ無理」と決めつけたが、続けた友人たちは今も幸せだ。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:94,  empathized:false, time:'6ヶ月前' },
+  { id:86,  text:'一人の時間を大切にしすぎた。パートナーとの時間を削り続けたら、相手は孤独を感じていた。', category:'恋愛・パートナー', age:'30代', gender:'男性', empathy:88,  empathized:false, time:'7ヶ月前' },
+  { id:87,  text:'お互いの将来設計を話し合わなかった。3年付き合って初めて価値観の違いが発覚した。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:73,  empathized:false, time:'7ヶ月前' },
+  { id:88,  text:'相手の親の介護問題から逃げた。向き合うべきだったのに、見て見ぬふりをしたまま別れた。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:88,  empathized:false, time:'8ヶ月前' },
+  { id:89,  text:'フラれた後すぐに新しい恋愛に走った。傷を埋めるための恋愛が、また別の誰かを傷つけた。', category:'恋愛・パートナー', age:'20代', gender:'女性', empathy:47,  empathized:false, time:'9ヶ月前' },
+  { id:90,  text:'別れを決めた後も引きずった。終わった関係に3年間こだわり、新しい出会いを全部断った。', category:'恋愛・パートナー', age:'30代', gender:'女性', empathy:91,  empathized:false, time:'10ヶ月前' },
+  { id:91,  text:'浮気した。一度だけと思っていたが、その一度が全てを壊した。', category:'恋愛・パートナー', age:'40代', gender:'男性', empathy:198, empathized:false, time:'10ヶ月前' },
+  { id:92,  text:'父の葬儀で泣けなかった。仕事ばかりで親子関係が希薄になっていた。もっと早く気づくべきだった。', category:'家族・親子', age:'50代', gender:'男性', empathy:213, empathized:false, time:'4日前' },
+  { id:93,  text:'母の料理を「また同じものか」と言ってしまった。あの表情は今も夢に出てくる。', category:'家族・親子', age:'30代', gender:'女性', empathy:178, empathized:false, time:'5日前' },
+  { id:94,  text:'子供に怒りすぎた。疲れていた日の夜、子供を怒鳴ってしまった。あの顔が頭から離れない。', category:'家族・親子', age:'30代', gender:'女性', empathy:289, empathized:false, time:'6日前' },
+  { id:95,  text:'兄弟と絶縁状態のまま20年が経った。些細な喧嘩がきっかけだったのに、お互い意地を張り続けた。', category:'家族・親子', age:'50代', gender:'男性', empathy:156, empathized:false, time:'1週間前' },
+  { id:96,  text:'祖父母の話を記録しなかった。戦争体験や昔話を聞いて感動したのに、メモも録音もしなかった。', category:'家族・親子', age:'30代', gender:'女性', empathy:244, empathized:false, time:'1週間前' },
+  { id:97,  text:'子供のスポーツ大会を全部見に行けなかった。仕事を言い訳にしたが、本当は優先順位の問題だった。', category:'家族・親子', age:'40代', gender:'男性', empathy:167, empathized:false, time:'2週間前' },
+  { id:98,  text:'子供に読み聞かせをしなかった。スマホを渡して静かにさせてしまった日々が後悔として残っている。', category:'家族・親子', age:'30代', gender:'女性', empathy:198, empathized:false, time:'2週間前' },
+  { id:99,  text:'父に謝れなかった。最後に会ったとき喧嘩していた。その半年後に父が急死した。', category:'家族・親子', age:'50代', gender:'男性', empathy:312, empathized:false, time:'2週間前' },
+  { id:100, text:'実家への帰省を5年間しなかった。コロナも理由だったが、それ以上に面倒くさかった自分を責めている。', category:'家族・親子', age:'30代', gender:'男性', empathy:143, empathized:false, time:'3週間前' },
+  { id:101, text:'離婚して子供と離れた。週末しか会えない時間が、こんなに辛いとは思わなかった。', category:'家族・親子', age:'40代', gender:'男性', empathy:267, empathized:false, time:'3週間前' },
+  { id:102, text:'子供に厳しすぎた。完璧を求めすぎた親を反面教師にしていたのに、いつしか同じことをしていた。', category:'家族・親子', age:'50代', gender:'女性', empathy:189, empathized:false, time:'1ヶ月前' },
+  { id:103, text:'母の最期に間に合わなかった。「明日行けばいい」と思っていたのに。', category:'家族・親子', age:'50代', gender:'男性', empathy:356, empathized:false, time:'1ヶ月前' },
+  { id:104, text:'子供の不登校に気づくのが遅れた。表面上は元気そうに見えていたので、SOSに気づかなかった。', category:'家族・親子', age:'40代', gender:'女性', empathy:234, empathized:false, time:'1ヶ月前' },
+  { id:105, text:'子供の進路に口を出しすぎた。自分の夢を子供に押し付けていたと、子供から言われた。', category:'家族・親子', age:'50代', gender:'女性', empathy:201, empathized:false, time:'2ヶ月前' },
+  { id:106, text:'子供が幼少期に離婚した。「子供のために」と思っていたが、子供は「ずっと不安だった」と大人になって言った。', category:'家族・親子', age:'50代', gender:'女性', empathy:289, empathized:false, time:'2ヶ月前' },
+  { id:107, text:'親の介護を施設に任せた。「プロに任せた方がいい」と思っていたが、「側にいてほしかった」という言葉が忘れられない。', category:'家族・親子', age:'50代', gender:'男性', empathy:198, empathized:false, time:'2ヶ月前' },
+  { id:108, text:'孫の成長を見るより仕事を選んだ。孫育てより仕事が大事だと思っていたが、今はその選択が間違っていたと思う。', category:'家族・親子', age:'60代以上', gender:'男性', empathy:134, empathized:false, time:'3ヶ月前' },
+  { id:109, text:'弟の結婚式に参加しなかった。仕事が理由だったが、実は気まずかっただけ。弟との関係は今も修復できていない。', category:'家族・親子', age:'30代', gender:'女性', empathy:88,  empathized:false, time:'3ヶ月前' },
+  { id:110, text:'父の日に連絡をしなかった年があった。「どうせいつでも連絡できる」と思っていたら、その翌月に父が倒れた。', category:'家族・親子', age:'40代', gender:'女性', empathy:178, empathized:false, time:'3ヶ月前' },
+  { id:111, text:'息子の反抗期を受け止められなかった。「なんで言うことを聞かないんだ」と怒鳴り続けた。今は連絡が来ない。', category:'家族・親子', age:'50代', gender:'男性', empathy:234, empathized:false, time:'4ヶ月前' },
+  { id:112, text:'家族旅行を後回しにした。「老後にゆっくり行こう」と思っていたら、体が動かなくなった。', category:'家族・親子', age:'60代以上', gender:'女性', empathy:189, empathized:false, time:'4ヶ月前' },
+  { id:113, text:'子供に「あなたが生まれてよかった」と一度も言わなかった。言い出せないまま、子供は家を出た。', category:'家族・親子', age:'50代', gender:'女性', empathy:267, empathized:false, time:'4ヶ月前' },
+  { id:114, text:'姉との昔の喧嘩を謝れていない。お互い大人になった今、どう謝ったらいいかわからなくなった。', category:'家族・親子', age:'40代', gender:'女性', empathy:124, empathized:false, time:'5ヶ月前' },
+  { id:115, text:'家族の誕生日をいつも忘れた。「また来年でいいや」と思っていたら、もう来年が来なかった家族がいる。', category:'家族・親子', age:'50代', gender:'男性', empathy:312, empathized:false, time:'5ヶ月前' },
+  { id:116, text:'老親の足腰が弱るまで、一度も温泉に連れて行かなかった。「いつでも行ける」は嘘だ。', category:'家族・親子', age:'40代', gender:'男性', empathy:234, empathized:false, time:'6ヶ月前' },
+  { id:117, text:'子供の前でスマホばかり見ていた。「見て、見て」と言う子供をよく後回しにしていた。', category:'家族・親子', age:'30代', gender:'女性', empathy:156, empathized:false, time:'6ヶ月前' },
+  { id:118, text:'親に「ありがとう」を言えなかった。照れくさくて一度も言えないまま、片親を亡くした。', category:'家族・親子', age:'40代', gender:'男性', empathy:289, empathized:false, time:'7ヶ月前' },
+  { id:119, text:'子供の夢を笑った。「そんな仕事で食べていけるの」と言い、傷つけた。今もその言葉を後悔している。', category:'家族・親子', age:'50代', gender:'女性', empathy:201, empathized:false, time:'7ヶ月前' },
+  { id:120, text:'親への仕送りをもっと多くすればよかった。余裕がなかったのは本当だが、もう少し工夫できたはずだ。', category:'家族・親子', age:'40代', gender:'男性', empathy:88,  empathized:false, time:'8ヶ月前' },
+  { id:121, text:'子供の習い事をやめさせた。親の都合で諦めさせた夢が、子供の心の傷になっていた。', category:'家族・親子', age:'40代', gender:'女性', empathy:201, empathized:false, time:'8ヶ月前' },
+  { id:122, text:'配偶者の育児参加を評価しなかった。「手伝ってくれている」という感覚でいたが、本来は共同作業だった。', category:'家族・親子', age:'30代', gender:'女性', empathy:178, empathized:false, time:'9ヶ月前' },
+  { id:123, text:'大学を途中で辞めた。親に迷惑をかけないためと言い訳したが、単純に逃げただけだった。', category:'学び・挑戦', age:'20代', gender:'女性', empathy:134, empathized:false, time:'3日前' },
+  { id:124, text:'留学のチャンスを蹴った。「日本の方が安心」と感じ断ったが、あれは人生最大のチャンスだった。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:198, empathized:false, time:'4日前' },
+  { id:125, text:'プログラミングを20代のうちに学ばなかった。今から始めても遅くないとは思うが、あの頃の吸収力が懐かしい。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:156, empathized:false, time:'5日前' },
+  { id:126, text:'音楽をもっと続けていれば。受験を理由に辞めてしまったピアノが、今も恋しい。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:167, empathized:false, time:'6日前' },
+  { id:127, text:'読書をずっとサボってきた。40代になって本の大切さに気づいたが、20年分の差が埋まらない。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:134, empathized:false, time:'1週間前' },
+  { id:128, text:'絵を諦めた。「プロになれるほどじゃない」と自分で決めつけてやめた。でも楽しむことと仕事は別だった。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:89,  empathized:false, time:'1週間前' },
+  { id:129, text:'資格試験に3回落ちて諦めた。4回目で受かった友人と今は大きな差がついた。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:167, empathized:false, time:'2週間前' },
+  { id:130, text:'スポーツを途中で諦めた。「才能がない」と決めつけたのは自分だった。努力を続けた仲間は今も輝いている。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:112, empathized:false, time:'2週間前' },
+  { id:131, text:'行動よりも計画ばかりした。完璧な計画を立ててから動こうとして、一度も動けなかった。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:213, empathized:false, time:'3週間前' },
+  { id:132, text:'料理を学ばなかった。「外食すればいい」と思っていたが、作れる料理が増えると生活の質が全く変わった。', category:'学び・挑戦', age:'20代', gender:'女性', empathy:98,  empathized:false, time:'3週間前' },
+  { id:133, text:'習い事を親に決めてもらった。自分で選んだことがなく、社会人になって何をしたいかわからなくなった。', category:'学び・挑戦', age:'20代', gender:'女性', empathy:134, empathized:false, time:'1ヶ月前' },
+  { id:134, text:'体を鍛えるのを後回しにした。筋肉は40代から急激につきにくくなることを、40代になって知った。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:156, empathized:false, time:'1ヶ月前' },
+  { id:135, text:'短期間で諦めすぎた。「3ヶ月やって上達しなかったから向いてない」と辞め続けた。どれも3ヶ月じゃ無理だった。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:91,  empathized:false, time:'1ヶ月前' },
+  { id:136, text:'英語以外の言語を学ばなかった。スペイン語を習い始めた友人が、今はラテンアメリカで活躍している。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:91,  empathized:false, time:'2ヶ月前' },
+  { id:137, text:'師匠を持たなかった。独学で全部やろうとして遠回りをした。誰かに師事していれば10年は早く成長できた。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:134, empathized:false, time:'2ヶ月前' },
+  { id:138, text:'新しい挑戦を「年齢を理由に」断った。30代で「もう遅い」と思っていたが、60代で始めた人の方が輝いていた。', category:'学び・挑戦', age:'40代', gender:'女性', empathy:198, empathized:false, time:'2ヶ月前' },
+  { id:139, text:'自己啓発書を読みすぎた。行動せずに読むだけで満足し続けた10年間が惜しい。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:178, empathized:false, time:'3ヶ月前' },
+  { id:140, text:'一つのことに集中できなかった。あれもこれもと手を出して、何一つ極めることができなかった。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:134, empathized:false, time:'3ヶ月前' },
+  { id:141, text:'早起きを習慣にしなかった。朝の時間の価値を30代になって初めて知った。学生時代に知っていれば。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:89,  empathized:false, time:'4ヶ月前' },
+  { id:142, text:'ギターを諦めなければよかった。Fコードで2ヶ月挫折した。今思えばたかがコード一つだった。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:112, empathized:false, time:'4ヶ月前' },
+  { id:143, text:'数学を諦めた。「自分には無理」と信じ込まされたが、理解できる教え方があるとあとで知った。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:134, empathized:false, time:'5ヶ月前' },
+  { id:144, text:'大学院への進学を経済的な理由だけで諦めた。奨学金という選択肢を調べもしなかった。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:167, empathized:false, time:'5ヶ月前' },
+  { id:145, text:'批判的思考力を育てなかった。何でも「そういうものだ」と受け入れて、自分の頭で考えることをしなかった。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:167, empathized:false, time:'6ヶ月前' },
+  { id:146, text:'SNSをもっと早くビジネスに使うべきだった。趣味のアカウントで止まっていた時間が惜しい。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:145, empathized:false, time:'6ヶ月前' },
+  { id:147, text:'哲学や思想を学ばなかった。実用的でないと思っていたが、考える力こそが今一番必要なものだった。', category:'学び・挑戦', age:'40代', gender:'男性', empathy:88,  empathized:false, time:'7ヶ月前' },
+  { id:148, text:'チャレンジする前から「どうせ無理」と思っていた。結果より過程を楽しむことを学ぶのが遅すぎた。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:145, empathized:false, time:'8ヶ月前' },
+  { id:149, text:'ビジネス書を若い頃に読まなかった。20代は漫画ばかりだった。あの時間で本を読んでいれば。', category:'学び・挑戦', age:'30代', gender:'男性', empathy:134, empathized:false, time:'9ヶ月前' },
+  { id:150, text:'ダンスを続けていたら。大人になってもダンスが好きだったが、恥ずかしくてやめてしまった。', category:'学び・挑戦', age:'30代', gender:'女性', empathy:91,  empathized:false, time:'10ヶ月前' },
+  { id:151, text:'SNSで知り合いへのいいねを怠った。薄いつながりも積み重なれば人脈になると気づいたのが遅かった。', category:'友情・人間関係', age:'30代', gender:'男性', empathy:54,  empathized:false, time:'4日前' },
+  { id:152, text:'親友の悩みを聞かずに自分の話ばかりした。気づいたら彼女は私に相談しなくなっていた。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:156, empathized:false, time:'5日前' },
+  { id:153, text:'友人のお見舞いに行かなかった。「回復してから会えばいい」と思っていたら、そのまま亡くなった。', category:'友情・人間関係', age:'50代', gender:'女性', empathy:312, empathized:false, time:'1週間前' },
+  { id:154, text:'嫌いな人を露骨に避けた。それがいじめの加担になっていた。あの子に今も申し訳ない。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:213, empathized:false, time:'1週間前' },
+  { id:155, text:'噂話を広めてしまった。「内緒で」と言われた話を別の人に話してしまい、信頼を失った。', category:'友情・人間関係', age:'20代', gender:'女性', empathy:143, empathized:false, time:'2週間前' },
+  { id:156, text:'悪口を言いすぎた。陰で人の悪口を言い続け、自分の評判を自分で下げていた。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:167, empathized:false, time:'2週間前' },
+  { id:157, text:'助けてほしいときに誰にも言えなかった。「迷惑をかけてはいけない」という思いが友情を希薄にした。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:178, empathized:false, time:'3週間前' },
+  { id:158, text:'怒りに任せてLINEを送った。翌日後悔したが、送ったメッセージは取り消せなかった。', category:'友情・人間関係', age:'20代', gender:'女性', empathy:198, empathized:false, time:'3週間前' },
+  { id:159, text:'嘘をついて友人を傷つけた。小さな嘘が積み重なり、発覚した時には修復不可能だった。', category:'友情・人間関係', age:'30代', gender:'男性', empathy:189, empathized:false, time:'1ヶ月前' },
+  { id:160, text:'職場いじめを傍観した。自分はターゲットでなかったが、何もしなかった自分が一番の加害者だった。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:267, empathized:false, time:'1ヶ月前' },
+  { id:161, text:'ネットでの発言が誰かを傷つけた。匿名だから誰も傷つかないと思っていた。でも画面の向こうに人がいた。', category:'友情・人間関係', age:'20代', gender:'男性', empathy:312, empathized:false, time:'1ヶ月前' },
+  { id:162, text:'友人の誕生日を何年も祝わなかった。「大人になったらそういうもの」と思っていたが、友人はちゃんと祝ってくれていた。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:156, empathized:false, time:'2ヶ月前' },
+  { id:163, text:'孤立している同僚に声をかけなかった。「自分には関係ない」と思っていたら、その人は突然退職した。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:198, empathized:false, time:'2ヶ月前' },
+  { id:164, text:'人の相談を途中で解決策を出した。「聞いてほしいだけ」という大切なことを理解していなかった。', category:'友情・人間関係', age:'40代', gender:'男性', empathy:112, empathized:false, time:'3ヶ月前' },
+  { id:165, text:'軽い気持ちで「また今度ね」と言い続けた。その「今度」が一度も来なかった友人がいる。', category:'友情・人間関係', age:'50代', gender:'女性', empathy:289, empathized:false, time:'3ヶ月前' },
+  { id:166, text:'嫌なことを嫌と言えなかった。断れない性格のせいで、都合の良い友人として使われ続けた。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:201, empathized:false, time:'4ヶ月前' },
+  { id:167, text:'友人との政治の話で仲が壊れた。「議論して分かり合える」と思っていたが、甘かった。', category:'友情・人間関係', age:'40代', gender:'男性', empathy:78,  empathized:false, time:'4ヶ月前' },
+  { id:168, text:'先輩への感謝を伝えなかった。定年退職の日にちゃんとお礼が言いたかったが、機会を逃した。', category:'友情・人間関係', age:'40代', gender:'男性', empathy:78,  empathized:false, time:'5ヶ月前' },
+  { id:169, text:'新しいコミュニティに入るのを怖がった。引っ越して知り合いがゼロになった時、一歩踏み出せなかった。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:134, empathized:false, time:'5ヶ月前' },
+  { id:170, text:'承認欲求が強すぎて友人を疲れさせた。「いいね」してほしい、褒めてほしいを友人に求め続けた。', category:'友情・人間関係', age:'20代', gender:'女性', empathy:156, empathized:false, time:'6ヶ月前' },
+  { id:171, text:'旧友との年賀状を20年で止めた。「時代遅れ」と思ってやめたが、あの細い糸が大切だった。', category:'友情・人間関係', age:'50代', gender:'男性', empathy:89,  empathized:false, time:'6ヶ月前' },
+  { id:172, text:'高校時代の親友と疎遠になった。連絡先は知っているのに、「今更どんな顔して連絡するんだ」と思って踏み出せない。', category:'友情・人間関係', age:'40代', gender:'女性', empathy:201, empathized:false, time:'7ヶ月前' },
+  { id:173, text:'友人の引っ越し手伝いを断った。「忙しい」を理由に断り続け、いつの間にか連絡が来なくなった。', category:'友情・人間関係', age:'20代', gender:'男性', empathy:67,  empathized:false, time:'8ヶ月前' },
+  { id:174, text:'感情的になりすぎて友人を傷つけた。自分が正しいと思い込んでいたが、相手の立場を考えていなかった。', category:'友情・人間関係', age:'30代', gender:'女性', empathy:167, empathized:false, time:'9ヶ月前' },
+  { id:175, text:'人の名前を覚えようとしなかった。すぐ忘れるのは仕方ないと思っていたが、相手にはちゃんと伝わっていた。', category:'友情・人間関係', age:'40代', gender:'男性', empathy:67,  empathized:false, time:'10ヶ月前' },
+  { id:176, text:'保険に入りすぎた。FPに言われるまま複数の保険に加入し、毎月4万円無駄にしていた。', category:'お金・生活', age:'40代', gender:'男性', empathy:134, empathized:false, time:'3日前' },
+  { id:177, text:'若い頃に浪費した。ブランド品に憧れ、毎月クレジットの限度額まで使い続けた。', category:'お金・生活', age:'30代', gender:'女性', empathy:189, empathized:false, time:'4日前' },
+  { id:178, text:'投資の知識なしに株を始めた。ニュースで聞いた銘柄を勘で買い、100万円を失った。', category:'お金・生活', age:'30代', gender:'男性', empathy:201, empathized:false, time:'6日前' },
+  { id:179, text:'ギャンブルで人生を狂わせた。「必ず取り返せる」という呪いにはまって、300万円以上失った。', category:'お金・生活', age:'40代', gender:'男性', empathy:267, empathized:false, time:'1週間前' },
+  { id:180, text:'老後の年金を甘く見ていた。「国が何とかしてくれる」と思っていたが、受給額を計算して絶望した。', category:'お金・生活', age:'50代', gender:'男性', empathy:234, empathized:false, time:'1週間前' },
+  { id:181, text:'家を勢いで買った。立地の調査を怠り、転売しようにも売れない物件を抱えている。', category:'お金・生活', age:'40代', gender:'男性', empathy:198, empathized:false, time:'2週間前' },
+  { id:182, text:'奨学金の返済を甘く見ていた。就職後も「まあいいか」と先延ばしにして、利子が膨らんだ。', category:'お金・生活', age:'20代', gender:'男性', empathy:134, empathized:false, time:'2週間前' },
+  { id:183, text:'リボ払いを長年使った。手数料の恐ろしさを知らず、元本が全く減らなかった。', category:'お金・生活', age:'30代', gender:'男性', empathy:201, empathized:false, time:'3週間前' },
+  { id:184, text:'住宅ローンの金利比較をしなかった。担当者に言われたまま契約し、後で100万円以上の差があると知った。', category:'お金・生活', age:'40代', gender:'男性', empathy:178, empathized:false, time:'3週間前' },
+  { id:185, text:'固定費の見直しを一度もしなかった。使っていないサービスに月3万円以上払い続けていた。', category:'お金・生活', age:'30代', gender:'女性', empathy:89,  empathized:false, time:'1ヶ月前' },
+  { id:186, text:'浪費グセを直すタイミングを逃し続けた。「給料が上がったら節約する」を繰り返し、給料が上がっても出費も増えた。', category:'お金・生活', age:'40代', gender:'女性', empathy:134, empathized:false, time:'1ヶ月前' },
+  { id:187, text:'小額投資の積み重ねを軽視した。「月5千円では意味ない」と思ってやらなかった20年の損失を計算したら泣いた。', category:'お金・生活', age:'40代', gender:'女性', empathy:234, empathized:false, time:'2ヶ月前' },
+  { id:188, text:'副業収入を全部使ってしまった。入ってきたら使う、を繰り返して一円も資産にならなかった。', category:'お金・生活', age:'30代', gender:'男性', empathy:91,  empathized:false, time:'2ヶ月前' },
+  { id:189, text:'新車を勢いで買った。ローンで400万円の車を買い、5年間生活が苦しかった。', category:'お金・生活', age:'30代', gender:'男性', empathy:123, empathized:false, time:'3ヶ月前' },
+  { id:190, text:'副業の税金を知らなかった。無申告のまま3年間過ごし、追徴課税で100万円以上支払った。', category:'お金・生活', age:'30代', gender:'男性', empathy:267, empathized:false, time:'3ヶ月前' },
+  { id:191, text:'確定申告で控除を使わなかった。医療費控除で数万円戻ってくるのを、めんどうで申告しなかった。', category:'お金・生活', age:'30代', gender:'女性', empathy:91,  empathized:false, time:'4ヶ月前' },
+  { id:192, text:'海外旅行保険に入らなかった。現地で骨折し、治療費が60万円かかった。', category:'お金・生活', age:'20代', gender:'女性', empathy:156, empathized:false, time:'4ヶ月前' },
+  { id:193, text:'お金の価値観が違う人と結婚した。収入があっても貯金ゼロという事態は、話し合いで防げた。', category:'お金・生活', age:'40代', gender:'女性', empathy:201, empathized:false, time:'5ヶ月前' },
+  { id:194, text:'節税対策を調べなかった。毎年10万円以上の税金を余分に払い続けていたと確定申告を学んで気づいた。', category:'お金・生活', age:'40代', gender:'男性', empathy:112, empathized:false, time:'5ヶ月前' },
+  { id:195, text:'賃貸更新時の交渉をしなかった。黙って更新していたが、交渉すれば家賃が下がっていたと後で知った。', category:'お金・生活', age:'30代', gender:'男性', empathy:78,  empathized:false, time:'6ヶ月前' },
+  { id:196, text:'緊急資金を持たずに生きてきた。突然の病気でたった50万円の出費が致命的になった。', category:'お金・生活', age:'30代', gender:'女性', empathy:201, empathized:false, time:'6ヶ月前' },
+  { id:197, text:'家計簿をつけなかった。「何となく貯金できていれば」でいたが、何となくでは全然できていなかった。', category:'お金・生活', age:'30代', gender:'女性', empathy:98,  empathized:false, time:'7ヶ月前' },
+  { id:198, text:'給付金や助成金の存在を知らなかった。調べれば受け取れた補助金が山ほどあったと後でわかった。', category:'お金・生活', age:'30代', gender:'男性', empathy:113, empathized:false, time:'8ヶ月前' },
+  { id:199, text:'友人への貸したお金を催促できなかった。10万円を返してもらえないまま友情も消えた。', category:'お金・生活', age:'30代', gender:'女性', empathy:134, empathized:false, time:'9ヶ月前' },
+  { id:200, text:'お金のために嫌いな仕事を選んだ。高収入だったが精神が崩壊した。お金より健康の方が大事だった。', category:'お金・生活', age:'30代', gender:'男性', empathy:189, empathized:false, time:'10ヶ月前' },
+  { id:201, text:'タバコをもっと早くやめるべきだった。20年間吸い続け、やめた後も後遺症が残っている。', category:'健康・身体', age:'50代', gender:'男性', empathy:198, empathized:false, time:'2日前' },
+  { id:202, text:'歯の定期検診をサボった。「痛くなければいい」でいたら、40代で複数本のインプラントが必要になった。', category:'健康・身体', age:'40代', gender:'男性', empathy:234, empathized:false, time:'3日前' },
+  { id:203, text:'メンタルの異変を無視した。「気のせい」と放置し続け、うつ病が悪化してから治療が長引いた。', category:'健康・身体', age:'30代', gender:'女性', empathy:289, empathized:false, time:'5日前' },
+  { id:204, text:'運動不足を10年放置した。30代で腰痛が慢性化し、今では5分歩くだけで辛い。', category:'健康・身体', age:'40代', gender:'男性', empathy:178, empathized:false, time:'6日前' },
+  { id:205, text:'若い頃の無理なダイエットが体を壊した。拒食症になりかけた経験が今も心に残っている。', category:'健康・身体', age:'20代', gender:'女性', empathy:201, empathized:false, time:'1週間前' },
+  { id:206, text:'睡眠時間を削って仕事した。4〜5時間睡眠を5年続けた結果、免疫が落ちて入院した。', category:'健康・身体', age:'30代', gender:'男性', empathy:167, empathized:false, time:'1週間前' },
+  { id:207, text:'健康診断でひっかかっても精密検査を受けなかった。「どうせ大したことない」が命取りになりかけた。', category:'健康・身体', age:'50代', gender:'男性', empathy:312, empathized:false, time:'2週間前' },
+  { id:208, text:'食事に無頓着だった。30代まで食事を「燃料補給」としか考えなかった結果、生活習慣病が発覚した。', category:'健康・身体', age:'40代', gender:'男性', empathy:189, empathized:false, time:'2週間前' },
+  { id:209, text:'アルコールを飲み過ぎた。接待が多かったのはわかるが、「肝臓は再生する」という都市伝説を信じすぎた。', category:'健康・身体', age:'50代', gender:'男性', empathy:234, empathized:false, time:'3週間前' },
+  { id:210, text:'心療内科へのハードルを高く感じすぎた。「自分はそんなに弱くない」とプライドが邪魔をした。', category:'健康・身体', age:'30代', gender:'男性', empathy:167, empathized:false, time:'3週間前' },
+  { id:211, text:'筋トレを「後でいつでもできる」と思っていた。筋肉は使わないと落ちるが、つけるのは時間がかかる。', category:'健康・身体', age:'30代', gender:'男性', empathy:189, empathized:false, time:'1ヶ月前' },
+  { id:212, text:'腸の健康を無視した。便秘を「体質だから」と諦め、腸活を始めたら10年間の不調が嘘のように消えた。', category:'健康・身体', age:'40代', gender:'女性', empathy:201, empathized:false, time:'1ヶ月前' },
+  { id:213, text:'深夜の食事習慣をやめられなかった。夜11時以降の食事が10年続き、逆流性食道炎になった。', category:'健康・身体', age:'30代', gender:'男性', empathy:134, empathized:false, time:'2ヶ月前' },
+  { id:214, text:'生理痛を我慢し続けた。「みんなそんなものだ」と10年放置したら、子宮内膜症が悪化していた。', category:'健康・身体', age:'30代', gender:'女性', empathy:267, empathized:false, time:'2ヶ月前' },
+  { id:215, text:'過度なカフェイン摂取を続けた。眠れないからコーヒーを飲む悪循環が、自律神経を乱した。', category:'健康・身体', age:'30代', gender:'女性', empathy:134, empathized:false, time:'3ヶ月前' },
+  { id:216, text:'スポーツジムの会費を無駄にした。3ヶ月通って辞めるを5回繰り返し、計60万円ほど捨てた。', category:'健康・身体', age:'30代', gender:'女性', empathy:91,  empathized:false, time:'3ヶ月前' },
+  { id:217, text:'メンタルが弱ることを恥だと思っていた。「強くなければ」という思い込みが、回復を遅らせた。', category:'健康・身体', age:'40代', gender:'男性', empathy:201, empathized:false, time:'4ヶ月前' },
+  { id:218, text:'目の酷使を続けた。スマホとPC漬けの生活で、30代で視力が0.1以下になった。', category:'健康・身体', age:'30代', gender:'女性', empathy:134, empathized:false, time:'4ヶ月前' },
+  { id:219, text:'スマホを使いながら食事を続けた。10年後に食べることへの喜びが全くなくなっていた。', category:'健康・身体', age:'30代', gender:'男性', empathy:78,  empathized:false, time:'5ヶ月前' },
+  { id:220, text:'二日酔いを放置して仕事した。「若いから大丈夫」という感覚が、30代後半で急激に崩れた。', category:'健康・身体', age:'30代', gender:'男性', empathy:89,  empathized:false, time:'5ヶ月前' },
+  { id:221, text:'ダイエットを繰り返してリバウンドした。「食べない」方法で10回以上挑戦し、その度に体を壊した。', category:'健康・身体', age:'30代', gender:'女性', empathy:167, empathized:false, time:'6ヶ月前' },
+  { id:222, text:'整形外科への受診を先延ばしにした。膝の痛みを放置し続け、軟骨がすり減り手術が必要になった。', category:'健康・身体', age:'50代', gender:'女性', empathy:156, empathized:false, time:'6ヶ月前' },
+  { id:223, text:'体の声に耳を傾けなかった。「疲れた」を無視し続け、過労で倒れて初めて「もっと休んでよかった」と思った。', category:'健康・身体', age:'40代', gender:'男性', empathy:298, empathized:false, time:'7ヶ月前' },
+  { id:224, text:'転倒リスクを無視した。階段を急いで駆け下りる癖があり、骨折して3ヶ月動けなくなった。', category:'健康・身体', age:'60代以上', gender:'女性', empathy:201, empathized:false, time:'8ヶ月前' },
+  { id:225, text:'マッサージや整体を贅沢だと思っていた。身体のメンテナンスを怠り続けた結果の医療費の方が高かった。', category:'健康・身体', age:'40代', gender:'男性', empathy:156, empathized:false, time:'9ヶ月前' },
+  { id:226, text:'花粉症の対策を怠った。毎年「今年こそ治そう」と言いながら20年、今では通年アレルギーになった。', category:'健康・身体', age:'40代', gender:'男性', empathy:112, empathized:false, time:'10ヶ月前' },
+  { id:227, text:'旅行に行けばよかった。「お金が貯まったら行こう」を繰り返して、コロナで5年間行けなかった。', category:'その他', age:'30代', gender:'女性', empathy:134, empathized:false, time:'2日前' },
+  { id:228, text:'スマホに人生を奪われた。1日5時間のスマホ時間を10年続けると、1万8千時間。何が作れただろう。', category:'その他', age:'30代', gender:'男性', empathy:234, empathized:false, time:'4日前' },
+  { id:229, text:'「いつかやる」リストが全く実現しなかった。書き留めるだけで満足し、何一つ実行しなかった。', category:'その他', age:'40代', gender:'男性', empathy:178, empathized:false, time:'5日前' },
+  { id:230, text:'自分の強みを知るのが遅かった。他人の評価ばかり気にして、自分が何が得意かを知るのに40年かかった。', category:'その他', age:'40代', gender:'女性', empathy:201, empathized:false, time:'1週間前' },
+  { id:231, text:'今この瞬間を大切にしなかった。過去を悔いるか未来を心配するかで、「今」をずっと生きていなかった。', category:'その他', age:'40代', gender:'女性', empathy:267, empathized:false, time:'2週間前' },
+  { id:232, text:'誰かに感謝を伝えるのが苦手だった。「伝えなくてもわかってくれる」と信じていたが、人は言葉にしないとわからない。', category:'その他', age:'40代', gender:'男性', empathy:167, empathized:false, time:'2週間前' },
+  { id:233, text:'過去の写真を整理しなかった。ハードディスクが壊れて、子供の幼少期の写真が全部消えた。', category:'その他', age:'40代', gender:'男性', empathy:312, empathized:false, time:'3週間前' },
+  { id:234, text:'人の好意を素直に受け取れなかった。「お返しできない」という気持ちから拒み続け、気づいたら助けてもらえる関係がなかった。', category:'その他', age:'40代', gender:'女性', empathy:178, empathized:false, time:'1ヶ月前' },
+  { id:235, text:'自分を褒める習慣がなかった。他者の評価を基準に生き続けて、自己肯定感が地の底まで落ちた。', category:'その他', age:'30代', gender:'女性', empathy:201, empathized:false, time:'1ヶ月前' },
+  { id:236, text:'趣味を仕事にしたことを後悔している。好きなことが義務になった瞬間、楽しさが消えた。', category:'その他', age:'30代', gender:'男性', empathy:156, empathized:false, time:'2ヶ月前' },
+  { id:237, text:'地元を出る決断が遅すぎた。「縁があれば戻ればいい」と思ったのに、都会に出た友人との差が10年で埋まらなくなった。', category:'その他', age:'20代', gender:'女性', empathy:134, empathized:false, time:'2ヶ月前' },
+  { id:238, text:'生きる意味を考えるのを避け続けた。「哲学的すぎる」と笑っていたが、50代でその問いに向き合えなかったことが一番の後悔だ。', category:'その他', age:'50代', gender:'男性', empathy:198, empathized:false, time:'3ヶ月前' },
+  { id:239, text:'故郷の祭りに参加し続けるべきだった。東京に出てからずっと切り離した地元の文化が、今は宝だったとわかる。', category:'その他', age:'40代', gender:'男性', empathy:112, empathized:false, time:'3ヶ月前' },
+  { id:240, text:'夢中になれるものを早く見つければよかった。「没頭する経験」のない人生が、いかに空虚かを知るのが遅かった。', category:'その他', age:'30代', gender:'女性', empathy:189, empathized:false, time:'4ヶ月前' },
+  { id:241, text:'ボランティアに関わればよかった。「自分のことで精一杯」を理由にしていたが、社会と繋がる喜びを知るのが遅かった。', category:'その他', age:'40代', gender:'男性', empathy:89,  empathized:false, time:'4ヶ月前' },
+  { id:242, text:'日記をつければよかった。感情を記録していたら、今の自分をもっと理解できたと思う。', category:'その他', age:'20代', gender:'女性', empathy:89,  empathized:false, time:'5ヶ月前' },
+  { id:243, text:'感情を抑えすぎた。「感情的になるのは弱い」と信じ続け、40年間泣けなかった自分が哀れだ。', category:'その他', age:'50代', gender:'男性', empathy:201, empathized:false, time:'5ヶ月前' },
+  { id:244, text:'移住の決断を先延ばしにした。田舎暮らしへの憧れを「老後に」と言い続けて、老後になってから動けなくなった。', category:'その他', age:'60代以上', gender:'男性', empathy:89,  empathized:false, time:'6ヶ月前' },
+  { id:245, text:'メディア断ちを試みるべきだった。ニュースを見るたびに不安になる生活から早く抜け出すべきだった。', category:'その他', age:'30代', gender:'男性', empathy:112, empathized:false, time:'7ヶ月前' },
+  { id:246, text:'手書きの手紙を送ればよかった。メールやLINEで済ませてきたが、手書きの言葉の重みを感じるのが遅かった。', category:'その他', age:'60代以上', gender:'女性', empathy:134, empathized:false, time:'8ヶ月前' },
+  { id:247, text:'ペットを飼うのをためらった。「世話が大変」を理由に断り続けたが、一人暮らしの孤独がこれほど辛いとは思わなかった。', category:'その他', age:'40代', gender:'女性', empathy:156, empathized:false, time:'9ヶ月前' },
+  { id:248, text:'「自分は特別だ」という感覚を手放すのに時間がかかった。謙虚さを身につけるのが遅すぎて、多くの人を傷つけた。', category:'その他', age:'40代', gender:'男性', empathy:178, empathized:false, time:'10ヶ月前' },
+];
+
+let posts = JSON.parse(localStorage.getItem('koukai_posts_v2') || 'null') || initialPosts;
+let currentFilter = 'すべて';
+let nextId = Math.max(...posts.map(p => p.id)) + 1;
+let myPostIds = JSON.parse(localStorage.getItem('koukai_my_ids') || '[]');
+let comments = JSON.parse(localStorage.getItem('koukai_comments_v1') || '{}');
+
+function savePosts() { localStorage.setItem('koukai_posts_v2', JSON.stringify(posts)); }
+function saveComments() { localStorage.setItem('koukai_comments_v1', JSON.stringify(comments)); }
+
+function updateHeroStats() {
+  document.getElementById('heroTotal').textContent = posts.length;
+  document.getElementById('heroEmpathy').textContent = posts.reduce((s,p)=>s+p.empathy,0).toLocaleString();
+}
+
+// ========= NAVIGATION =========
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'feed')  renderFeed();
+  if (name === 'stats') renderStats();
+}
+
+// ========= POST FORM =========
+
+document.getElementById('postText').addEventListener('input', function() {
+  document.getElementById('submitBtn').disabled = this.value.trim().length === 0;
+});
+
+function submitPost() {
+  const text = document.getElementById('postText').value.trim();
+  if (!text) return;
+  const newPost = {
+    id: nextId++,
+    text,
+    category: document.getElementById('postCategory').value,
+    age: document.getElementById('postAge').value,
+    gender: document.getElementById('postGender').value,
+    empathy: 0,
+    empathized: false,
+    time: 'たった今',
+  };
+  posts.unshift(newPost);
+  savePosts();
+  myPostIds.push(newPost.id);
+  localStorage.setItem('koukai_my_ids', JSON.stringify(myPostIds));
+  document.getElementById('postText').value = '';
+  document.getElementById('submitBtn').disabled = true;
+  updateHeroStats();
+  // feedページに移動して自分の投稿までスクロール
+  showPage('feed', document.querySelectorAll('nav.tab-nav button')[1]);
+  updateBottomNav('bn-feed');
+  setTimeout(() => {
+    const el = document.getElementById('post-' + newPost.id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.outline = '2px solid var(--primary)';
+      el.style.outlineOffset = '2px';
+      setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 3000);
+    }
+  }, 80);
+  showToast('投稿しました。ありがとうございます。');
+}
+
+// ========= FEED =========
+
+function setFilter(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('#feedFilter button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFeed();
+}
+
+function renderFeed() {
+  const list = document.getElementById('feedList');
+  const filtered = currentFilter === 'すべて' ? posts : posts.filter(p => p.category === currentFilter);
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty">まだ投稿がありません</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(p => postCardHtml(p)).join('');
+}
+
+function postCardHtml(p) {
+  const r = AI_REALIZATION[p.category];
+  const shareUrl = encodeURIComponent(window.location.href.split('#')[0]);
+  const shareText = encodeURIComponent(`「${p.text.slice(0,45)}${p.text.length>45?'…':''}」 — みんなの後悔`);
+  const isMyPost = myPostIds.includes(p.id);
+  const postComments = comments[p.id] || [];
+  const commentCount = postComments.length;
+
+  return `
+    <div class="post-card" id="post-${p.id}" data-cat="${escHtml(p.category)}">
+      <div class="post-top">
+        <span class="cat-pill" data-cat="${escHtml(p.category)}">${escHtml(p.category)}</span>
+        <span class="post-meta-tag">${escHtml(p.age)}</span>
+        <span class="post-meta-tag">${escHtml(p.gender || '未回答')}</span>
+        ${isMyPost ? '<span class="my-post-badge">あなたの投稿</span>' : ''}
+        <span class="post-time">${escHtml(p.time)}</span>
+      </div>
+      <div class="post-body">${escHtml(p.text)}</div>
+      ${r ? `
+        <button class="ai-toggle-btn" id="ai-btn-${p.id}" onclick="toggleAi(${p.id})">
+          <span>AIが実現できるかも — ${escHtml(r.title.slice(0,32))}...</span>
+          <span>確度 ${r.confidence}%</span>
+          <span class="ai-arrow">▼</span>
+        </button>
+        <div class="ai-detail-panel" id="ai-panel-${p.id}">
+          <div class="ai-detail-head">
+            <div class="ai-detail-title">${escHtml(r.title)}</div>
+            <div class="ai-detail-conf">実現確度 ${r.confidence}% — 現時点で最も確実性が高いケース</div>
+          </div>
+          <div class="ai-detail-why">${escHtml(r.why)}</div>
+          <div class="ai-steps">
+            ${r.steps.map((s,i) => `
+              <div class="ai-step">
+                <div class="ai-step-num">${i+1}</div>
+                <div class="ai-step-content">
+                  <div class="ai-step-title">${escHtml(s.title)}</div>
+                  <div class="ai-step-desc">${escHtml(s.desc)}</div>
+                  ${s.link ? `<a class="ai-step-link" href="${s.link}" target="_blank" rel="noopener noreferrer">${escHtml(s.linkText)}</a>` : ''}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>` : ''}
+      <div class="post-footer">
+        <button class="empathy-btn ${p.empathized ? 'active' : ''}" onclick="toggleEmpathy(${p.id})">
+          ${p.empathized ? '♥' : '♡'} わかる ${p.empathy}
+        </button>
+        <button class="empathy-btn" id="cmt-btn-${p.id}" onclick="toggleComments(${p.id})" style="gap:5px;">
+          💬 コメント${commentCount > 0 ? ` ${commentCount}` : ''}
+        </button>
+        <div class="share-row">
+          <button class="share-btn x" onclick="shareSNS('x','${shareUrl}','${shareText}')">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X
+          </button>
+          <button class="share-btn th" onclick="shareSNS('threads','${shareUrl}','${shareText}')">
+            <svg viewBox="0 0 192 192"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.986 0-27.449 6.396-35.12 18.036l13.779 9.452c5.73-8.695 14.724-10.548 21.348-10.548h.229c8.249.053 14.474 2.452 18.503 7.129 2.932 3.405 4.893 8.111 5.864 14.05-7.314-1.243-15.224-1.626-23.68-1.14-23.82 1.371-39.134 15.264-38.105 34.568.522 9.792 5.4 18.216 13.735 23.719 7.047 4.652 16.124 6.927 25.557 6.412 12.458-.683 22.231-5.436 29.049-14.127 5.178-6.6 8.452-15.153 9.899-25.93 5.937 3.583 10.337 8.298 12.767 13.966 4.132 9.635 4.373 25.468-8.546 38.376-11.319 11.308-24.925 16.2-45.488 16.351-22.809-.169-40.06-7.484-51.275-21.741C35.236 139.966 29.808 120.682 29.605 96c.203-24.682 5.63-43.966 16.133-57.317C56.954 24.425 74.204 17.11 97.013 16.94c22.975.17 40.526 7.52 52.171 21.847 5.71 7.026 10.015 15.86 12.853 26.162l16.147-4.308c-3.44-12.68-8.853-23.606-16.219-32.668C147.036 9.607 125.202.195 97.07 0h-.113C68.882.194 47.292 9.642 32.788 28.08 19.882 44.485 13.224 67.315 13.001 95.932L13 96v.068c.224 28.617 6.882 51.447 19.788 67.852 14.504 18.438 36.094 27.886 64.208 28.08h.113c24.96-.173 42.554-6.708 57.048-21.237 18.763-18.787 18.017-42.097 11.904-56.435-4.217-9.82-12.191-17.954-24.524-23.34zM98.44 129.507c-10.44.588-21.286-4.098-21.82-14.135-.397-7.442 5.296-15.746 22.461-16.735 1.966-.113 3.895-.169 5.79-.169 6.235 0 12.068.606 17.371 1.765-1.978 24.702-13.58 28.713-23.802 29.274z"/></svg>
+            Threads
+          </button>
+          <button class="share-btn line" onclick="shareSNS('line','${shareUrl}','${shareText}')">
+            <svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.63 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.07 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+            LINE
+          </button>
+          <button class="share-btn fb" onclick="shareSNS('facebook','${shareUrl}','')">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            FB
+          </button>
+          <button class="share-btn ig" onclick="shareSNS('instagram','${shareUrl}','${shareText}')">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            IG
+          </button>
+        </div>
+      </div>
+      <div class="comment-section" id="cmt-section-${p.id}" style="display:none;">
+        <div class="comment-section-title">コメント</div>
+        <div id="cmt-list-${p.id}">
+          ${postComments.length === 0
+            ? '<div class="comment-empty">まだコメントはありません</div>'
+            : postComments.map(c => `
+              <div class="comment-item">
+                <div class="comment-item-text">${escHtml(c.text)}</div>
+                <div class="comment-item-time">${escHtml(c.time)}</div>
+              </div>`).join('')}
+        </div>
+        <div class="comment-input-row">
+          <input class="comment-input" id="cmt-input-${p.id}" type="text" placeholder="匿名でコメント..." maxlength="200" onkeydown="if(event.key==='Enter')submitComment(${p.id})">
+          <button class="comment-submit" onclick="submitComment(${p.id})">送信</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleAi(id) {
+  const btn = document.getElementById('ai-btn-' + id);
+  const panel = document.getElementById('ai-panel-' + id);
+  btn.classList.toggle('open');
+  panel.classList.toggle('open');
+}
+
+function toggleEmpathy(id) {
+  const p = posts.find(p => p.id === id);
+  if (!p) return;
+  p.empathized = !p.empathized;
+  p.empathy += p.empathized ? 1 : -1;
+  savePosts();
+  updateHeroStats();
+  const el = document.getElementById('post-' + id);
+  if (el) el.outerHTML = postCardHtml(p);
+}
+
+function shareSNS(type, url, text) {
+  const u = decodeURIComponent(url);
+  const t = decodeURIComponent(text);
+  const eu = encodeURIComponent(u);
+  const et = encodeURIComponent(t);
+  switch(type) {
+    case 'x':        window.open(`https://twitter.com/intent/tweet?text=${et}&url=${eu}`, '_blank', 'noopener,noreferrer,width=550,height=450'); break;
+    case 'threads':  window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(t+'\n'+u)}`, '_blank', 'noopener,noreferrer,width=550,height=450'); break;
+    case 'line':     window.open(`https://social-plugins.line.me/lineit/share?url=${eu}`, '_blank', 'noopener,noreferrer'); break;
+    case 'facebook': window.open(`https://www.facebook.com/sharer/sharer.php?u=${eu}`, '_blank', 'noopener,noreferrer,width=600,height=400'); break;
+    case 'instagram':
+      if (navigator.share) { navigator.share({ title: 'みんなの後悔', text: t, url: u }).catch(()=>{}); }
+      else { navigator.clipboard.writeText(u).then(()=>showToast('リンクをコピーしました。Instagramアプリで貼り付けてシェアしてください。')); }
+      break;
+  }
+}
+
+// ========= STATS =========
+
+function renderStats() {
+  // Top 3
+  const top3 = [...posts].sort((a,b) => b.empathy - a.empathy).slice(0,3);
+  const rankLabels = ['1', '2', '3'];
+  document.getElementById('topPosts').innerHTML = top3.map((p,i) => `
+    <div class="top-item">
+      <div class="top-rank">${rankLabels[i]}</div>
+      <div>
+        <div class="top-text">${escHtml(p.text.length>100?p.text.slice(0,100)+'…':p.text)}</div>
+        <div class="top-meta">
+          <span>${p.category}</span>
+          <span>${p.age} · ${p.gender||'未回答'}</span>
+          <span>♥ ${p.empathy.toLocaleString()}人が共感</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Insights
+  const totalEmpathy = posts.reduce((s,p)=>s+p.empathy,0);
+  const avgEmpathy = (totalEmpathy / posts.length).toFixed(1);
+  const topCat = Object.entries(posts.reduce((acc,p)=>{acc[p.category]=(acc[p.category]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1])[0];
+  const topAge = Object.entries(posts.reduce((acc,p)=>{acc[p.age]=(acc[p.age]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1])[0];
+  const topEmpathyPost = [...posts].sort((a,b)=>b.empathy-a.empathy)[0];
+  document.getElementById('insightList').innerHTML = [
+    `投稿1件あたりの平均共感数は <strong>${avgEmpathy}</strong> 件`,
+    `最も後悔が多いカテゴリは「<strong>${topCat[0]}</strong>」（${topCat[1]}件）`,
+    `最も後悔が多い年代は「<strong>${topAge[0]}</strong>」（${topAge[1]}件）`,
+    `最も共感された後悔は「<strong>${topEmpathyPost.text.slice(0,30)}…</strong>」（${topEmpathyPost.empathy}共感）`,
+  ].map(t=>`<li>${t}</li>`).join('');
+
+  // Category bars (count)
+  const catCount = {};
+  posts.forEach(p => { catCount[p.category]=(catCount[p.category]||0)+1; });
+  const catMax = Math.max(...Object.values(catCount),1);
+  document.getElementById('catBars').innerHTML = Object.entries(catCount).sort((a,b)=>b[1]-a[1]).map(([cat,cnt])=>`
+    <div class="bar-row">
+      <div class="bar-label">${cat}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(cnt/catMax*100)}%"></div></div>
+      <div class="bar-val">${cnt}</div>
+    </div>`).join('');
+
+  // Category bars (avg empathy)
+  const catEmpSum = {}, catEmpCnt = {};
+  posts.forEach(p => {
+    catEmpSum[p.category] = (catEmpSum[p.category]||0) + p.empathy;
+    catEmpCnt[p.category] = (catEmpCnt[p.category]||0) + 1;
+  });
+  const catAvg = Object.keys(catEmpSum).map(c => [c, catEmpSum[c]/catEmpCnt[c]]);
+  const catAvgMax = Math.max(...catAvg.map(a=>a[1]),1);
+  document.getElementById('catEmpathyBars').innerHTML = [...catAvg].sort((a,b)=>b[1]-a[1]).map(([cat,avg])=>`
+    <div class="bar-row">
+      <div class="bar-label">${cat}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(avg/catAvgMax*100)}%;background:#06c755"></div></div>
+      <div class="bar-val">${avg.toFixed(1)}</div>
+    </div>`).join('');
+
+  // Age bars
+  const ageOrder = ['10代','20代','30代','40代','50代','60代以上'];
+  const ageCount = {};
+  posts.forEach(p => { ageCount[p.age]=(ageCount[p.age]||0)+1; });
+  const ageMax = Math.max(...Object.values(ageCount),1);
+  document.getElementById('ageBars').innerHTML = ageOrder.filter(a=>ageCount[a]).map(age=>`
+    <div class="bar-row">
+      <div class="bar-label">${age}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((ageCount[age]||0)/ageMax*100)}%"></div></div>
+      <div class="bar-val">${ageCount[age]||0}</div>
+    </div>`).join('');
+
+  // Gender bars
+  const genderCount = {};
+  posts.forEach(p => { const g=p.gender||'未回答'; genderCount[g]=(genderCount[g]||0)+1; });
+  const genderMax = Math.max(...Object.values(genderCount),1);
+  const genderColors = { '男性':'#3b82f6','女性':'#ec4899','未回答':'#9ca3af' };
+  document.getElementById('genderBars').innerHTML = Object.entries(genderCount).sort((a,b)=>b[1]-a[1]).map(([g,cnt])=>`
+    <div class="bar-row">
+      <div class="bar-label">${g}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(cnt/genderMax*100)}%;background:${genderColors[g]||'#6b7280'}"></div></div>
+      <div class="bar-val">${cnt}</div>
+    </div>`).join('');
+
+  // Cross table: age × category
+  const cats = Object.keys(CATEGORIES);
+  const ages = ageOrder.filter(a => ageCount[a]);
+  const crossData = {};
+  posts.forEach(p => {
+    const key = p.age + '|' + p.category;
+    crossData[key] = (crossData[key]||0) + 1;
+  });
+  const crossMax = Math.max(...Object.values(crossData), 1);
+  const heatLevel = v => v===0?0:v<=1?1:v<=2?2:v<=3?3:v<=4?4:5;
+  document.getElementById('crossTable').innerHTML = `
+    <thead><tr>
+      <th>年代 \\ カテゴリ</th>
+      ${cats.map(c=>`<th>${c.replace('・','・<br>')}</th>`).join('')}
+    </tr></thead>
+    <tbody>
+      ${ages.map(age=>`<tr>
+        <td class="row-head">${age}</td>
+        ${cats.map(cat=>{const v=crossData[age+'|'+cat]||0;return `<td class="heat-${heatLevel(v)}">${v||'—'}</td>`;}).join('')}
+      </tr>`).join('')}
+    </tbody>`;
+
+  // Keywords
+  const stopWords = new Set(['こと','ため','もの','それ','これ','あれ','ない','れた','する','ある','なか','から','まで','ていた','していた','ておけ','てから','だった','でき','きた','ずっと','もっと','やって','けど','には','ては','でも','ても','ながら','たら','ので','のに','れば','しまっ','しまう','いる','いた','おく','ある','した','なる','いう','いう','きた','くれ','てい','ます','です','ました']);
+  const wordMap = {};
+  posts.forEach(p => {
+    const segs = p.text.split(/[。、！？「」『』（）・\s\.\,]+/);
+    segs.forEach(s => {
+      s = s.trim();
+      if (s.length >= 2 && s.length <= 10 && !stopWords.has(s) && !/^[a-zA-Z0-9]+$/.test(s)) {
+        wordMap[s] = (wordMap[s]||0) + 1;
+      }
+    });
+  });
+  const keywords = Object.entries(wordMap).filter(([,v])=>v>=2).sort((a,b)=>b[1]-a[1]).slice(0,24);
+  const kwMax = keywords.length ? keywords[0][1] : 1;
+  document.getElementById('kwCloud').innerHTML = keywords.map(([w,c]) => {
+    const size = 11 + Math.round((c/kwMax)*6);
+    return `<span class="kw-tag" style="font-size:${size}px">${escHtml(w)}<span class="kw-cnt">${c}</span></span>`;
+  }).join('');
+}
+
+// ========= AI ADVICE =========
+
+const AI_ADVICE = {
+  '10代': {
+    from: '30〜40代が最も後悔していること',
+    message: '今の積み重ねが、10年後の「選択肢の数」を決めます。10代でできること・すべきことは大人になってからは取り返せません。ただし、焦らなくていい。今日の小さな行動が、20年後に大きな差を生みます。',
+    items: [
+      {
+        regret: '英語をちゃんとやらなかった',
+        pct: 68,
+        insight: '40代の68%が「学生時代に英語をもっと勉強すればよかった」と後悔。語学は若い脳ほど吸収が速く、20代以降に同じ習熟度に達するには3〜5倍の時間がかかる。',
+        root: '「受験英語」で止まり、実用英語に移行しなかったのが最大の原因。「英語で考える」習慣が早期に身につくほど、将来の選択肢（外資系・海外大学院・グローバルキャリア）が広がる。',
+        steps: [
+          { title: 'Duolingoで毎日10分の習慣化（今日・無料）', desc: '継続こそが最重要。週7日×10分で、1年後にはA2〜B1レベルに達した事例が多数。アプリのストリーク機能で習慣化を担保する。', link: 'https://www.duolingo.com/', linkText: 'Duolingo（無料）' },
+          { title: '英語の動画コンテンツに切り替える', desc: 'YouTubeの設定を英語字幕に変更。1日30分の視聴習慣があれば、1年でリスニング力が劇的に向上する。好きなジャンル（ゲーム・音楽・スポーツ）の英語コンテンツから始める。' },
+          { title: 'Hello Talkで外国人と文通（無料）', desc: 'アプリで母語が日本語・学習言語が英語の相手とマッチング。週3回・各15分のテキスト会話で、実用英語の感覚が自然に育つ。', link: 'https://www.hellotalk.com/', linkText: 'HelloTalk（無料）' },
+        ]
+      },
+      {
+        regret: '貯金・お金の勉強をしなかった',
+        pct: 61,
+        insight: '30代の61%が「10代のうちにお金の仕組みを学んでおけばよかった」と後悔。金融リテラシーは学校で教えられず、多くの人が30代になって初めてNISAを知る。',
+        root: '日本の金融教育の欠如が根本原因。「お金の話は汚い」という文化的偏見が学習機会を奪い、20〜30代の「見えない経済的損失」につながっている。',
+        steps: [
+          { title: '「お金の大学」を読む（約1,500円）', desc: '両学長のベストセラー。10代でも読めるほど平易で、貯める・増やす・守るの基礎が全網羅されている。図書館でも借りられる。' },
+          { title: '高校生でも開設できるジュニアNISAの確認', desc: '未成年でも親権者の同意があれば投資信託の積立が可能。月3,000円から始められる。「お金が勝手に増える感覚」を10代で掴むことに価値がある。', link: 'https://www.fsa.go.jp/policy/nisa2/about/juniorNISA/', linkText: '金融庁 ジュニアNISA解説' },
+          { title: '家計簿アプリで支出を「見える化」', desc: 'マネーフォワードME（無料）でお小遣いや収入を記録するだけで、「どこにお金が消えているか」が一目瞭然になる。自制心より仕組みが大切。', link: 'https://moneyforward.com/', linkText: 'マネーフォワードME（無料）' },
+        ]
+      },
+    ]
+  },
+  '20代': {
+    from: '40〜50代が最も後悔していること',
+    message: '20代のリスクは最大の投資です。失敗できる時間・体力・可塑性が最も高い今、「安定」という名の先送りをやめることが、50代の後悔を防ぐ唯一の方法です。',
+    items: [
+      {
+        regret: '貯金・資産形成を始めなかった',
+        pct: 72,
+        insight: '50代の72%が「20代から積立投資を始めていればよかった」と後悔。25歳で月3.3万円の積立を始めた人と35歳で始めた人では、60歳時点で約1,200万円の差が生まれる（年利5%想定）。',
+        root: '「今の収入では無理」「投資は難しそう」「もう少し安定したら」という先送りバイアスが原因。実際には月3,000円から始められ、設定は10分で完了する。',
+        steps: [
+          { title: 'NISA口座を今日開設する（10〜20分）', desc: 'SBI証券 or 楽天証券で口座開設（無料）。マイナンバーカード + スマホで完結。つみたて枠（年120万円）をeMAXIS Slim 全世界株式（オルカン）に設定。月3.3万円が理想だが月3,000円でも始めることが最重要。', link: 'https://www.sbisec.co.jp/', linkText: 'SBI証券でNISA開設（無料）' },
+          { title: '緊急資金の分離（今月）', desc: '生活費3ヶ月分（60〜90万円目安）を「使わない口座」に分離。SBI新生銀行スタンダード（年0.3%）が現状最も高利息。投資と生活費を混在させないことが継続の鍵。', link: 'https://www.sbishinseibank.co.jp/', linkText: 'SBI新生銀行（年0.3%）' },
+          { title: '固定費を今月1万円削減する', desc: 'スマホをpovo or LINEMOへ変更（月0〜3,000円）。不要サブスクをマネーフォワードMEで洗い出し解約。この1万円を積立に回すだけで年間12万円の投資原資になる。', link: 'https://povo.jp/', linkText: 'povo2.0（基本料金0円）' },
+          { title: '副業で収入の天井を上げる', desc: '節約の限界は月3〜5万円。収入増加には上限がない。クラウドワークスで月1件から始め、3ヶ月で月3万円の副収入を目標に。貯蓄率30%（収入×0.3を自動積立）を最終目標に設定する。', link: 'https://crowdworks.jp/', linkText: 'クラウドワークスで副業開始' },
+        ]
+      },
+      {
+        regret: '好きな仕事・起業に挑戦しなかった',
+        pct: 58,
+        insight: '「安定」を選んだ20代の58%が40代で後悔。成功した起業家の多くが「もっと早く始めればよかった」と言う理由は、20代は最も回復コストが低いからです。失敗しても30代からやり直せる。',
+        root: '「準備が整ったら」「もう少し貯金が増えたら」という認知バイアスが行動を阻害。実際には、準備が整う日は永遠に来ない。最小コストで試すことが唯一の突破口。',
+        steps: [
+          { title: '副業として「スモール起業」を今月開始', desc: '法人化は後でよい。個人事業主として開業届を出すだけで副業が始められる（税務署に書類1枚）。初期費用50万円以下、回収期間6ヶ月以内のビジネスモデルで設計する。' },
+          { title: 'アイデアをnoteで「有料記事1本」検証', desc: '思っていることをnoteに書き、500〜1,000円で販売してみる。1本でも購入されれば「お金を払ってくれる人がいる」という証明になり、起業への心理的障壁が消える。', link: 'https://note.com/', linkText: 'noteで有料記事を試す' },
+          { title: 'ターゲット顧客の課題をSNSで検証', desc: 'Xで「ターゲット顧客が抱える課題についての投稿」を30日間連続でする。反応があれば市場ニーズの証明。反応がなければ方向修正。0円・ノーリスクの市場調査。' },
+          { title: '起業家コミュニティで壁打ちを3回行う', desc: 'STARTUP HUB TOKYOやPeatixの起業家イベントに参加。アイデアを話してフィードバックをもらう体験を月2回以上積む。「同期の起業家」がいると継続確率が3倍になる。', link: 'https://startup-station.jp/m/startuphub/', linkText: 'STARTUP HUB TOKYO（無料）' },
+        ]
+      },
+    ]
+  },
+  '30代': {
+    from: '50〜60代が最も後悔していること',
+    message: '30代は人生最大の「選択の密度」が高い時期です。仕事・家族・健康・友人—すべてが同時に進行する中で、「大切なものの優先順位」を明確にしていない人が、50代に最も後悔しています。',
+    items: [
+      {
+        regret: '親との時間を作らなかった',
+        pct: 68,
+        insight: '60代の68%が「30〜40代に親ともっと過ごせばよかった」と後悔。平均的な日本人が親と過ごせる「残り時間」は、親が60歳の段階でわずか1,000時間前後（年20日・1日5時間換算）。',
+        root: '「いつでも会えると思っていた」「仕事が忙しかった」という認識の歪みが原因。親の健康は直線的ではなく、ある日突然、急速に変化する。今の行動が唯一の対策。',
+        steps: [
+          { title: '今月、帰省 or ビデオ通話を設定する', desc: '日程を今日カレンダーに入れる。「忙しいから後で」が許されるリミットがある。Googleカレンダーに「月1回の親電話」を繰り返しリマインドとして設定する。' },
+          { title: '親の「聞き書き」を録音しておく', desc: 'スマホのボイスメモで「子どもの頃どんな生活だったか」「人生で一番後悔していることは」を聞いて録音。30分の会話が、認知症後でも失われない一生の記録になる。' },
+          { title: '「緊急でないが重要」な時間をスケジュール化', desc: '週の予定表に「家族時間（予防的）」をブロックとして入れる。仕事の予定と同等に扱う。緊急性がないから後回しになるが、実際の重要度は最高レベル。' },
+        ]
+      },
+      {
+        regret: '健康を後回しにした',
+        pct: 63,
+        insight: '40代以降に発症する生活習慣病の大部分は、30代の睡眠・運動・食習慣に起因する。心筋梗塞で入院した50代の90%以上が「30代から変えていれば防げた」と語っている。',
+        root: '「30代はまだ若い」という誤認識と、「症状が出てから対応する」日本の医療文化が予防を妨げる。痛みがない状態の異常こそが最も危険。',
+        steps: [
+          { title: '今年の健康診断を必ず受け、結果を保存する', desc: '「D判定」は無視しない。会社の健診はスクリーニングに過ぎない。再検査を指示されたら必ず受ける。健診結果をスマホで撮影し、毎年比較できるようにする。' },
+          { title: '週150分の有酸素運動を習慣化', desc: 'WHO推奨の週150分（1日20〜30分）の中強度運動。通勤を徒歩 or 自転車に変えるだけで達成できる。Apple Watch等で活動量を計測すると行動変容が起きやすい。' },
+          { title: '睡眠7〜8時間を最優先にする', desc: '慢性的な睡眠不足（6時間未満）は、肥満・2型糖尿病・うつ病・心臓病のリスクを2〜3倍に引き上げる。「深夜のスマホ」を物理的に排除（寝室にスマホを持ち込まない）するだけで睡眠の質が大きく改善する。' },
+        ]
+      },
+    ]
+  },
+  '40代': {
+    from: '60代以上が最も後悔していること',
+    message: '人生の折り返し点を過ぎた今、「残り時間」を意識し始めた世代へ。老後の幸福度は、40代の「設計力」で決まります。今からでも十分間に合う。ただし今すぐ動くことが条件。',
+    items: [
+      {
+        regret: '老後の資金計画を考えなかった',
+        pct: 69,
+        insight: '60代の69%が「もっと早く老後の資金計画を立てるべきだった」と後悔。65歳以降の生活費は、厚生年金受給者でも月6〜8万円の赤字（月26万円必要 vs 年金約20万円）が一般的。',
+        root: '「退職金と年金があれば何とかなる」という楽観バイアスと、年金制度の実態把握の遅れが主因。多くの人が「計算してみたら絶望した」というタイミングが60代。',
+        steps: [
+          { title: '「老後資金の現在地」を今週計算する', desc: '現在の金融資産合計 ÷ (65歳まで残り年数) = 毎年の積み上げ必要額を計算。公的年金の受取額は「ねんきんネット」で確認可能（5分・無料）。現実を数字で直視することが全行動の出発点。', link: 'https://www.nenkin.go.jp/n_net/', linkText: 'ねんきんネット（無料）' },
+          { title: 'iDeCoとNISAの最大活用', desc: 'iDeCo（個人型確定拠出年金）は掛金が全額所得控除になり、年収600万円の人が月2.3万円拠出すると年間約8万円の節税。NISAと合わせて「非課税二刀流」が最も効率的。', link: 'https://www.ideco-koushiki.jp/', linkText: 'iDeCo公式ナビ' },
+          { title: '住居費を見直す（最大の固定費）', desc: '持ち家なら住宅ローンの借り換え（固定→変動 or 金利交渉）で月1〜3万円の削減余地。賃貸なら「郊外への移住」で月2〜5万円削減し、差額をNISAに回す選択肢も。' },
+        ]
+      },
+      {
+        regret: 'やりたいことを先延ばしにした',
+        pct: 59,
+        insight: '「退職したらやろう」と言い続けた人の60%以上が、退職後に健康・気力・時間の問題で実現できなかった。40代の今が「やりたいこと」に着手できる最後のベストタイミング。',
+        root: '「今は忙しい」「条件が整ってから」というキャンセル習慣が積み重なり、「先送り体質」が形成される。実際には「条件が整う」ことはほぼない。',
+        steps: [
+          { title: '「死ぬ前に後悔したくないこと」を10分で書き出す', desc: 'iPhoneのメモに「80歳の自分が後悔しそうなこと」を箇条書きで10項目書く。書くだけで優先度が整理され、「今すぐやるべきこと」が浮かび上がる。' },
+          { title: 'TOP3を「今年中」の期限で設定', desc: 'リストから上位3つを選び、カレンダーに「着手日」を入れる。「来年」ではなく「今年中」の期限設定が実行率を3〜5倍高める（心理学の実装意図効果）。' },
+          { title: '副業・週末活動として小さく始める', desc: '「起業したい」なら今月中にクラウドワークス登録。「本を書きたい」ならnoteで週1記事。「習い事」なら今週体験申込。完成度より「着手した事実」が人生を変える起点になる。' },
+        ]
+      },
+    ]
+  },
+  '50代': {
+    from: '70代以上が最も後悔していること',
+    message: '「やり残したこと」よりも「今できること」に目を向ける時。70代以上の調査で最も後悔されているのは「挑戦しなかったこと」ではなく「伝えなかったこと」「つながりを維持しなかったこと」です。',
+    items: [
+      {
+        regret: '定年後の「生きがい」を準備しなかった',
+        pct: 66,
+        insight: '70代の66%が「仕事以外のアイデンティティを持っておくべきだった」と後悔。定年直後は解放感があるが、6ヶ月後から「虚無感・孤独感」を感じる人が急増する。定年前に「第二の人生の設計図」があるかどうかで、70代の幸福度が大きく変わる。',
+        root: '日本社会は「仕事＝アイデンティティ」になりやすく、仕事を失うと「自分は何者か」という問いに答えられなくなる。定年後に趣味や人脈を急造しようとしても遅い。',
+        steps: [
+          { title: '今日、「定年後にやりたいこと」を3つ書く', desc: '書き出すだけで脳が準備を始める。「旅行・ゴルフ・孫の世話」ではなく「他者に価値を提供できること」（教える・作る・相談される）に絞ると充実度が高い。' },
+          { title: 'シニア向けスキルシェアに登録（今月）', desc: 'ビザスクや「おてつたび」で、これまでの専門性を活かした単発コンサルや副業を開始。月3〜5万円の収入より「社会とのつながり」を維持することが目的。', link: 'https://visasq.co.jp/', linkText: 'ビザスク — スポットコンサル' },
+          { title: '地域コミュニティとのつながりを今から構築', desc: '定年後に初めてコミュニティを探しても、既存グループへの参入障壁は高い。今から月1回の地域活動（町内会・NPO・スポーツ同好会）に参加し、「顔見知り」を5人作っておく。' },
+        ]
+      },
+      {
+        regret: '気持ちを伝えなかった',
+        pct: 71,
+        insight: '70代以上の71%が「感謝・謝罪・愛情を伝えるべき人に伝えられなかった」と後悔。死別や認知症で「伝える機会」が突然失われるケースが50代から急増する。',
+        root: '「今更照れくさい」「いつでもできる」という先送りが、最大の後悔の源泉。研究では、感謝の言葉を伝えることは受け取る側より伝える側の幸福度を長期的に高める。',
+        steps: [
+          { title: '今日、感謝のLINEを1通送る（5分）', desc: '「お世話になった人」「ずっと言えていなかった人」に、一言のLINEを送る。内容は短くていい。「いつもありがとう」の一言が、相手の人生に残る言葉になることがある。' },
+          { title: '「エンディングノート」を書き始める（遺書ではない）', desc: '自分の価値観・大切な人への気持ち・人生で嬉しかった出来事を書くノート。comodのエンディングノート（1,500円〜）や、Notionで自分だけのフォーマットで。', link: 'https://www.comod.co.jp/ending-note/', linkText: 'エンディングノートの選び方' },
+          { title: '家族との「感謝の会話」を月1回設定', desc: '誕生日や正月に限らず、普通の週末に「最近ありがとうと思ったこと」を話す時間を作る。形式張らなくていい。「この前の○○、助かったよ」の一言から始めればよい。' },
+        ]
+      },
+    ]
+  },
+  '60代以上': {
+    from: '同世代・先人たちの声',
+    message: '後悔は「生きた証拠」であり、あなたの経験は次の世代への最高の贈り物です。60代以上が直面する後悔の多くは、「まだできること」がある今からでも対処可能なものばかりです。',
+    items: [
+      {
+        regret: '自分の経験・知恵を伝えなかった',
+        pct: 58,
+        insight: '70代以上の58%が「自分の経験を若い世代にもっと伝えるべきだった」と後悔。人生60〜70年の経験・失敗・知恵は、どんなAIも持てない固有の価値。',
+        root: '「自分の経験なんて役に立たない」という過小評価と、「どうやって伝えればいいかわからない」というスキルの不足が伝承を妨げている。',
+        steps: [
+          { title: 'noteで「人生で一番後悔したこと」を書く（無料）', desc: '長文でなくていい。500〜1,000字でも、60代の後悔談はバズることがある。「若い頃の自分に伝えたいこと」というタイトルにすると読まれやすい。', link: 'https://note.com/', linkText: 'noteで書き始める（無料）' },
+          { title: 'ビザスクでスポットコンサルタントになる', desc: '職歴・業界経験をビザスクに登録すると、企業や起業家から「1時間話を聞かせてほしい」という依頼が来る。1回3〜5万円で、経験を収入と社会貢献に変えられる。', link: 'https://visasq.co.jp/advisor/', linkText: 'ビザスク アドバイザー登録' },
+          { title: '孫や若い世代への「メンター」になる', desc: '身近な若者（孫・子ども・近所の若者）に定期的に話しかける機会を作る。「失敗した経験」こそが最も価値ある教材。正解より「どう転んで、どう立ち直ったか」を話す。' },
+        ]
+      },
+      {
+        regret: '旅・体験をもっとすればよかった',
+        pct: 49,
+        insight: '体が動く間にしたかったことを後回しにし、「あのとき行けばよかった」という後悔は70代以上に非常に多い。体力の衰えは直線的ではなく、ある時期から急激に低下する。',
+        root: '「お金がかかる」「体力が心配」「一人では難しい」という先送り理由は、AI旅行サポートと各種高齢者向けサービスで解決できるようになっている。',
+        steps: [
+          { title: '「行きたい場所リスト」を今日5つ書く', desc: 'iPhoneのメモに書き出すだけでよい。「行けるかどうか」ではなく「行きたいかどうか」で書く。書くだけで脳が計画を始める。' },
+          { title: 'クラブツーリズムのシニア向けツアーを検索', desc: '「一人参加OK」「ゆったりペース」「健康サポート付き」のシニア特化ツアーが充実。ChatGPTに「60代 一人でも安心 国内旅行 アクセスしやすい」と聞くと最適プランを提案してくれる。', link: 'https://www.club-t.com/', linkText: 'クラブツーリズム（シニア向け）' },
+          { title: '旅の記録をSNSやブログで発信する', desc: 'Instagramや個人ブログで旅を記録。「シニア一人旅」「60代の旅行記」は若い世代にも読まれ、フォロワーができることがある。旅そのものと、発信の両方が生きがいになる。' },
+        ]
+      },
+    ]
+  },
+};
+
+function selectAge(age, btn) {
+  document.querySelectorAll('#ageSelectRow button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdvice(age);
+}
+
+function renderAdvice(age) {
+  const d = AI_ADVICE[age];
+  if (!d) return;
+  document.getElementById('adviceContent').innerHTML = `
+    <div class="advice-card">
+      <div class="advice-card-head">
+        <h3>${escHtml(d.from)}</h3>
+        <p>${escHtml(age)}のあなたへ — データと経験に基づく先回りアクションプラン</p>
+      </div>
+      <div class="advice-message">${escHtml(d.message)}</div>
+      ${d.items.map(item => `
+        <div class="advice-item">
+          <div class="advice-item-head">
+            <div class="advice-pct-block">
+              <span class="advice-pct-num">${item.pct}%</span>
+              <span class="advice-pct-label">が後悔</span>
+            </div>
+            <div style="flex:1">
+              <div class="advice-regret-title">「${escHtml(item.regret)}」</div>
+              <div class="advice-regret-insight">${escHtml(item.insight)}</div>
+              <div class="advice-root">根本原因：${escHtml(item.root)}</div>
+            </div>
+          </div>
+          <div class="advice-steps">
+            ${item.steps.map((s,i)=>`
+              <div class="advice-step">
+                <div class="advice-step-num">${i+1}</div>
+                <div class="advice-step-body">
+                  <div class="advice-step-title">${escHtml(s.title)}</div>
+                  <div class="advice-step-desc">${escHtml(s.desc)}</div>
+                  ${s.link?`<a class="advice-step-link" href="${s.link}" target="_blank" rel="noopener noreferrer">${escHtml(s.linkText)}</a>`:''}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+    <div class="message-box"><p>${escHtml(d.message)}</p></div>`;
+}
+
+// ========= CATEGORY PILL SELECTOR =========
+
+function selectCat(btn) {
+  document.querySelectorAll('#catPills button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('postCategory').value = btn.dataset.cat;
+}
+
+// ========= BOTTOM NAV =========
+
+function updateBottomNav(activeId) {
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active-nav'));
+  const el = document.getElementById(activeId);
+  if (el) el.classList.add('active-nav');
+}
+
+// ========= COMMENTS =========
+
+function toggleComments(id) {
+  const sec = document.getElementById('cmt-section-' + id);
+  if (!sec) return;
+  const isOpen = sec.style.display !== 'none';
+  sec.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    const inp = document.getElementById('cmt-input-' + id);
+    if (inp) inp.focus();
+  }
+}
+
+function submitComment(id) {
+  const inp = document.getElementById('cmt-input-' + id);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  if (!comments[id]) comments[id] = [];
+  const now = new Date();
+  const time = now.toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  comments[id].push({ text, time });
+  saveComments();
+  renderCommentList(id);
+  // コメントボタンのカウントを更新
+  const btn = document.getElementById('cmt-btn-' + id);
+  if (btn) {
+    const cnt = comments[id].length;
+    btn.textContent = `💬 コメント${cnt > 0 ? ' ' + cnt : ''}`;
+  }
+}
+
+function renderCommentList(id) {
+  const list = document.getElementById('cmt-list-' + id);
+  if (!list) return;
+  const postComments = comments[id] || [];
+  list.innerHTML = postComments.length === 0
+    ? '<div class="comment-empty">まだコメントはありません</div>'
+    : postComments.map(c => `
+        <div class="comment-item">
+          <div class="comment-item-text">${escHtml(c.text)}</div>
+          <div class="comment-item-time">${escHtml(c.time)}</div>
+        </div>`).join('');
+}
+
+// ========= UTILS =========
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ========= INIT =========
+updateHeroStats();
+</script>
+</body>
+</html>
