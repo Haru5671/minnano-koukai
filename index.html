@@ -9,6 +9,7 @@
   <style>
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -949,14 +950,53 @@ const initialPosts = [
   { id:248, text:'「自分は特別だ」という感覚を手放すのに時間がかかった。謙虚さを身につけるのが遅すぎて、多くの人を傷つけた。', category:'その他', age:'40代', gender:'男性', empathy:178, empathized:false, time:'10ヶ月前' },
 ];
 
-let posts = JSON.parse(localStorage.getItem('koukai_posts_v2') || 'null') || initialPosts;
-let currentFilter = 'すべて';
-let nextId = Math.max(...posts.map(p => p.id)) + 1;
-let myPostIds = JSON.parse(localStorage.getItem('koukai_my_ids') || '[]');
-let comments = JSON.parse(localStorage.getItem('koukai_comments_v1') || '{}');
+// Supabase init
+const _SB_URL  = 'https://suvaagqjdcmotzqzfwqo.supabase.co';
+const _SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmFhZ3FqZGNtb3R6cXpmd3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTA4MzQsImV4cCI6MjA5MDkyNjgzNH0.9bWwRHNENJlA2oFp3NLsrs6oldpJmGlsLnH5xQpfNbk';
+const db = supabase.createClient(_SB_URL, _SB_ANON);
 
-function savePosts() { localStorage.setItem('koukai_posts_v2', JSON.stringify(posts)); }
-function saveComments() { localStorage.setItem('koukai_comments_v1', JSON.stringify(comments)); }
+let posts = [...initialPosts];
+let currentFilter = 'すべて';
+let myPostIds = JSON.parse(localStorage.getItem('koukai_my_ids') || '[]');
+let comments = {};
+
+function formatTime(isoStr) {
+  const diff = (Date.now() - new Date(isoStr)) / 1000;
+  if (diff < 60)            return 'たった今';
+  if (diff < 3600)          return `${Math.floor(diff/60)}分前`;
+  if (diff < 86400)         return `${Math.floor(diff/3600)}時間前`;
+  if (diff < 86400*30)      return `${Math.floor(diff/86400)}日前`;
+  if (diff < 86400*365)     return `${Math.floor(diff/86400/30)}ヶ月前`;
+  return `${Math.floor(diff/86400/365)}年前`;
+}
+
+async function loadPosts() {
+  const { data } = await db.from('koukai_posts').select('*').order('created_at', { ascending: false }).limit(500);
+  if (data && data.length > 0) {
+    posts = data.map(p => ({
+      id: p.id,
+      text: p.text,
+      category: p.category,
+      age: p.age,
+      gender: p.gender,
+      empathy: p.empathy,
+      empathized: false,
+      time: formatTime(p.created_at),
+    }));
+    updateHeroStats();
+    renderFeed();
+  }
+}
+
+async function loadComments(postId) {
+  const { data } = await db.from('koukai_comments').select('*').eq('post_id', postId).order('created_at', { ascending: true });
+  if (data) {
+    comments[postId] = data.map(c => ({
+      text: c.text,
+      time: formatTime(c.created_at),
+    }));
+  }
+}
 
 function updateHeroStats() {
   document.getElementById('heroTotal').textContent = posts.length;
@@ -980,27 +1020,41 @@ document.getElementById('postText').addEventListener('input', function() {
   document.getElementById('submitBtn').disabled = this.value.trim().length === 0;
 });
 
-function submitPost() {
+async function submitPost() {
   const text = document.getElementById('postText').value.trim();
   if (!text) return;
-  const newPost = {
-    id: nextId++,
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+
+  const { data, error } = await db.from('koukai_posts').insert({
     text,
     category: document.getElementById('postCategory').value,
     age: document.getElementById('postAge').value,
     gender: document.getElementById('postGender').value,
     empathy: 0,
+  }).select().single();
+
+  if (error || !data) {
+    showToast('投稿に失敗しました。もう一度お試しください。');
+    btn.disabled = false;
+    return;
+  }
+
+  const newPost = {
+    id: data.id,
+    text: data.text,
+    category: data.category,
+    age: data.age,
+    gender: data.gender,
+    empathy: 0,
     empathized: false,
     time: 'たった今',
   };
   posts.unshift(newPost);
-  savePosts();
   myPostIds.push(newPost.id);
   localStorage.setItem('koukai_my_ids', JSON.stringify(myPostIds));
   document.getElementById('postText').value = '';
-  document.getElementById('submitBtn').disabled = true;
   updateHeroStats();
-  // feedページに移動して自分の投稿までスクロール
   showPage('feed', document.querySelectorAll('nav.tab-nav button')[1]);
   updateBottomNav('bn-feed');
   setTimeout(() => {
@@ -1132,15 +1186,15 @@ function toggleAi(id) {
   panel.classList.toggle('open');
 }
 
-function toggleEmpathy(id) {
+async function toggleEmpathy(id) {
   const p = posts.find(p => p.id === id);
   if (!p) return;
   p.empathized = !p.empathized;
   p.empathy += p.empathized ? 1 : -1;
-  savePosts();
   updateHeroStats();
   const el = document.getElementById('post-' + id);
   if (el) el.outerHTML = postCardHtml(p);
+  await db.from('koukai_posts').update({ empathy: p.empathy }).eq('id', id);
 }
 
 function shareSNS(type, url, text) {
@@ -1522,30 +1576,32 @@ function updateBottomNav(activeId) {
 
 // ========= COMMENTS =========
 
-function toggleComments(id) {
+async function toggleComments(id) {
   const sec = document.getElementById('cmt-section-' + id);
   if (!sec) return;
   const isOpen = sec.style.display !== 'none';
   sec.style.display = isOpen ? 'none' : 'block';
   if (!isOpen) {
+    await loadComments(id);
+    renderCommentList(id);
     const inp = document.getElementById('cmt-input-' + id);
     if (inp) inp.focus();
   }
 }
 
-function submitComment(id) {
+async function submitComment(id) {
   const inp = document.getElementById('cmt-input-' + id);
   if (!inp) return;
   const text = inp.value.trim();
   if (!text) return;
   inp.value = '';
+
+  const { data, error } = await db.from('koukai_comments').insert({ post_id: id, text }).select().single();
+  if (error || !data) return;
+
   if (!comments[id]) comments[id] = [];
-  const now = new Date();
-  const time = now.toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  comments[id].push({ text, time });
-  saveComments();
+  comments[id].push({ text: data.text, time: 'たった今' });
   renderCommentList(id);
-  // コメントボタンのカウントを更新
   const btn = document.getElementById('cmt-btn-' + id);
   if (btn) {
     const cnt = comments[id].length;
@@ -1581,6 +1637,24 @@ function showToast(msg) {
 
 // ========= INIT =========
 updateHeroStats();
+loadPosts();
+
+// PVトラッキング（セッションIDで一意識別）
+(async function trackPV() {
+  try {
+    let sid = sessionStorage.getItem('koukai_sid');
+    if (!sid) {
+      sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      sessionStorage.setItem('koukai_sid', sid);
+    }
+    await db.from('koukai_page_views').insert({
+      path: location.pathname || '/',
+      ip_hash: sid,
+      referrer: document.referrer || null,
+      ua: navigator.userAgent || null,
+    });
+  } catch(e) {}
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>みんなの後悔 — Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Geist Mono', 'Fira Code', 'Consolas', monospace; background: #0d1117; color: #e6edf3; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    /* LOGIN */
+    #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 40px; width: 340px; }
+    .login-box h1 { font-size: 14px; color: #39d353; letter-spacing: 0.1em; margin-bottom: 24px; }
+    .login-box input { width: 100%; padding: 10px 14px; background: #0d1117; border: 1px solid #21262d; border-radius: 6px; color: #e6edf3; font-family: inherit; font-size: 14px; margin-bottom: 12px; }
+    .login-box input:focus { outline: none; border-color: #39d353; }
+    .login-box button { width: 100%; padding: 10px; background: #39d353; border: none; border-radius: 6px; color: #0d1117; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .login-err { color: #f85149; font-size: 12px; margin-top: 8px; display: none; }
+
+    /* DASHBOARD */
+    #dashboard { display: none; }
+    header { border-bottom: 1px solid #21262d; padding: 12px 24px; background: #161b22; display: flex; align-items: center; justify-content: space-between; }
+    .hd-left { display: flex; align-items: center; gap: 16px; }
+    .hd-logo { color: #39d353; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; }
+    .hd-sub  { color: #484f58; font-size: 11px; }
+    .hd-right { display: flex; align-items: center; gap: 16px; }
+    .hd-time { color: #484f58; font-size: 11px; }
+    .hd-link { color: #00d4ff; font-size: 11px; }
+    .hd-logout { color: #484f58; font-size: 11px; cursor: pointer; background: none; border: none; font-family: inherit; }
+    .hd-logout:hover { color: #f85149; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    /* CARDS */
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+    .card { background: #161b22; border: 1px solid #21262d; border-radius: 6px; padding: 16px 20px; }
+    .card-lbl { font-size: 10px; color: #484f58; letter-spacing: 0.12em; margin-bottom: 6px; }
+    .card-val { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .card-sub { font-size: 10px; color: #6e7681; }
+
+    /* GRID 2 */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .panel { background: #161b22; border: 1px solid #21262d; border-radius: 6px; padding: 20px; }
+    .panel-title { font-size: 11px; color: #484f58; letter-spacing: 0.1em; margin-bottom: 16px; }
+
+    /* CHARTS */
+    .bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+    .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .bar-pair { width: 100%; display: flex; align-items: flex-end; gap: 1px; height: 64px; }
+    .bar { border-radius: 2px 2px 0 0; }
+    .bar-lbl { font-size: 8px; color: #484f58; white-space: nowrap; }
+
+    /* ROWS */
+    .row-list { display: flex; flex-direction: column; gap: 10px; }
+    .row-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .row-item span:first-child { font-size: 11px; color: #8b949e; }
+    .row-item span:last-child  { font-size: 11px; }
+    .bar-track { height: 3px; background: #21262d; border-radius: 99px; overflow: hidden; margin-top: 4px; }
+    .bar-fill  { height: 100%; border-radius: 99px; }
+
+    /* TABLE */
+    .tbl-wrap { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .tbl-header { padding: 14px 20px; border-bottom: 1px solid #21262d; display: flex; align-items: center; justify-content: space-between; }
+    .tbl-title { font-size: 11px; color: #484f58; letter-spacing: 0.1em; }
+    .tbl-meta  { font-size: 11px; color: #6e7681; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { padding: 8px 16px; text-align: left; color: #6e7681; font-weight: 400; font-size: 10px; letter-spacing: 0.08em; border-bottom: 1px solid #21262d; background: #0d1117; }
+    td { padding: 9px 16px; border-bottom: 1px solid #21262d; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) { background: #0d1117; }
+    .badge { font-size: 10px; padding: 2px 8px; border-radius: 99px; }
+    .badge-cat  { background: #21262d; color: #8b949e; }
+    .badge-age  { background: #1a1f35; color: #79b8ff; }
+    .badge-gender { background: #1a3520; color: #7ee787; }
+
+    /* LOADING */
+    #loading { position: fixed; inset: 0; background: #0d1117; display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .spin { width: 32px; height: 32px; border: 3px solid #21262d; border-top-color: #39d353; border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>◆ KOUKAI ADMIN</h1>
+    <input type="password" id="pwInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">ログイン</button>
+    <div class="login-err" id="loginErr">パスワードが違います</div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" style="display:none"><div class="spin"></div></div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="hd-left">
+      <span class="hd-logo">◆ KOUKAI ADMIN</span>
+      <span class="hd-sub">dashboard</span>
+    </div>
+    <div class="hd-right">
+      <span class="hd-time" id="nowTime"></span>
+      <a class="hd-link" href="/" target="_blank">← サイトへ</a>
+      <button class="hd-logout" onclick="doLogout()">ログアウト</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- SUMMARY CARDS -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-lbl">TOTAL PV</div>
+        <div class="card-val" id="cTotalPV" style="color:#00d4ff">—</div>
+        <div class="card-sub" id="cPVToday">今日 —</div>
+      </div>
+      <div class="card">
+        <div class="card-lbl">UNIQUE USERS</div>
+        <div class="card-val" id="cUU" style="color:#39d353">—</div>
+        <div class="card-sub" id="cUUToday">今日 —</div>
+      </div>
+      <div class="card">
+        <div class="card-lbl">POSTS</div>
+        <div class="card-val" id="cPosts" style="color:#a78bfa">—</div>
+        <div class="card-sub" id="cPostsToday">今日 —</div>
+      </div>
+      <div class="card">
+        <div class="card-lbl">COMMENTS</div>
+        <div class="card-val" id="cComments" style="color:#fb923c">—</div>
+        <div class="card-sub">全コメント数</div>
+      </div>
+      <div class="card">
+        <div class="card-lbl">TOTAL EMPATHY</div>
+        <div class="card-val" id="cEmpathy" style="color:#f472b6">—</div>
+        <div class="card-sub">累計わかる数</div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel-title">PAGE VIEWS — LAST 14 DAYS</div>
+        <div style="font-size:10px;color:#6e7681;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:8px;height:8px;background:#00d4ff;border-radius:2px"></span>PV
+          <span style="display:inline-block;width:8px;height:8px;background:#39d353;border-radius:2px;margin-left:4px"></span>UV
+        </div>
+        <div class="bar-chart" id="pvChart"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">POSTS — LAST 14 DAYS</div>
+        <div style="font-size:10px;color:#6e7681;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:8px;height:8px;background:#a78bfa;border-radius:2px"></span>投稿数
+        </div>
+        <div class="bar-chart" id="postsChart"></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <!-- CATEGORY -->
+      <div class="panel">
+        <div class="panel-title">CATEGORY BREAKDOWN</div>
+        <div class="row-list" id="catBreakdown"></div>
+      </div>
+      <!-- AGE + GENDER -->
+      <div class="panel">
+        <div class="panel-title">AGE / GENDER</div>
+        <div style="font-size:10px;color:#484f58;letter-spacing:0.08em;margin-bottom:8px;">年代</div>
+        <div class="row-list" id="ageBreakdown"></div>
+        <div style="font-size:10px;color:#484f58;letter-spacing:0.08em;margin:16px 0 8px;">性別</div>
+        <div class="row-list" id="genderBreakdown"></div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:20px">
+      <!-- TRAFFIC SOURCE -->
+      <div class="panel">
+        <div class="panel-title">TRAFFIC SOURCE</div>
+        <div class="row-list" id="referrerBreakdown"></div>
+      </div>
+      <!-- DEVICE -->
+      <div class="panel">
+        <div class="panel-title">DEVICE</div>
+        <div class="row-list" id="deviceBreakdown"></div>
+      </div>
+    </div>
+
+    <!-- POSTS TABLE -->
+    <div class="tbl-wrap">
+      <div class="tbl-header">
+        <span class="tbl-title">RECENT POSTS — TOP 100</span>
+        <span class="tbl-meta" id="postCount">— rows</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>CREATED</th>
+            <th>CATEGORY</th>
+            <th>AGE</th>
+            <th>GENDER</th>
+            <th>BODY</th>
+            <th style="text-align:center">EMPATHY</th>
+          </tr>
+        </thead>
+        <tbody id="postsTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const _SB_URL  = 'https://suvaagqjdcmotzqzfwqo.supabase.co';
+const _SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmFhZ3FqZGNtb3R6cXpmd3FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTA4MzQsImV4cCI6MjA5MDkyNjgzNH0.9bWwRHNENJlA2oFp3NLsrs6oldpJmGlsLnH5xQpfNbk';
+const db = supabase.createClient(_SB_URL, _SB_ANON);
+
+const PW_HASH = '392dc7f8a3f8d7c06b9c502b7b2b292b5e08ee69397a2ee5bb31e85e78aa5fc8';
+
+// SHA-256
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+  const pw = document.getElementById('pwInput').value;
+  const hash = await sha256(pw);
+  if (hash !== PW_HASH) {
+    document.getElementById('loginErr').style.display = 'block';
+    return;
+  }
+  sessionStorage.setItem('koukai_admin', '1');
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  await loadDashboard();
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+}
+
+function doLogout() {
+  sessionStorage.removeItem('koukai_admin');
+  location.reload();
+}
+
+// JST今日0時（UTC換算）
+function todayJST() {
+  const JST = 9 * 60 * 60 * 1000;
+  const n = new Date(Date.now() + JST);
+  return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()) - JST);
+}
+
+async function loadDashboard() {
+  const today = todayJST();
+  const fourteenDaysAgo = new Date(today.getTime() - 13 * 24 * 60 * 60 * 1000);
+  const JST = 9 * 60 * 60 * 1000;
+
+  const [pvCountRes, pvRecentRes, pvHashRes, postsRes, commentsCountRes] = await Promise.all([
+    db.from('koukai_page_views').select('*', { count: 'exact', head: true }),
+    db.from('koukai_page_views').select('ip_hash,referrer,ua,created_at').gte('created_at', fourteenDaysAgo.toISOString()).limit(20000),
+    db.from('koukai_page_views').select('ip_hash').limit(100000),
+    db.from('koukai_posts').select('*').order('created_at', { ascending: false }).limit(1000),
+    db.from('koukai_comments').select('*', { count: 'exact', head: true }),
+  ]);
+
+  const totalPV   = pvCountRes.count ?? 0;
+  const pvRows    = pvRecentRes.data ?? [];
+  const allHashes = pvHashRes.data ?? [];
+  const posts     = postsRes.data ?? [];
+  const totalCmt  = commentsCountRes.count ?? 0;
+
+  const uniqueUsers = new Set(allHashes.map(r => r.ip_hash)).size;
+  const pvToday  = pvRows.filter(r => new Date(r.created_at) >= today).length;
+  const uvToday  = new Set(pvRows.filter(r => new Date(r.created_at) >= today).map(r => r.ip_hash)).size;
+  const postsToday = posts.filter(p => new Date(p.created_at) >= today).length;
+  const totalEmpathy = posts.reduce((s, p) => s + (p.empathy ?? 0), 0);
+
+  // Cards
+  document.getElementById('cTotalPV').textContent  = totalPV.toLocaleString();
+  document.getElementById('cPVToday').textContent   = `今日 ${pvToday}`;
+  document.getElementById('cUU').textContent        = uniqueUsers.toLocaleString();
+  document.getElementById('cUUToday').textContent   = `今日 ${uvToday}`;
+  document.getElementById('cPosts').textContent     = posts.length.toLocaleString();
+  document.getElementById('cPostsToday').textContent= `今日 ${postsToday}`;
+  document.getElementById('cComments').textContent  = totalCmt.toLocaleString();
+  document.getElementById('cEmpathy').textContent   = totalEmpathy.toLocaleString();
+
+  // Now label
+  document.getElementById('nowTime').textContent = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+
+  // Daily stats
+  const dailyStats = [];
+  for (let i = 13; i >= 0; i--) {
+    const d    = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+    const next = new Date(d.getTime() + 24 * 60 * 60 * 1000);
+    const dJST = new Date(d.getTime() + JST);
+    const dayPV = pvRows.filter(r => { const t = new Date(r.created_at); return t >= d && t < next; });
+    const dayPosts = posts.filter(p => { const t = new Date(p.created_at); return t >= d && t < next; }).length;
+    dailyStats.push({
+      label: `${dJST.getUTCMonth()+1}/${dJST.getUTCDate()}`,
+      pv: dayPV.length,
+      uv: new Set(dayPV.map(r => r.ip_hash)).size,
+      posts: dayPosts,
+    });
+  }
+
+  // PV chart
+  const maxPV = Math.max(...dailyStats.map(d => d.pv), 1);
+  document.getElementById('pvChart').innerHTML = dailyStats.map(d => `
+    <div class="bar-group">
+      <div class="bar-pair">
+        <div class="bar" style="flex:1;background:#00d4ff66;height:${Math.max((d.pv/maxPV)*64,d.pv>0?2:0)}px"></div>
+        <div class="bar" style="flex:1;background:#39d353;height:${Math.max((d.uv/maxPV)*64,d.uv>0?2:0)}px"></div>
+      </div>
+      <span class="bar-lbl">${d.label}</span>
+    </div>`).join('');
+
+  // Posts chart
+  const maxP = Math.max(...dailyStats.map(d => d.posts), 1);
+  document.getElementById('postsChart').innerHTML = dailyStats.map(d => `
+    <div class="bar-group">
+      <span style="font-size:8px;color:#6e7681">${d.posts > 0 ? d.posts : ''}</span>
+      <div class="bar" style="width:100%;background:#a78bfa;height:${Math.max((d.posts/maxP)*56,d.posts>0?2:0)}px"></div>
+      <span class="bar-lbl">${d.label}</span>
+    </div>`).join('');
+
+  // Category breakdown
+  const cats = {};
+  posts.forEach(p => { cats[p.category] = (cats[p.category]||0) + 1; });
+  const catMax = Math.max(...Object.values(cats), 1);
+  document.getElementById('catBreakdown').innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,n]) => `
+    <div>
+      <div class="row-item"><span>${c}</span><span style="color:#a78bfa">${n}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n/catMax*100).toFixed(1)}%;background:linear-gradient(90deg,#a78bfa,#00d4ff)"></div></div>
+    </div>`).join('');
+
+  // Age breakdown
+  const ages = {};
+  posts.forEach(p => { ages[p.age] = (ages[p.age]||0) + 1; });
+  const ageMax = Math.max(...Object.values(ages), 1);
+  const ageOrder = ['10代','20代','30代','40代','50代','60代以上'];
+  document.getElementById('ageBreakdown').innerHTML = ageOrder.filter(a=>ages[a]).map(a => `
+    <div>
+      <div class="row-item"><span>${a}</span><span style="color:#79b8ff">${ages[a]}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(ages[a]/ageMax*100).toFixed(1)}%;background:#79b8ff"></div></div>
+    </div>`).join('');
+
+  // Gender breakdown
+  const genders = {};
+  posts.forEach(p => { const g = p.gender||'未回答'; genders[g] = (genders[g]||0) + 1; });
+  const gMax = Math.max(...Object.values(genders), 1);
+  const gColors = { '男性':'#3b82f6','女性':'#ec4899','その他':'#a78bfa','未回答':'#6e7681' };
+  document.getElementById('genderBreakdown').innerHTML = Object.entries(genders).sort((a,b)=>b[1]-a[1]).map(([g,n]) => `
+    <div>
+      <div class="row-item"><span>${g}</span><span style="color:${gColors[g]||'#8b949e'}">${n}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n/gMax*100).toFixed(1)}%;background:${gColors[g]||'#8b949e'}"></div></div>
+    </div>`).join('');
+
+  // Referrer
+  const refs = {};
+  pvRows.forEach(r => {
+    let label = '直接アクセス';
+    if (r.referrer) {
+      try {
+        const h = new URL(r.referrer).hostname.replace('www.','');
+        if (h.includes('google')) label = 'Google';
+        else if (h.includes('yahoo')) label = 'Yahoo';
+        else if (h.includes('bing')) label = 'Bing';
+        else if (h.includes('twitter')||h.includes('x.com')) label = 'X (Twitter)';
+        else if (h.includes('instagram')) label = 'Instagram';
+        else if (h.includes('tiktok')) label = 'TikTok';
+        else if (h.includes('line')) label = 'LINE';
+        else if (h.includes('facebook')) label = 'Facebook';
+        else label = h;
+      } catch { label = '直接アクセス'; }
+    }
+    refs[label] = (refs[label]||0) + 1;
+  });
+  const refMax = Math.max(...Object.values(refs), 1);
+  document.getElementById('referrerBreakdown').innerHTML = Object.entries(refs).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([l,n]) => `
+    <div>
+      <div class="row-item"><span>${l}</span><span style="color:#00d4ff">${n} <span style="color:#484f58">(${(n/totalPV*100).toFixed(1)}%)</span></span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n/refMax*100).toFixed(1)}%;background:linear-gradient(90deg,#00d4ff,#39d353)"></div></div>
+    </div>`).join('') || '<div style="color:#484f58;font-size:12px">データ収集中...</div>';
+
+  // Device
+  const dev = { スマホ:0, PC:0, タブレット:0 };
+  pvRows.forEach(r => {
+    const ua = r.ua||'';
+    if (/iPad|Tablet/i.test(ua)) dev['タブレット']++;
+    else if (/iPhone|Android|Mobile/i.test(ua)) dev['スマホ']++;
+    else if (ua) dev['PC']++;
+  });
+  const devMax = Math.max(...Object.values(dev), 1);
+  const devColors = { スマホ:'#a78bfa', PC:'#39d353', タブレット:'#fb923c' };
+  document.getElementById('deviceBreakdown').innerHTML = Object.entries(dev).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([l,n]) => `
+    <div>
+      <div class="row-item"><span>${l}</span><span style="color:${devColors[l]}">${n} <span style="color:#484f58">(${(n/(totalPV||1)*100).toFixed(1)}%)</span></span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n/devMax*100).toFixed(1)}%;background:${devColors[l]}"></div></div>
+    </div>`).join('') || '<div style="color:#484f58;font-size:12px">データ収集中...</div>';
+
+  // Posts table
+  document.getElementById('postCount').textContent = `${posts.length} rows`;
+  document.getElementById('postsTable').innerHTML = posts.slice(0, 100).map((p, i) => `
+    <tr>
+      <td style="color:#6e7681;white-space:nowrap;font-size:11px">${new Date(p.created_at).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</td>
+      <td><span class="badge badge-cat">${esc(p.category)}</span></td>
+      <td><span class="badge badge-age">${esc(p.age)}</span></td>
+      <td><span class="badge badge-gender">${esc(p.gender||'未回答')}</span></td>
+      <td style="color:#c9d1d9;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.text)}</td>
+      <td style="text-align:center;color:#f472b6">${p.empathy??0}</td>
+    </tr>`).join('') || '<tr><td colspan="6" style="padding:32px;text-align:center;color:#484f58">no data</td></tr>';
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Auto-login check
+if (sessionStorage.getItem('koukai_admin') === '1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  loadDashboard().then(() => {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  });
+}
+</script>
+</body>
+</html>
