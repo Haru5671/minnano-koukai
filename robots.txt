@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin
+Disallow: /*.new-design-draft.html$
+Disallow: /*.previous.html$
+
+# AI crawlers — index for discoverability
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://ko-kai.jp/sitemap.xml
