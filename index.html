@@ -26,7 +26,9 @@
   <!-- Performance hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=2000&q=70&auto=format&fit=crop" fetchpriority="high">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -197,16 +199,17 @@
     .btn-solid:hover { background: var(--primary); }
     .btn-solid:active { transform: scale(0.96); }
 
-    /* HERO — editorial cinematic */
+    /* HERO — editorial cinematic with atmospheric photo */
     .hero { position: relative; padding: 160px 24px 96px; text-align: center; overflow: hidden; min-height: 680px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0c0a08; }
-    /* layered gradient mesh — no external image, instant LCP */
+    /* atmospheric photo layer (foggy mountains — 後悔/内省) */
+    .hero-photo { position: absolute; inset: 0; z-index: 0; background: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=2000&q=70&auto=format&fit=crop') center 30%/cover no-repeat; opacity: 0.55; filter: saturate(0.7) brightness(0.7); }
+    /* darkening + gold-tinted gradient mesh for readability */
     .hero::before {
       content: ''; position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212,165,72,0.10) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(184,136,56,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 100% 70% at 50% 100%, rgba(212,165,72,0.06) 0%, transparent 60%),
-        linear-gradient(180deg, #0c0a08 0%, #15110d 45%, #0c0a08 100%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(212,165,72,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(184,136,56,0.10) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(10,8,6,.72) 0%, rgba(16,12,9,.80) 45%, rgba(10,8,6,.92) 100%);
     }
     /* subtle grain via SVG noise — adds editorial texture */
     .hero::after {
@@ -218,9 +221,10 @@
     .hero-frame::before, .hero-frame::after { content: ''; position: absolute; background: var(--primary); }
     .hero-frame::before { top: -1px; left: -1px; width: 18px; height: 1px; box-shadow: 0 0 0 0 var(--primary); }
     .hero-frame::after  { top: -1px; left: -1px; width: 1px; height: 18px; }
-    .hero-edition { position: absolute; top: 100px; left: 72px; font-family: Georgia, serif; font-style: italic; font-size: 11px; letter-spacing: .35em; color: var(--text-3); z-index: 1; }
-    .hero-edition-r { position: absolute; top: 100px; right: 72px; font-family: Georgia, serif; font-style: italic; font-size: 11px; letter-spacing: .35em; color: var(--text-3); z-index: 1; }
-    .hero > *:not(.hero-frame):not(.hero-edition):not(.hero-edition-r) { position: relative; z-index: 1; }
+    .hero-edition { position: absolute; top: 100px; left: 72px; font-family: Georgia, serif; font-style: italic; font-size: 11px; letter-spacing: .35em; color: var(--text-2); z-index: 1; }
+    .hero-edition-r { position: absolute; top: 100px; right: 72px; font-family: Georgia, serif; font-style: italic; font-size: 11px; letter-spacing: .35em; color: var(--text-2); z-index: 1; }
+    .hero > *:not(.hero-frame):not(.hero-edition):not(.hero-edition-r):not(.hero-photo) { position: relative; z-index: 1; }
+    .hero h1 { text-shadow: 0 2px 24px rgba(0,0,0,.5); }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 600; letter-spacing: .5em; text-transform: uppercase; color: var(--primary); background: transparent; padding: 0; border-radius: 0; margin-bottom: 36px; font-family: Georgia, serif; font-style: italic; }
     .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--primary); opacity: 0.6; }
     .hero h1 { font-size: clamp(38px, 7vw, 96px); font-weight: 500; letter-spacing: -.02em; line-height: 1.16; color: var(--text); margin-bottom: 32px; text-wrap: balance; word-break: keep-all; font-family: 'Yu Mincho','Hiragino Mincho ProN','Noto Serif JP',serif; }
@@ -501,12 +505,20 @@
     .seo-about-h2 { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: clamp(28px, 4.2vw, 48px); font-weight: 500; color: var(--text); letter-spacing: -.01em; line-height: 1.4; text-align: center; margin-bottom: 28px; text-wrap: balance; }
     .seo-about-h2 em { font-style: italic; color: var(--primary); }
     .seo-about-lead { max-width: 760px; margin: 0 auto 56px; font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 15px; line-height: 2.1; color: var(--text-2); text-align: center; }
-    .seo-cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); background: var(--border); }
-    .seo-cat { background: var(--bg); padding: 28px 24px; transition: background .25s, transform .25s; cursor: default; position: relative; }
-    .seo-cat:hover { background: var(--surface-2); }
-    .seo-cat::before { content: attr(data-cat); position: absolute; top: 12px; right: 14px; font-family: Georgia, serif; font-style: italic; font-size: 9px; letter-spacing: .25em; color: var(--text-3); opacity: 0; transition: opacity .25s; }
-    .seo-cat:hover::before { opacity: .6; }
-    .seo-cat h3 { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 18px; font-weight: 500; color: var(--primary); margin-bottom: 12px; letter-spacing: .02em; }
+    /* editorial image band */
+    .about-band { position: relative; margin: 0 0 56px; overflow: hidden; border: 1px solid var(--border); }
+    .about-band img { display: block; width: 100%; height: 340px; object-fit: cover; object-position: center 60%; filter: saturate(.8) brightness(.62); }
+    .about-band::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,8,6,.82) 0%, rgba(10,8,6,.45) 55%, rgba(10,8,6,.30) 100%); }
+    .about-band figcaption { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 0 clamp(28px, 7vw, 88px); }
+    .about-band-q { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: clamp(24px, 4vw, 42px); font-weight: 500; color: var(--text); letter-spacing: .02em; text-shadow: 0 2px 20px rgba(0,0,0,.6); }
+    .about-band-a { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: clamp(15px, 2vw, 20px); color: var(--primary); letter-spacing: .04em; }
+    .seo-cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border: 1px solid var(--border); background: var(--border); }
+    .seo-cat { background: var(--bg); padding: 28px 24px; transition: transform .3s; cursor: default; position: relative; overflow: hidden; min-height: 210px; display: flex; flex-direction: column; justify-content: flex-end; isolation: isolate; }
+    /* duotone photo layer — gold/dark, reads as texture not stock cliché */
+    .seo-cat-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .30; filter: grayscale(.4) sepia(.55) saturate(1.3) hue-rotate(355deg) brightness(.62); transition: opacity .4s, transform .6s; }
+    .seo-cat::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10,8,6,.45) 0%, rgba(10,8,6,.78) 70%, rgba(10,8,6,.92) 100%); }
+    .seo-cat:hover .seo-cat-img { opacity: .46; transform: scale(1.05); }
+    .seo-cat h3 { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 19px; font-weight: 500; color: var(--primary); margin-bottom: 12px; letter-spacing: .02em; }
     .seo-cat p { font-size: 12px; line-height: 1.95; color: var(--text-2); font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; }
     .seo-about-foot { max-width: 760px; margin: 56px auto 0; font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 13px; line-height: 2; color: var(--text-3); text-align: center; padding-top: 40px; border-top: 1px solid var(--border); }
 
@@ -521,6 +533,17 @@
     .seo-faq details[open] summary::before { content: '−'; }
     .seo-faq details p { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 13px; color: var(--text-2) !important; line-height: 2 !important; margin-top: 16px; padding-left: 30px; }
 
+    /* CTA BAND — dawn photo */
+    .cta-band { position: relative; overflow: hidden; min-height: 460px; display: flex; align-items: center; justify-content: center; text-align: center; border-top: 1px solid var(--border); }
+    .cta-band-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; filter: saturate(.9) brightness(.66); z-index: 0; }
+    .cta-band::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,8,6,.42) 0%, rgba(10,8,6,.42) 55%, rgba(10,8,6,.60) 100%); }
+    .cta-band-inner { position: relative; z-index: 2; padding: 80px 24px; max-width: 720px; }
+    .cta-band-h2 { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: clamp(28px, 5vw, 52px); font-weight: 500; color: var(--text); letter-spacing: -.01em; line-height: 1.4; margin: 18px 0 22px; text-shadow: 0 2px 28px rgba(0,0,0,.85); text-wrap: balance; }
+    .cta-band-h2 em { font-style: italic; color: #f3c970; }
+    .cta-band-p { font-family: 'Yu Mincho','Hiragino Mincho ProN',serif; font-size: 15px; line-height: 2.1; color: #f0e6d2; margin-bottom: 36px; text-shadow: 0 1px 12px rgba(0,0,0,.8); }
+    .cta-band-btn { font-size: 12px; font-weight: 700; color: var(--bg); background: var(--primary); border: 1px solid var(--primary); border-radius: 0; padding: 18px 40px; cursor: pointer; font-family: inherit; transition: all .25s cubic-bezier(.2,.7,.3,1); letter-spacing: .3em; display: inline-flex; align-items: center; gap: 10px; }
+    .cta-band-btn:hover { background: var(--text); border-color: var(--text); transform: translateY(-2px); }
+
     @media (max-width: 1024px) {
       .seo-cat-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -528,6 +551,8 @@
       .seo-cat-grid { grid-template-columns: 1fr; }
       .seo-about { padding: 72px 20px 60px; }
       .seo-faq { padding: 64px 20px; }
+      .about-band img { height: 240px; }
+      .cta-band { min-height: 380px; }
     }
 
     /* keep legacy fallback for any details outside SEO sections (legal modal) */
@@ -573,6 +598,7 @@
 
 <main id="main" role="main">
 <section class="hero" aria-label="メインビジュアル">
+  <div class="hero-photo" role="img" aria-label="霧に包まれた山並みの風景"></div>
   <div class="hero-frame" aria-hidden="true"></div>
   <div class="hero-edition" aria-hidden="true">— MINNA NO KOUKAI</div>
   <div class="hero-edition-r" aria-hidden="true">VOL. 01 / 2026</div>
@@ -813,15 +839,23 @@
     <h2 id="seo-about-h2" class="seo-about-h2">後悔は、共有することで<em>力</em>に変わる。</h2>
     <p class="seo-about-lead">「みんなの後悔（ko-kai.jp）」は、あなたの後悔を匿名で書き残し、同じ経験をした人の声を読み、AIが具体的なアクションプランに変換するWebサービスです。仕事・恋愛・家族・お金・健康など8つのカテゴリで集めた声を年代別に集計し、上の世代の後悔を下の世代の意思決定に役立てます。</p>
 
+    <figure class="about-band">
+      <img src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=1600&q=70&auto=format&fit=crop" alt="夕暮れの中をどこまでも続く一本の道" loading="lazy" decoding="async" width="1600" height="600">
+      <figcaption>
+        <span class="about-band-q">「あの時、こうしておけば」</span>
+        <span class="about-band-a">——その一言を、未来の選択に変える。</span>
+      </figcaption>
+    </figure>
+
     <div class="seo-cat-grid" aria-label="後悔のカテゴリ一覧">
-      <article class="seo-cat" data-cat="仕事・キャリア"><h3>仕事・キャリア</h3><p>転職・副業・独立・昇進・スキル形成。20代から60代までの「あの時こうしておけば」をAIが行動計画に翻訳します。</p></article>
-      <article class="seo-cat" data-cat="恋愛・パートナー"><h3>恋愛・パートナー</h3><p>告白できなかった・別れの言葉を選べなかった・結婚のタイミング。後悔の正体を言語化し、今からの一歩を提案。</p></article>
-      <article class="seo-cat" data-cat="家族・親子"><h3>家族・親子</h3><p>親孝行・子育て・兄弟との関係。「言えなかった一言」を、今からでも届けられる形に変えます。</p></article>
-      <article class="seo-cat" data-cat="学び・挑戦"><h3>学び・挑戦</h3><p>留学・資格・大学院・新しい挑戦。年齢を理由に諦めかけた挑戦を、最短距離で取り戻すアクション。</p></article>
-      <article class="seo-cat" data-cat="友情・人間関係"><h3>友情・人間関係</h3><p>疎遠になった友人・職場の人間関係・SNSとの距離感。後悔を整理して、関係を選び直す視点を持つ。</p></article>
-      <article class="seo-cat" data-cat="お金・生活"><h3>お金・生活</h3><p>貯金・投資・住宅・保険・浪費。世代別の「お金の後悔TOP」を可視化し、今からの最適行動を提示。</p></article>
-      <article class="seo-cat" data-cat="健康・身体"><h3>健康・身体</h3><p>運動・食事・睡眠・歯・メンタル。手遅れになる前に始められる、年代別の健康投資リスト。</p></article>
-      <article class="seo-cat" data-cat="その他"><h3>その他の後悔</h3><p>趣味・移住・故郷・自分との対話。カテゴリでは括れない「人生の質」に関わる声を集めています。</p></article>
+      <article class="seo-cat" data-cat="仕事・キャリア"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>仕事・キャリア</h3><p>転職・副業・独立・昇進・スキル形成。20代から60代までの「あの時こうしておけば」をAIが行動計画に翻訳します。</p></article>
+      <article class="seo-cat" data-cat="恋愛・パートナー"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1516542076529-1ea3854896f2?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>恋愛・パートナー</h3><p>告白できなかった・別れの言葉を選べなかった・結婚のタイミング。後悔の正体を言語化し、今からの一歩を提案。</p></article>
+      <article class="seo-cat" data-cat="家族・親子"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>家族・親子</h3><p>親孝行・子育て・兄弟との関係。「言えなかった一言」を、今からでも届けられる形に変えます。</p></article>
+      <article class="seo-cat" data-cat="学び・挑戦"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>学び・挑戦</h3><p>留学・資格・大学院・新しい挑戦。年齢を理由に諦めかけた挑戦を、最短距離で取り戻すアクション。</p></article>
+      <article class="seo-cat" data-cat="友情・人間関係"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>友情・人間関係</h3><p>疎遠になった友人・職場の人間関係・SNSとの距離感。後悔を整理して、関係を選び直す視点を持つ。</p></article>
+      <article class="seo-cat" data-cat="お金・生活"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>お金・生活</h3><p>貯金・投資・住宅・保険・浪費。世代別の「お金の後悔TOP」を可視化し、今からの最適行動を提示。</p></article>
+      <article class="seo-cat" data-cat="健康・身体"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>健康・身体</h3><p>運動・食事・睡眠・歯・メンタル。手遅れになる前に始められる、年代別の健康投資リスト。</p></article>
+      <article class="seo-cat" data-cat="その他"><img class="seo-cat-img" src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=600&q=55&auto=format&fit=crop" alt="" loading="lazy" decoding="async" width="600" height="400"><h3>その他の後悔</h3><p>趣味・移住・故郷・自分との対話。カテゴリでは括れない「人生の質」に関わる声を集めています。</p></article>
     </div>
 
     <p class="seo-about-foot">後悔を忘れる・乗り越える・前に進む——フラッシュバックやトラウマで「思い出したくない記憶」「嫌な経験」に悩む方も、まずは匿名で言葉にすることから。あなたの一文が、誰かの人生の決断材料になります。</p>
@@ -853,6 +887,20 @@
       <summary>料金はかかりますか？</summary>
       <p>すべての機能を完全無料でご利用いただけます。後悔の投稿、閲覧、AIアドバイス、統計データの確認まで料金は一切発生しません。</p>
     </details>
+  </div>
+</section>
+
+<!-- CTA band — 前に進む（夜明け） -->
+<section class="cta-band" aria-label="後悔を投稿する">
+  <img class="cta-band-img" src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1800&q=70&auto=format&fit=crop" alt="山あいに昇る朝日" loading="lazy" decoding="async" width="1800" height="700">
+  <div class="cta-band-inner">
+    <div class="seo-about-eyebrow">— YOUR FIRST STEP</div>
+    <h2 class="cta-band-h2">その後悔を、<em>今日の一歩</em>に。</h2>
+    <p class="cta-band-p">言葉にした瞬間から、過去は「経験」に変わりはじめます。<br>登録不要・完全匿名。あなたの一文をお待ちしています。</p>
+    <button class="cta-band-btn" onclick="goToPostForm()">
+      <span class="material-symbols-outlined" style="font-size:16px;vertical-align:-3px;" aria-hidden="true">send</span>
+      後悔を書く
+    </button>
   </div>
 </section>
 
