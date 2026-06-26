@@ -1,0 +1,14 @@
+{
+  "name": "みんなの後悔",
+  "short_name": "みんなの後悔",
+  "description": "後悔を匿名で共有し、年代別の統計とAIによる助言を提供するコミュニティ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9fe",
+  "theme_color": "#06c755",
+  "lang": "ja",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

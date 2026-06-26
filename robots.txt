@@ -1,0 +1,52 @@
+# みんなの後悔 (ko-kai.jp) robots.txt
+# AI検索・引用ボットは許可、学習専用クローラは任意でブロック（引用には影響しない）
+
+# --- AI検索／引用ボット（許可）---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# --- 学習専用クローラ（オプトアウト：引用・検索表示には影響しません）---
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+# --- その他すべて ---
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin
+Disallow: /scripts/
+
+Sitemap: https://ko-kai.jp/sitemap.xml
