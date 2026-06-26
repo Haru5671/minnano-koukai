@@ -37,9 +37,9 @@
   <meta property="og:description" content="仕事・恋愛・家族・お金の後悔を匿名で共有。AIが「今からでも遅くない」具体的アクションプランを提案します。後悔を忘れたい、フラッシュバックに悩む方にも。">
   <meta property="og:url" content="https://ko-kai.jp/">
   <meta property="og:locale" content="ja_JP">
-  <meta property="og:image" content="https://ko-kai.jp/og-image.svg">
-  <meta property="og:image:secure_url" content="https://ko-kai.jp/og-image.svg">
-  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:image" content="https://ko-kai.jp/og.png">
+  <meta property="og:image:secure_url" content="https://ko-kai.jp/og.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="みんなの後悔 — あなたの後悔、聞かせてください。">
@@ -48,7 +48,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="みんなの後悔 | 匿名で後悔を共有・AIが解決策を提案">
   <meta name="twitter:description" content="あなたの後悔が、誰かの人生を変える。匿名投稿＆AIアドバイスで後悔を前に進む力に変換。">
-  <meta name="twitter:image" content="https://ko-kai.jp/og-image.svg">
+  <meta name="twitter:image" content="https://ko-kai.jp/og.png">
   <meta name="twitter:image:alt" content="みんなの後悔 — あなたの後悔、聞かせてください。">
 
   <!-- 構造化データ (JSON-LD) -->
@@ -76,7 +76,7 @@
         "@id": "https://ko-kai.jp/#org",
         "name": "みんなの後悔 編集部",
         "url": "https://ko-kai.jp/",
-        "logo": "https://ko-kai.jp/og-image.svg",
+        "logo": "https://ko-kai.jp/apple-touch-icon.png",
         "sameAs": []
       },
       {
@@ -905,12 +905,53 @@
       <div class="footer-logo">みんなの後悔</div>
       <p class="footer-tagline">あなたの後悔が、誰かの人生を変える。</p>
     </div>
-    <nav class="footer-links" aria-label="フッターナビゲーション">
-      <a onclick="openLegal('terms')" role="button" tabindex="0">利用規約</a>
-      <a onclick="openLegal('privacy')" role="button" tabindex="0">プライバシーポリシー</a>
-      <a href="/sitemap.xml">サイトマップ</a>
+
+    <!-- サイト内リンク（年代・テーマ・読み物） -->
+    <nav aria-label="サイト内リンク" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:22px 36px;width:100%;max-width:880px;text-align:left;font-family:'Yu Mincho','Hiragino Mincho ProN',serif;">
+      <div>
+        <div style="font-size:11px;letter-spacing:.2em;color:var(--primary);margin-bottom:12px;">年代別の後悔</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <a href="/age/20/" style="font-size:13px;color:var(--text-3);text-decoration:none;">20代の後悔ランキング</a>
+          <a href="/age/30/" style="font-size:13px;color:var(--text-3);text-decoration:none;">30代の後悔ランキング</a>
+          <a href="/age/40/" style="font-size:13px;color:var(--text-3);text-decoration:none;">40代の後悔ランキング</a>
+          <a href="/age/50/" style="font-size:13px;color:var(--text-3);text-decoration:none;">50代の後悔ランキング</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:.2em;color:var(--primary);margin-bottom:12px;">テーマ別の後悔</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <a href="/category/shigoto/" style="font-size:13px;color:var(--text-3);text-decoration:none;">仕事・キャリアの後悔</a>
+          <a href="/category/renai/" style="font-size:13px;color:var(--text-3);text-decoration:none;">恋愛・パートナーの後悔</a>
+          <a href="/category/okane/" style="font-size:13px;color:var(--text-3);text-decoration:none;">お金・生活の後悔</a>
+          <a href="/category/kenko/" style="font-size:13px;color:var(--text-3);text-decoration:none;">健康・身体の後悔</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:.2em;color:var(--primary);margin-bottom:12px;">後悔と向き合う</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <a href="/regret/forget/" style="font-size:13px;color:var(--text-3);text-decoration:none;">後悔を忘れる方法</a>
+          <a href="/regret/flashback/" style="font-size:13px;color:var(--text-3);text-decoration:none;">フラッシュバックの対処法</a>
+          <a href="/regret/psychology/" style="font-size:13px;color:var(--text-3);text-decoration:none;">後悔の心理学</a>
+          <a href="/regret/die-regret/" style="font-size:13px;color:var(--text-3);text-decoration:none;">死ぬ前に後悔すること</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:.2em;color:var(--primary);margin-bottom:12px;">サイト情報</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <a href="/stats/" style="font-size:13px;color:var(--text-3);text-decoration:none;">後悔の統計データ</a>
+          <a href="/about/" style="font-size:13px;color:var(--text-3);text-decoration:none;">運営者情報・このサイトについて</a>
+          <a onclick="openLegal('terms')" role="button" tabindex="0" style="font-size:13px;color:var(--text-3);text-decoration:none;cursor:pointer;">利用規約</a>
+          <a onclick="openLegal('privacy')" role="button" tabindex="0" style="font-size:13px;color:var(--text-3);text-decoration:none;cursor:pointer;">プライバシーポリシー</a>
+        </div>
+      </div>
     </nav>
-    <div class="footer-copy">© 2026 みんなの後悔 — 登録不要・完全無料 · ko-kai.jp</div>
+
+    <!-- 相談窓口（YMYL配慮） -->
+    <p style="font-size:11.5px;color:var(--text-3);line-height:1.9;max-width:760px;margin:0 auto;">
+      つらい気持ちが続くときは、ひとりで抱えないでください。よりそいホットライン <span style="color:var(--primary);">0120-279-338</span>（24時間・無料）／いのちの電話 <span style="color:var(--primary);">0570-783-556</span>（10:00〜22:00）。掲載するAIアドバイス・統計は参考情報であり、医療・法律・金融等の専門的助言に代わるものではありません。
+    </p>
+
+    <div class="footer-copy">運営：株式会社FEworks ｜ © 2026 みんなの後悔 — 登録不要・完全無料 · ko-kai.jp</div>
   </div>
 </footer>
 
@@ -2133,7 +2174,14 @@ async function toggleEmpathy(id) {
   updateHeroStats();
   const el = document.getElementById('post-' + id);
   if (el) el.outerHTML = postCardHtml(p);
-  await db.from('koukai_posts').update({ empathy: p.empathy }).eq('id', id);
+  // 共感カウントは RPC 経由で加減算（RLSでanonの直接UPDATEを禁止できる）。
+  // RPC未作成（RLS強化前）の場合は従来の直接UPDATEにフォールバック。
+  try {
+    const { error } = await db.rpc('increment_empathy', { p_post_id: id, p_delta: p.empathized ? 1 : -1 });
+    if (error) throw error;
+  } catch (e) {
+    await db.from('koukai_posts').update({ empathy: p.empathy }).eq('id', id);
+  }
 }
 
 function shareSNS(type, url, text) {
