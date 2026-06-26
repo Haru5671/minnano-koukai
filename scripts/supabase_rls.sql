@@ -17,6 +17,7 @@ drop policy if exists "posts_insert_anon"  on public.koukai_posts;
 drop policy if exists "comments_select_anon" on public.koukai_comments;
 drop policy if exists "comments_insert_anon" on public.koukai_comments;
 drop policy if exists "pv_insert_anon"     on public.koukai_page_views;
+drop policy if exists "pv_select_anon"     on public.koukai_page_views;
 
 -- 3) koukai_posts: 閲覧(SELECT)と投稿(INSERT)のみ。UPDATE/DELETE ポリシーは作らない=禁止。
 create policy "posts_select_anon" on public.koukai_posts
@@ -37,14 +38,18 @@ create policy "comments_insert_anon" on public.koukai_comments
   for insert to anon
   with check (char_length(text) between 1 and 2000);
 
--- 5) koukai_page_views: INSERT のみ(閲覧は許可しない=SELECTポリシーを作らない)
+-- 5) koukai_page_views: INSERT(PVトラッキング) + SELECT。
+--    ※ admin.html が anon キーで page_views を閲覧して分析表示しているため SELECT を許可。
+--    本来は admin を Supabase Auth で保護し、ここを INSERT のみに絞るのが理想（別タスク）。
 create policy "pv_insert_anon" on public.koukai_page_views
   for insert to anon with check (true);
+create policy "pv_select_anon" on public.koukai_page_views
+  for select to anon using (true);
 
--- 6) 念のため anon から直接の UPDATE/DELETE 権限を剥奪
+-- 6) 念のため anon から直接の UPDATE/DELETE 権限を剥奪（SELECT/INSERTは上のポリシーで許可）
 revoke update, delete on public.koukai_posts      from anon;
 revoke update, delete on public.koukai_comments   from anon;
-revoke update, delete, select on public.koukai_page_views from anon;
+revoke update, delete on public.koukai_page_views from anon;
 
 -- 7) 共感カウントは SECURITY DEFINER 関数経由でのみ加減算可能にする
 create or replace function public.increment_empathy(p_post_id bigint, p_delta int default 1)
