@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#15110d"/>
+      <stop offset="100%" stop-color="#0c0a08"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#d4a548" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#d4a548" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#d4a548" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grain" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="30" r="0.5" fill="#d4a548" opacity="0.05"/>
+      <circle cx="70" cy="60" r="0.5" fill="#d4a548" opacity="0.04"/>
+      <circle cx="40" cy="80" r="0.5" fill="#d4a548" opacity="0.06"/>
+      <circle cx="85" cy="15" r="0.5" fill="#d4a548" opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grain)"/>
+
+  <!-- editorial frame -->
+  <rect x="60" y="60" width="1080" height="510" fill="none" stroke="#3a322a" stroke-width="1"/>
+  <line x1="60" y1="140" x2="1140" y2="140" stroke="#3a322a" stroke-width="1"/>
+  <line x1="60" y1="490" x2="1140" y2="490" stroke="#3a322a" stroke-width="1"/>
+
+  <!-- eyebrow -->
+  <text x="100" y="110" font-family="Georgia,serif" font-size="18" font-style="italic" fill="#d4a548" letter-spacing="8">— MINNA NO KOUKAI</text>
+  <text x="1100" y="110" font-family="Georgia,serif" font-size="14" font-style="italic" fill="#8a7e6e" text-anchor="end" letter-spacing="4">VOL. 01 / 2026</text>
+
+  <!-- main typography -->
+  <text x="100" y="270" font-family="'Yu Mincho','Hiragino Mincho ProN',serif" font-size="84" font-weight="500" fill="#f0e6d2" letter-spacing="-1">あなたの後悔、</text>
+  <text x="100" y="360" font-family="'Yu Mincho','Hiragino Mincho ProN',serif" font-size="84" font-weight="500" fill="#f0e6d2" letter-spacing="-1">
+    <tspan fill="#d4a548" font-style="italic">聞かせて</tspan>ください。
+  </text>
+
+  <!-- sub copy -->
+  <text x="100" y="430" font-family="'Yu Mincho','Hiragino Mincho ProN',serif" font-size="22" fill="#bfb4a0" letter-spacing="2">匿名で共有 ＋ AIが今からの行動を提案する、後悔データベース。</text>
+
+  <!-- bottom bar -->
+  <text x="100" y="540" font-family="Georgia,serif" font-size="13" font-style="italic" fill="#8a7e6e" letter-spacing="4">SHARE · LEARN · MOVE FORWARD</text>
+  <text x="1100" y="540" font-family="Georgia,serif" font-size="13" font-style="italic" fill="#d4a548" text-anchor="end" letter-spacing="4">ko-kai.jp</text>
+</svg>

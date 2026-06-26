@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>みんなの後悔 — 後悔しない人生のために。匿名共有＆AI解決策</title>
+<meta name="description" content="あなたの後悔が、誰かの人生を変えるかもしれない。仕事・恋愛・家族・お金の後悔を匿名で共有し、AIが具体的な解決策を提案。フラッシュバックやトラウマに悩む方へ、後悔を忘れる・乗り越えるためのアクションプランを届けます。">
+<meta name="keywords" content="後悔,後悔しない,後悔 忘れる,フラッシュバック,トラウマ,忘れたい記憶,思い出したくない,嫌な経験,戻りたい,タイムマシン,後悔 乗り越える,人生 やり直し">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="みんなの後悔">
+<meta property="og:title" content="みんなの後悔 — 後悔しない人生のために。匿名共有＆AI解決策">
+<meta property="og:description" content="仕事・恋愛・家族・お金の後悔を匿名で共有。AIが「今からでも遅くない」具体的アクションプランを提案します。">
+<meta property="og:url" content="https://ko-kai.jp/">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="みんなの後悔 — 後悔しない人生のために">
+<meta name="twitter:description" content="あなたの後悔が、誰かの人生を変える。匿名投稿＆AIアドバイスで後悔を前に進む力に変換。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0a08;
+  --soft:#1a1612;
+  --paper:#f0e6d2;
+  --warm:#e8a87c;
+  --gold:#d4a548;
+  --dim:#8a7e6e;
+  --line:#3a322a;
+}
+html,body{min-height:100%;scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--paper);
+  font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:.02em;
+}
+
+.top{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:24px 48px;
+  background:linear-gradient(180deg, rgba(12,10,8,.85), rgba(12,10,8,0));
+}
+.brand{font-size:13px;letter-spacing:.4em;color:var(--paper);font-weight:600}
+.brand b{color:var(--gold);font-weight:600;letter-spacing:.15em}
+.nav{display:flex;gap:28px;font-size:12px;letter-spacing:.3em;align-items:center}
+.nav a{color:var(--paper);text-decoration:none;opacity:.7;transition:opacity .2s}
+.nav a:hover{opacity:1}
+.nav .write{background:var(--paper);color:var(--bg);padding:10px 22px;opacity:1;font-weight:700}
+
+.hero{
+  position:relative;height:100vh;min-height:680px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(12,10,8,.5) 0%, rgba(12,10,8,.7) 100%),
+    url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=2400&q=85') center/cover;
+}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center, transparent 30%, rgba(12,10,8,.7) 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:960px}
+.hero-act{font-size:11px;letter-spacing:.5em;color:var(--gold);font-weight:600;margin-bottom:32px;font-family:Georgia,serif;font-style:italic}
+.hero h1{
+  font-size:clamp(34px, 6.5vw, 88px);
+  font-weight:400;line-height:1.18;letter-spacing:-.01em;margin-bottom:32px;
+  text-wrap:balance;word-break:keep-all;overflow-wrap:normal;
+}
+.hero h1 .gold{color:var(--gold);font-style:italic;display:inline-block;white-space:nowrap}
+.hero p{font-size:17px;line-height:2;color:#d8c8a8;max-width:620px;margin:0 auto 20px}
+.hero p.sub{font-size:14px;color:#bba98c;font-style:italic;margin-bottom:40px;letter-spacing:.05em}
+.hero-cta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.btn-fill{background:var(--paper);color:var(--bg);padding:18px 36px;text-decoration:none;font-size:13px;letter-spacing:.3em;font-weight:700;display:inline-flex;align-items:center;gap:10px;transition:transform .2s}
+.btn-fill:hover{transform:translateY(-2px)}
+.btn-line{border:1px solid var(--paper);color:var(--paper);padding:18px 36px;text-decoration:none;font-size:13px;letter-spacing:.3em;font-weight:700;display:inline-flex;align-items:center;gap:10px}
+
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--paper);font-size:10px;letter-spacing:.5em;opacity:.6}
+.scroll-hint::after{content:'';display:block;width:1px;height:40px;background:var(--paper);margin:12px auto 0;animation:scroll 2s ease-in-out infinite}
+@keyframes scroll{0%{height:0}50%{height:40px}100%{height:0}}
+
+.chapter{position:relative;min-height:560px;display:grid;grid-template-columns:1fr 1fr;align-items:center}
+.chapter.reverse{grid-template-columns:1fr 1fr}
+.chapter-img{position:relative;height:100%;min-height:560px;background-size:cover;background-position:center}
+.chapter.reverse .chapter-img{order:2}
+.chapter-text{padding:80px 64px}
+.chapter-mark{font-size:11px;letter-spacing:.5em;color:var(--gold);font-style:italic;font-family:Georgia,serif;margin-bottom:20px}
+.chapter h2{font-size:56px;font-weight:400;line-height:1.1;letter-spacing:-.01em;margin-bottom:28px;text-wrap:balance;word-break:keep-all}
+.chapter h2 em{font-style:italic;color:var(--warm)}
+.chapter p{font-size:16px;line-height:2;color:var(--dim);margin-bottom:24px}
+.chapter blockquote{
+  border-left:2px solid var(--gold);padding:16px 24px;margin:24px 0;
+  font-size:18px;font-style:italic;color:var(--paper);line-height:1.85;
+}
+
+.pillars{padding:96px 48px;background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pillars-h{text-align:center;margin-bottom:56px}
+.pillars-h .small{font-size:11px;letter-spacing:.6em;color:var(--gold);font-style:italic;font-family:Georgia,serif;display:block;margin-bottom:14px}
+.pillars-h h3{font-size:42px;font-weight:400;letter-spacing:.02em}
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;max-width:1100px;margin:0 auto}
+.pillar{text-align:center}
+.pillar-icon{font-size:28px;margin-bottom:20px;display:inline-block;width:56px;height:56px;border:1px solid var(--gold);color:var(--gold);border-radius:50%;line-height:54px}
+.pillar-name{font-size:20px;font-weight:600;margin-bottom:14px;letter-spacing:.05em}
+.pillar-desc{font-size:14px;line-height:1.95;color:var(--dim)}
+
+.strip{padding:80px 48px;display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.strip-cell{padding:0 24px;border-right:1px solid var(--line)}
+.strip-cell:last-child{border-right:0}
+.strip-num{font-size:64px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-.03em}
+.strip-label{font-size:11px;letter-spacing:.5em;color:var(--dim);margin-top:14px;font-style:italic;font-family:Georgia,serif}
+
+.cats-section{padding:120px 48px;border-top:1px solid var(--line)}
+.cats-h{text-align:center;margin-bottom:80px}
+.cats-h .small{font-size:11px;letter-spacing:.6em;color:var(--gold);font-style:italic;font-family:Georgia,serif;margin-bottom:16px;display:block}
+.cats-h h3{font-size:48px;font-weight:400;line-height:1}
+.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.c-tile{
+  position:relative;height:340px;overflow:hidden;cursor:pointer;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.c-tile:nth-child(4n){border-right:0}
+.c-tile:nth-child(n+5){border-bottom:0}
+.c-tile-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s, filter .4s;filter:grayscale(70%) brightness(.7)}
+.c-tile:hover .c-tile-bg{transform:scale(1.08);filter:grayscale(0%) brightness(.85)}
+.c-tile-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, transparent 30%, rgba(12,10,8,.85))}
+.c-tile-text{position:absolute;bottom:24px;left:24px;right:24px;z-index:1}
+.c-tile-text .num{font-size:40px;color:var(--gold);font-style:italic;font-family:Georgia,serif;line-height:1;margin-bottom:8px;opacity:.8}
+.c-tile-text .name{font-size:22px;font-weight:500;margin-bottom:6px}
+.c-tile-text .count{font-size:11px;letter-spacing:.4em;color:var(--dim)}
+
+.top3{padding:120px 48px;background:var(--soft);border-top:1px solid var(--line)}
+.top3-h{text-align:center;margin-bottom:64px}
+.top3-h .small{font-size:11px;letter-spacing:.6em;color:var(--gold);font-style:italic;font-family:Georgia,serif;display:block;margin-bottom:14px}
+.top3-h h3{font-size:42px;font-weight:400}
+.top3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1280px;margin:0 auto}
+.top3-card{background:var(--bg);border:1px solid var(--line);padding:40px 32px;position:relative;transition:transform .25s, border-color .2s}
+.top3-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.top3-rank{position:absolute;top:-22px;left:32px;background:var(--gold);color:var(--bg);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;font-family:Georgia,serif}
+.top3-cat{font-size:11px;letter-spacing:.3em;color:var(--gold);margin-bottom:16px;margin-top:8px;font-weight:700}
+.top3-text{font-size:17px;line-height:1.95;color:var(--paper);margin-bottom:20px}
+.top3-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);letter-spacing:.15em}
+.top3-foot .heart{color:var(--warm);font-weight:700}
+
+.ai{position:relative;min-height:680px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:96px 24px}
+.ai::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(12,10,8,.7), rgba(12,10,8,.92)),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2400&q=85') center/cover;
+}
+.ai-content{position:relative;z-index:2;max-width:820px}
+.ai-act{font-size:11px;letter-spacing:.6em;color:var(--gold);font-style:italic;font-family:Georgia,serif;margin-bottom:24px}
+.ai-content h3{font-size:clamp(40px,6vw,80px);font-weight:400;line-height:1.1;letter-spacing:-.01em;margin-bottom:32px;text-wrap:balance;word-break:keep-all}
+.ai-content h3 .gold{color:var(--gold);font-style:italic;display:inline-block;white-space:nowrap}
+.ai-content p{font-size:17px;line-height:2;color:#d8c8a8;margin-bottom:40px}
+.ai-ages{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.ai-age{padding:10px 18px;border:1px solid var(--gold);color:var(--gold);font-size:13px;letter-spacing:.1em;font-weight:600;cursor:pointer;transition:background .2s}
+.ai-age:hover, .ai-age.on{background:var(--gold);color:var(--bg)}
+
+.faq{padding:120px 48px;border-top:1px solid var(--line)}
+.faq-h{text-align:center;margin-bottom:64px}
+.faq-h .small{font-size:11px;letter-spacing:.6em;color:var(--gold);font-style:italic;font-family:Georgia,serif;display:block;margin-bottom:14px}
+.faq-h h3{font-size:42px;font-weight:400}
+.faq-list{max-width:880px;margin:0 auto}
+.faq-item{padding:32px 0;border-bottom:1px solid var(--line)}
+.faq-item:last-child{border-bottom:0}
+.faq-q{display:flex;gap:20px;align-items:start;font-size:22px;font-weight:500;line-height:1.55;margin-bottom:16px;color:var(--paper)}
+.faq-q .mark{color:var(--gold);font-style:italic;font-family:Georgia,serif;font-size:28px;line-height:1;flex-shrink:0}
+.faq-a{padding-left:48px;font-size:15px;line-height:2;color:var(--dim)}
+
+.foot{padding:48px;border-top:1px solid var(--line);font-size:12px;letter-spacing:.3em;color:var(--dim);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot a{color:var(--dim);margin-left:32px;text-decoration:none;transition:color .2s}
+.foot a:hover{color:var(--paper)}
+.foot .left{display:flex;align-items:center;gap:24px}
+.foot .free{background:var(--gold);color:var(--bg);padding:6px 14px;font-weight:700;letter-spacing:.2em;font-style:normal;font-size:11px}
+
+@media (max-width:900px){
+  .top{padding:16px 24px}
+  .nav{display:none}
+  .nav .write{display:none}
+  .chapter{grid-template-columns:1fr}
+  .chapter.reverse .chapter-img{order:1}
+  .chapter-img{min-height:280px}
+  .chapter-text{padding:48px 24px}
+  .chapter h2{font-size:36px}
+  .pillars{padding:64px 24px}
+  .pillars-grid{grid-template-columns:1fr;gap:32px}
+  .strip{grid-template-columns:1fr;padding:48px 24px;gap:32px 0}
+  .strip-cell{border-right:0;border-bottom:1px solid var(--line);padding-bottom:24px}
+  .strip-cell:last-child{border-bottom:0}
+  .cats-section, .top3, .faq{padding:64px 24px}
+  .cats-h h3, .top3-h h3, .faq-h h3{font-size:32px}
+  .cats-grid{grid-template-columns:repeat(2,1fr)}
+  .c-tile:nth-child(2n){border-right:0}
+  .c-tile:nth-child(n+7){border-bottom:0}
+  .top3-grid{grid-template-columns:1fr}
+  .ai{min-height:520px;padding:64px 24px}
+  .faq-q{font-size:18px}
+  .faq-a{padding-left:32px;font-size:14px}
+  .foot{flex-direction:column;text-align:center;padding:32px 24px}
+  .foot .left{flex-direction:column;gap:12px}
+  .foot a{margin:0 12px}
+}
+
+@media (max-width:480px){
+  .hero h1{font-size:clamp(28px, 9vw, 44px)}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">KO-KAI · <b>みんなの後悔</b></div>
+  <nav class="nav">
+    <a href="#feed">みんなの後悔</a>
+    <a href="#stats">統計</a>
+    <a href="#ai">AIアドバイス</a>
+    <a href="#write" class="write">後悔を書く</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="hero-act">— Safe & Anonymous Sharing —</div>
+    <h1>あなたの後悔、<br><span class="gold">聞かせてください。</span></h1>
+    <p>あなたの後悔が、誰かの人生を変えるかもしれない。<br>積み重なった声がデータになり、AIが次の世代の後悔を防ぐ。</p>
+    <p class="sub">後悔を忘れたい・フラッシュバックに悩む方へ —<br>嫌な経験やトラウマを「前に進む力」に変える場所です。</p>
+    <div class="hero-cta">
+      <a href="#write" class="btn-fill">✎ 後悔を書く</a>
+      <a href="#feed" class="btn-line">みんなの後悔を見る</a>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<section class="chapter" id="about">
+  <div class="chapter-img" style="background-image:url('https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600&q=85')"></div>
+  <div class="chapter-text">
+    <div class="chapter-mark">— CHAPTER 01 / このサービスについて</div>
+    <h2>40代の後悔を、<br><em>20代</em>が知る。</h2>
+    <p>集まった後悔データは、年代・性別・カテゴリ別に集計されます。「40代が最も後悔していること」を20代が知ることで、<strong style="color:var(--paper)">先回りした人生設計</strong>が可能になります。</p>
+    <p>そしてあなたの後悔は、AIによって<strong style="color:var(--paper)">実現の可能性</strong>に変わります。「やればよかった」を「今からでも遅くない」に。</p>
+    <blockquote>あなたの後悔が、誰かの人生を変える。</blockquote>
+  </div>
+</section>
+
+<section class="pillars">
+  <div class="pillars-h">
+    <span class="small">— THREE PRINCIPLES</span>
+    <h3>3つの約束</h3>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar">
+      <div class="pillar-icon">🔒</div>
+      <div class="pillar-name">完全プライバシー</div>
+      <div class="pillar-desc">名前なし・トラッキングなし・足跡なし。あなたの正直な声だけ。</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">⚙</div>
+      <div class="pillar-name">集合知</div>
+      <div class="pillar-desc">あなたのデータが、AIによって他の人への道しるべになります。</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">♡</div>
+      <div class="pillar-name">感情的サポート</div>
+      <div class="pillar-desc">判断せずに理解するコミュニティ。あなたは一人ではありません。</div>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="strip-cell"><div class="strip-num">12,847</div><div class="strip-label">後悔の声</div></div>
+  <div class="strip-cell"><div class="strip-num">9,302</div><div class="strip-label">共感した人</div></div>
+  <div class="strip-cell"><div class="strip-num">8</div><div class="strip-label">カテゴリ</div></div>
+</section>
+
+<section class="cats-section" id="feed">
+  <div class="cats-h">
+    <span class="small">— BROWSE BY CATEGORY</span>
+    <h3>カテゴリから読む</h3>
+  </div>
+  <div class="cats-grid">
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">i</div><div class="name">仕事・キャリア</div><div class="count">2,418 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">ii</div><div class="name">恋愛・パートナー</div><div class="count">3,127 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">iii</div><div class="name">家族・親子</div><div class="count">1,902 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">iv</div><div class="name">学び・挑戦</div><div class="count">1,043 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">v</div><div class="name">友情・人間関係</div><div class="count">1,556 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">vi</div><div class="name">お金・生活</div><div class="count">1,288 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">vii</div><div class="name">健康・身体</div><div class="count">812 STORIES</div></div>
+    </div>
+    <div class="c-tile">
+      <div class="c-tile-bg" style="background-image:url('https://images.unsplash.com/photo-1516585427167-9f4af9627e6c?w=900&q=85')"></div>
+      <div class="c-tile-text"><div class="num">viii</div><div class="name">その他</div><div class="count">701 STORIES</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="top3" id="stats">
+  <div class="top3-h">
+    <span class="small">— MOST EMPATHIZED</span>
+    <h3>共感された後悔 Top 3</h3>
+  </div>
+  <div class="top3-grid">
+    <div class="top3-card">
+      <div class="top3-rank">1</div>
+      <div class="top3-cat">家族・親子</div>
+      <div class="top3-text">父が亡くなる前に、もっと一緒に時間を過ごせばよかった。仕事を理由に会いに行かなかった休日が、今、何度も夢に出てくる。</div>
+      <div class="top3-foot"><span>38歳・女性</span><span class="heart">♡ 1,284</span></div>
+    </div>
+    <div class="top3-card">
+      <div class="top3-rank">2</div>
+      <div class="top3-cat">お金・生活</div>
+      <div class="top3-text">20代のとき、貯金より自己投資にお金を使えばよかった。資格を取らずに過ごした10年間が、今の選択肢の少なさに直結している。</div>
+      <div class="top3-foot"><span>42歳・男性</span><span class="heart">♡ 982</span></div>
+    </div>
+    <div class="top3-card">
+      <div class="top3-rank">3</div>
+      <div class="top3-cat">学び・挑戦</div>
+      <div class="top3-text">留学のチャンスを断ったあの春のことを、20年経っても夢に見る。あの時に踏み出していれば、今の自分は違う場所にいたかもしれない。</div>
+      <div class="top3-foot"><span>44歳・女性</span><span class="heart">♡ 731</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter reverse">
+  <div class="chapter-img" style="background-image:url('https://images.unsplash.com/photo-1499728603263-13726abce5fd?w=1600&q=85')"></div>
+  <div class="chapter-text">
+    <div class="chapter-mark">— CHAPTER 02 / DATA INSIGHTS</div>
+    <h2>データから見える<br><em>傾向</em>。</h2>
+    <p>カテゴリ別の投稿数、共感数、年代×カテゴリのヒートマップ、頻出キーワード。集計された声から、世代を超えて見える「最もよくある後悔」のかたちを可視化します。</p>
+    <p>あなたの世代が今後悔しやすいことを知る。上の世代の後悔から学ぶ。それが、この場所のもう一つの使い方です。</p>
+  </div>
+</section>
+
+<section class="ai" id="ai">
+  <div class="ai-content">
+    <div class="ai-act">— FINAL ACT · AI ADVICE —</div>
+    <h3>あなたへの<br><span class="gold">AIアドバイス</span>。</h3>
+    <p>上の世代が最も後悔していることから、<br>今のあなたへ具体的なアクションプランを届けます。</p>
+    <div class="ai-ages">
+      <span class="ai-age">10代</span>
+      <span class="ai-age">20代</span>
+      <span class="ai-age on">30代</span>
+      <span class="ai-age">40代</span>
+      <span class="ai-age">50代</span>
+      <span class="ai-age">60代以上</span>
+    </div>
+    <a href="#" class="btn-fill">AIに相談する</a>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="faq-h">
+    <span class="small">— FREQUENTLY ASKED</span>
+    <h3>よくある質問</h3>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q"><span class="mark">Q.</span><span>後悔を忘れるにはどうすればいい？</span></div>
+      <div class="faq-a">後悔を完全に忘れることは難しいですが、「具体的な行動に変換する」ことで痛みを軽減できます。みんなの後悔では、AIがあなたの後悔を分析し、今日から始められるアクションプランを提案します。行動することで後悔は「経験」に変わります。嫌な経験やフラッシュバックに悩んでいる方は、専門家への相談も検討してください。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="mark">Q.</span><span>後悔しない人生を送るには？</span></div>
+      <div class="faq-a">上の世代が最も後悔していることを知り、先回りして行動することが効果的です。みんなの後悔の統計データとAIアドバイスは、年代別に「よくある後悔」と「今からできる具体策」を提示。40代が後悔していることを20代が知ることで、後悔しない選択ができます。「タイムマシンがあれば戻りたい」と感じる前に行動を。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="mark">Q.</span><span>トラウマや思い出したくない記憶がある場合は？</span></div>
+      <div class="faq-a">フラッシュバックやトラウマが日常生活に支障をきたしている場合は、専門家への相談を強くお勧めします。みんなの後悔では、同じ経験を持つ人々の声を匿名で読むことができ、「自分だけではない」と感じられる場所です。忘れたい記憶や嫌な経験を抱えている方へ — あなたの後悔を言葉にすることが、回復の第一歩になることがあります。</div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="left">
+    <span class="free">登録不要・完全無料</span>
+    <span>© 2026 みんなの後悔</span>
+  </div>
+  <div>
+    <a href="#">利用規約</a>
+    <a href="#">プライバシーポリシー</a>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "みんなの後悔",
+  "url": "https://ko-kai.jp/",
+  "description": "後悔を匿名で共有し、AIが具体的な解決策を提案するWebサービス。仕事・恋愛・家族・お金・健康など8カテゴリの後悔データをAIが分析し、今からでも遅くない具体的アクションプランを届けます。",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.6", "ratingCount": "248" },
+  "inLanguage": "ja"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "後悔を忘れるにはどうすればいい？", "acceptedAnswer": { "@type": "Answer", "text": "後悔を完全に忘れることは難しいですが、「具体的な行動に変換する」ことで痛みを軽減できます。みんなの後悔では、AIがあなたの後悔を分析し、今日から始められる具体的なアクションプランを提案します。行動することで後悔は「経験」に変わります。" } },
+    { "@type": "Question", "name": "フラッシュバックやトラウマに悩んでいます", "acceptedAnswer": { "@type": "Answer", "text": "フラッシュバックやトラウマが日常生活に支障をきたしている場合は、専門家への相談を強くお勧めします。みんなの後悔では、同じような経験を持つ人々の声を匿名で読むことができ、「自分だけではない」と感じられる場を提供しています。AIアドバイスには専門家への相談リンクも含まれています。" } },
+    { "@type": "Question", "name": "後悔しない人生を送るにはどうすればいい？", "acceptedAnswer": { "@type": "Answer", "text": "上の世代が最も後悔していることを知り、先回りして行動することが最も効果的です。みんなの後悔の統計データとAIアドバイスは、年代別に「最もよくある後悔」と「今からできる具体策」を提示します。40代が後悔していることを20代が知ることで、後悔しない選択ができます。" } },
+    { "@type": "Question", "name": "タイムマシンがあれば戻りたいと思うことがあります", "acceptedAnswer": { "@type": "Answer", "text": "「あの時に戻りたい」という気持ちは自然な感情です。大切なのは過去に戻ることではなく、今から行動を変えること。みんなの後悔のAIアドバイスは、後悔を「今日の行動」に変換する具体的なステップを提供し、過去への執着を未来への推進力に変えます。" } }
+  ]
+}
+</script>
+</body>
+</html>
