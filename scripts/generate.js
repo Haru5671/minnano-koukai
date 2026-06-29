@@ -315,7 +315,7 @@ for (const age of Object.keys(AI_ADVICE)) {
     body += `<h2>${esc(q3)}</h2>${a3}`;
   }
 
-  body += `<div class="cta-box"><p>あなたの${age}の後悔も、聞かせてください。<br>匿名で書き出すと、AIが「今からできること」を提案します。</p><a href="/regret/anonymous/">匿名で後悔を書く</a></div>`;
+  body += `<div class="cta-box"><p>あなたの${age}の後悔も、聞かせてください。<br>匿名で書き出すと、AIが「今からできること」を提案します。</p><a href="/#post">匿名で後悔を書く</a></div>`;
 
   const siblings = Object.keys(AGE_SLUG).filter(a => a !== age)
     .map(a => `<a href="/age/${AGE_SLUG[a]}/">${a}の後悔</a>`).join('');
@@ -375,7 +375,7 @@ for (const cat of Object.keys(CAT_META)) {
     body += `<h2>${esc(q2)}</h2>${a2}`;
   }
 
-  body += `<div class="cta-box"><p>${meta.short}の後悔を、匿名で吐き出してみませんか。<br>AIがあなたの状況に合わせて次の一歩を提案します。</p><a href="/regret/anonymous/">匿名で後悔を書く</a></div>`;
+  body += `<div class="cta-box"><p>${meta.short}の後悔を、匿名で吐き出してみませんか。<br>AIがあなたの状況に合わせて次の一歩を提案します。</p><a href="/#post">匿名で後悔を書く</a></div>`;
 
   const siblings = Object.keys(CAT_META).filter(c => c !== cat)
     .map(c => `<a href="/category/${CAT_META[c].slug}/">${CAT_META[c].short}の後悔</a>`).join('');
@@ -428,7 +428,7 @@ for (const cat of Object.keys(CAT_META)) {
 
   body += `<h2>このデータについて（出典・引用）</h2><p>出典：「みんなの後悔」（${SITE}）。${TOTAL}件の匿名投稿をカテゴリ・年代別に集計したもので、2026年6月時点のデータです。引用される際は出典の明記をお願いします。投稿は随時更新されるため、最新の傾向は本ページで更新します。</p>`;
 
-  body += `<div class="cta-box"><p>このデータは、あなたの一件から作られています。<br>あなたの後悔も、匿名で加えてみませんか。</p><a href="/regret/anonymous/">匿名で後悔を書く</a></div>`;
+  body += `<div class="cta-box"><p>このデータは、あなたの一件から作られています。<br>あなたの後悔も、匿名で加えてみませんか。</p><a href="/#post">匿名で後悔を書く</a></div>`;
 
   const crumbs = [['みんなの後悔', '/'], ['統計データ', null]];
   const ld = [
@@ -468,7 +468,7 @@ for (const art of ARTICLES) {
   if (art.sources && art.sources.length) {
     body += `<h2>参考・出典</h2><ul>` + art.sources.map(s => s.url ? `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)} ↗</a></li>` : `<li>${esc(s.name)}</li>`).join('') + `</ul>`;
   }
-  body += `<div class="cta-box"><p>あなたの後悔も、匿名で書き出せます。<br>登録不要・完全無料。AIが次の一歩を一緒に考えます。</p><a href="/regret/anonymous/">匿名で後悔を書く</a></div>`;
+  body += `<div class="cta-box"><p>あなたの後悔も、匿名で書き出せます。<br>登録不要・完全無料。AIが次の一歩を一緒に考えます。</p><a href="/#post">匿名で後悔を書く</a></div>`;
   if (art.related && art.related.length) {
     const rel = art.related.map(rs => {
       const a = ARTICLES.find(x => x.slug === rs);
@@ -512,7 +512,7 @@ for (const art of ARTICLES) {
 <h2>運営者</h2>
 <p>本サイトは<strong>株式会社FEworks</strong>が運営しています。利用規約・プライバシーポリシーは<a href="/">トップページ</a>のフッターからご確認いただけます。投稿の削除等のご要望がある場合の窓口は、別途ご案内します。</p>
 ${CRISIS_HTML}
-<div class="links"><a href="/stats/">統計データ</a><a href="/regret/anonymous/">匿名で後悔を書く</a><a href="/regret/psychology/">後悔の心理学</a></div>`;
+<div class="links"><a href="/stats/">統計データ</a><a href="/#post">匿名で後悔を書く</a><a href="/regret/psychology/">後悔の心理学</a></div>`;
   const crumbs = [['みんなの後悔', '/'], ['このサイトについて', null]];
   const ld = [
     breadcrumbLd(crumbs),

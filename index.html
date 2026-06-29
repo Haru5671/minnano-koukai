@@ -2735,6 +2735,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLegal()
 updateHeroStats();
 loadPosts();
 
+// 静的ページのCTA/フッターからの遷移を処理（#post=投稿フォーム, #terms/#privacy=規約）
+function handleHashRoute() {
+  const h = (location.hash || '').replace('#', '');
+  if (h === 'post') { try { goToPostForm(); } catch (e) {} }
+  else if (h === 'terms' || h === 'privacy') { try { openLegal(h); } catch (e) {} }
+}
+handleHashRoute();
+window.addEventListener('hashchange', handleHashRoute);
+
 // PVトラッキング（セッションIDで一意識別）
 (async function trackPV() {
   try {
